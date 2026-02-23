@@ -1,0 +1,275 @@
+\documentclass[oneside,openany,phd]{TMU-Thesis}
+
+% مشخصات پایان‌نامه را در فایلهای faTitle و enTitle وارد نمایید.
+% در اینجا برای یکپارچگی، همینجا وارد می‌کنیم
+
+% مشخصات فارسی
+\university{تربیت مدرس}
+\faculty{مهندسی برق و کامپیوتر}
+\department{گروه هوش مصنوعی و رباتیکز}
+\subject{مهندسی کامپیوتر}
+\field{نرم‌افزار}
+\credits{---} % در رساله دکتری معمولا به صورت واحدی ذکر نمی‌شود یا فیلد خالی است
+\title{یادگیری تقویتی عمیق با شکل‌دهی تصادفی پاداش برای مدیریت عدم قطعیت در سیستم‌های خودوفقی}
+\firstsupervisor{دکتر ...}
+% \secondsupervisor{استاد راهنمای دوم}
+\firstadvisor{دکتر ...}
+% \secondadvisor{استاد مشاور دوم}
+\name{علیرضا}
+\surname{کاویانی‌فر}
+\studentID{...}
+\thesisdate{بهمن ۱۴۰۴}
+
+% مشخصات انگلیسی
+\latinuniversity{Tarbiat Modares University}
+\latinfaculty{Faculty of Electrical and Computer Engineering}
+\latinsubject{Computer Engineering}
+\latinfield{Software}
+\latintitle{Randomized Reward-Shaped Deep Reinforcement Learning for Managing Uncertainty in Self-Adaptive Systems}
+\firstlatinsupervisor{Dr. ...}
+\firstlatinadvisor{Dr. ...}
+\latinname{Alireza}
+\latinsurname{Kavianifar}
+\latinthesisdate{February 2026}
+\latinkeywords{Self-Adaptive Systems, Deep Reinforcement Learning, Reward Shaping, Uncertainty}
+
+% فراخوانی بسته‌ها و دستورات استاندارد
+\input{commands}
+
+% تنظیمات اختصاصی برای فهرست مطالب (TOC)
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% بازگرداندن نقاط رابط (Dot Leaders) که در Cleanup حذف شده بود
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+
+% تنظیمات تورفتگی و ظاهر
+\setlength{\cftsubsubsecindent}{6em}
+\setlength{\cftaftertoctitleskip}{10pt} % رفع فاصله زیاد بعد از عنوان فهرست
+\raggedbottom
+
+\begin{document}
+\AutoPersianDigits
+\setstretch{1.5}
+
+\pagenumbering{harfi}
+\firstPage
+\besmPage
+\davaranPage
+% در این قسمت اسامی داوران در فایل اصلی باید دستی وارد شوند، اینجا از ساختار پیش‌فرض استفاده می‌کنیم
+
+\esalatPage
+\mojavezPage
+
+\chapter*{تقدیم}
+\addcontentsline{toc}{chapter}{تقدیم}
+\begin{center}
+    \textit{(متن تقدیم به خانواده، اساتید و ...)}
+\end{center}
+\newpage
+
+\begin{acknowledgementpage}
+(متن تشکر و قدردانی از اساتید راهنما، مشاور و دوستان)
+\signature 
+\end{acknowledgementpage}
+
+\keywords{سیستم‌های خودوفقی، یادگیری تقویتی عمیق، شکل‌دهی پاداش، عدم قطعیت}
+\fa-abstract{
+(خلاصه‌ای از چالش، راهکار و نتایج کلیدی در ۳۰۰ تا ۵۰۰ کلمه)
+}
+\abstractPage
+
+\tableofcontents
+\newpage
+
+\listoftables
+\newpage
+
+\listoffigures
+\newpage
+
+\chapter*{فهرست علائم و اختصارات}
+\addcontentsline{toc}{chapter}{فهرست علائم و اختصارات}
+(لیست نمادهای ریاضی مانند $\rho$، $\gamma$ و اختصارات مانند \lr{DRL}، \lr{SAS})
+\newpage
+
+% ============================================================================
+% متن اصلی رساله
+% ============================================================================
+\pagenumbering{arabic}
+\pagestyle{fancy}
+
+% فصل ۱: مقدمه
+\chapter{مقدمه}
+\section{پیش‌زمینه و مفاهیم: سیستم‌های خودوفقی}
+\subsection{انگیزه‌های پژوهش و مثال‌های عینی}
+\subsection{حلقه بازخورد \lr{MAPE-K}}
+\subsection{کاستی‌های رویکردهای ایستا و مبتنی بر قانون}
+
+\section{چالش عدم قطعیت در زمان اجرا}
+\subsection{مبانی عدم قطعیت در سیستم‌های خودوفقی}
+\subsection{مطالعه موردی انگیزشی: سیستم \lr{DeltaIoT} (نگاه اول)}
+\subsection{منابع و اثرات عدم قطعیت در \lr{DeltaIoT}}
+
+\section{یادگیری تقویتی برای خودوفقی: فرصت‌ها و چالش‌ها}
+\subsection{چرا یادگیری تقویتی برای تصمیم‌گیری در زمان اجرا؟}
+\subsection{محدودیت‌های یادگیری تقویتی سنتی در فضاهای وفقی گسسته و بزرگ}
+
+\section{بیان مسئله و سوالات تحقیق}
+
+\section{راهکار پیشنهادی: یادگیری تقویتی عمیق با شکل‌دهی پاداش (\lr{RS-DRL})}
+\textit{ادغام شده در معماری حلقه بازخورد \lr{MAPE-K} (\lr{Monitor-Analyze-Plan-Execute-Knowledge})}
+
+\subsection{ایده اصلی: شکل‌دهی تصادفی پاداش (فاکتور \texorpdfstring{$\rho$}{rho}) در طول بازپخش تجربه}
+\textit{کنترل شده توسط یک فاکتور شکل‌دهی \texorpdfstring{$\rho$}{rho} که نسبت تجربیات ناموفق برای شکل‌دهی مجدد را تعیین می‌کند.}
+
+\section{مشارکت‌های کلیدی رساله}
+\section{ساختار کلی رساله}
+
+\newpage
+
+% فصل ۲: مبانی و پیشینه تحقیق
+\chapter{مبانی و پیشینه تحقیق}
+\section{مبانی سیستم‌های خودوفقی}
+\subsection{مفاهیم اصلی و الگوهای معماری}
+\subsection{مدل‌سازی و مدیریت عدم قطعیت در سیستم‌های خودوفقی}
+
+\section{یادگیری تقویتی برای وفقی‌سازی سیستم}
+\subsection{اصول یادگیری تقویتی (\lr{MDP}ها، یادگیری \lr{Q})}
+\subsection{یادگیری تقویتی عمیق برای فضاهای عمل گسسته بزرگ (\lr{DQN})}
+\subsection{مفهوم یادگیری «مداوم» در این رساله (حلقه‌های وفقی جریانی)}
+
+\section{کار‌های مرتبط: شیوه‌های مدیریت فضاهای وفقی بزرگ}
+\subsection{روش‌های مبتنی بر یادگیری ماشین (به عنوان مثال \lr{ML4EAS})}
+\subsection{روش‌های مبتنی بر جستجو (به عنوان مثال الگوریتم‌های ژنتیک)}
+\subsection{روش‌های مبتنی بر یادگیری تقویتی (مانند \lr{Epsilon-Greedy DQN} و \texorpdfstring{\\}{}\lr{DLASER})}
+\subsection{شکل‌دهی پاداش و بازپخش تجربه با نگاه به گذشته (\lr{HER} و \lr{Soft HER})}
+
+\section{سنتز و شناسایی شکاف تحقیقاتی}
+
+\newpage
+
+% فصل ۳: مدل سیستم و فرمول‌بندی مسئله
+\chapter{مدل سیستم و فرمول‌بندی مسئله}
+\section{مطالعه موردی انگیزشی: سیستم \lr{DeltaIoT}}
+\subsection{مرور کلی سیستم و منابع عدم قطعیت}
+\subsection{فضای وفقی و بازنمایی پیکربندی}
+
+\section{مدل صوری برای تصمیم‌گیری خودوفقی تحت عدم قطعیت}
+\subsection{تعریف فضای حالت}
+\textit{فضای حالت به صورت $S = \{\text{\lr{Energy}}, \text{\lr{Packet Loss}}, \text{\lr{Latency}}\}$ تعریف می‌شود.}
+\subsection{فضای عمل: گزینه‌های وفقی گسسته}
+\subsection{فرمول‌بندی تابع پاداش برای اهداف تک‌هدفه و چندهدفه}
+\subsubsection{معادله ۱: پاداش چندهدفه (معادل معادله ۱۱ مقاله)}
+\subsubsection{معادله ۲: پاداش تک‌هدفه (معادل معادله ۱۲ مقاله)}
+\subsubsection{جدول ۱: پارامترهای پاداش برای اهداف \lr{TTS} و \lr{TT} (معادل جدول ۲ مقاله)}
+
+\section{بیان مسئله: یادگیری سیاست وفقی بهینه با عملیات مداوم در زمان اجرا}
+
+\newpage
+
+% فصل ۴: روش \lr{RS-DRL}: معماری و الگوریتم
+\chapter{روش \lr{RS-DRL}: معماری و الگوریتم}
+\section{مرور کلی رویکرد پیشنهادی}
+
+\section{معماری سیستم: ادغام \lr{RS-DRL} با حلقه \lr{MAPE-K}}
+\subsection{سیستم مدیریت‌شده و سیستم مدیریت‌کننده}
+\subsection{تعامل دقیق حلقه وفقی ۹ مرحله‌ای}
+
+\section{الگوریتم \lr{RS-DRL}}
+\subsection{الگوریتم اصلی: \lr{DQN} برای حلقه‌های وفقی جریانی}
+\textit{رفع محدودیت‌های یادگیری تقویتی کلاسیک از طریق تعامل یادگیری جریانی و مداوم.}
+\subsection{تابع شکل‌دهی پاداش (الگوریتم ۲)}
+\subsection{مقایسه با بازپخش تجربه با نگاه به گذشته (\lr{HER}) و سایر روش‌های پایه}
+
+\section{جزئیات کلیدی پیاده‌سازی برای بازتولیدپذیری}
+\subsection{ساخت حالت از داده‌های پایش شده}
+\subsection{اعتبارسنجی زمان اجرا با \lr{UPPAAL-SMC} و \lr{ActivFORMS}}
+\subsection{انتخاب و بهینه‌سازی ابرپارامترها (جستجوی شبکه‌ای و تنظیم \texorpdfstring{$\rho$}{rho})}
+
+\newpage
+
+% فصل ۵: ارزیابی تجربی
+\chapter{ارزیابی تجربی}
+\section{اهداف ارزیابی و سوالات تحقیق}
+
+\section{تنظیمات آزمایشگاهی}
+\subsection{نمونه‌های مطالعه موردی: \lr{DeltaIoTv1}، \lr{DeltaIoTv1.1} و \lr{DeltaIoTv2}}
+\subsection{مجموعه داده‌ها: ردپاهای محیطی و پارامترهای رانش}
+\subsection{پلتفرم پیاده‌سازی: \lr{Gymnasium} و \lr{Stable-Baselines3}}
+
+\section{روش‌های پایه و مقایسه}
+\subsection{روش \lr{Epsilon-Greedy DQN}}
+\subsection{روش \lr{RS-DRL} به همراه \lr{HER / Soft HER}}
+\subsection{روش‌های \lr{DLASER}، \lr{DLASER+} و \lr{ML4EAS}}
+\subsection{روش مرجع جستجوی کامل (\lr{Exhaustive Search})}
+\subsection{توجیه انتخاب روش‌های پایه: محدودیت‌ها و پروتکل‌های مقایسه}
+
+\section{معیارهای ارزیابی}
+\subsection{عملکرد یادگیری: عملکرد مجانبی، زمان تا آستانه و عملکرد کل}
+\subsection{عملکرد سیستم: از دست رفتن بسته، تاخیر، مصرف انرژی}
+
+\section{نتایج و تحلیل‌ها}
+\subsection{منحنی‌های یادگیری و رفتار همگرایی}
+\subsection{مقایسه عملکرد به ازای هر هدف}
+\subsection{ارزیابی مقایسه‌ای در برابر تمام روش‌های پایه}
+\subsection{مطالعه ابلیشن (\lr{Ablation}): حساسیت به فاکتور شکل‌دهی (\texorpdfstring{$\rho$}{rho})}
+\subsection{تحلیل مقیاس‌پذیری (از ۲۱۶ به ۴۰۹۶ گزینه وفقی)}
+
+\section{اعتبارسنجی آماری (آزمون‌های \lr{t} و مقادیر \lr{p})}
+
+\newpage
+
+% فصل ۶: بحث، کارهای آینده و نتیجه‌گیری
+\chapter{بحث، کارهای آینده و نتیجه‌گیری}
+\section{بحث در مورد یافته‌های کلیدی}
+\subsection{نظریه‌پردازی مکانیزم: چرا \lr{RS-DRL} کار می‌کند؟}
+\subsection{تحلیل تعاملات و مصالحه‌ها (به عنوان مثال، تاخیر در مقابل از دست رفتن بسته)}
+\subsection{پیامدهای مهندسی سیستم‌های خودوفقی}
+
+\section{محدودیت‌ها و تهدیدات اعتبار}
+\subsection{اعتبار داخلی، خارجی و سازه}
+\subsection{محدودیت‌های رویکرد \lr{RS-DRL} (وابستگی به \texorpdfstring{$\rho$}{rho}، فضاهای عمل گسسته)}
+
+\section{مسیرهایی برای تحقیقات آینده}
+\subsection{به سوی استراتژی‌های شکل‌دهی وفقی (تنظیم خودکار \texorpdfstring{$\rho$}{rho})}
+\subsection{گسترش \lr{RS-DRL} به دامنه‌های پیوسته و حساس به ایمنی}
+\subsection{اعتبارسنجی بین‌دامنه و تحلیل‌های نظری}
+
+\section{نتیجه‌گیری}
+\subsection{خلاصه بیان مسئله و راهکار پیشنهادی}
+\subsection{مرور مشارکت‌ها و شواهد تجربی}
+\subsection{سخنان پایانی}
+
+\newpage
+
+% کتابنامه و پیوست‌ها
+\pagestyle{empty}
+{
+\onehalfspacing
+\bibliographystyle{ieeetr-fa}
+\nocite{*}
+\bibliography{MyReferences}
+}
+
+\pagestyle{fancy}
+\appendix
+\chapter{جریان‌های کاری کامل فرآیند}
+\newpage
+\chapter{لیست کامل الگوریتم‌ها}
+\newpage
+\chapter{نتایج تجربی گسترده}
+\newpage
+\chapter{مصنوعات پیاده‌سازی و پکیج بازتولید}
+
+\newpage
+
+% چکیده و عنوان انگلیسی
+\en-abstract{
+(English summary of the thesis, required at the end by TMU guidelines)
+}
+\latinfirstPage
+
+\end{document}

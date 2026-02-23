@@ -17,9 +17,9 @@
 %% 
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{VThesis}
-              [10/21/2011 v0.4
- Persian thesis document class in XeLaTeX for University of Tabriz projects/theses/dissertations]
+\ProvidesClass{TMU-Thesis}
+              [2012/01/21 v0.5
+ Persian thesis document class for Tarbiat Modares University]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions
 \LoadClass[a4paper,12pt]{book}
@@ -66,6 +66,9 @@
 \newif\if@mscthesis
 \@mscthesisfalse
 \DeclareOption{msc}{\@mscthesistrue}
+\newif\if@phdthesis
+\@phdthesisfalse
+\DeclareOption{phd}{\@phdthesistrue}
 \ProcessOptions
 
 \ifx\@projectLabel\undefined%
