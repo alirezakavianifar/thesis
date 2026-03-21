@@ -24,7 +24,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{subfigure}
-\usepackage[subfigure]{tocloft}
+\usepackage{titletoc}
 
 
 % بسته‌ای برای ظاهر شدن «مراجع» و «نمایه» در فهرست مطالب
@@ -159,25 +159,34 @@
 %\renewcommand{\baselinestretch}{\MATtextbaseline}
 \doublespacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% دستوراتی برای اضافه کردن کلمه «فصل» در فهرست مطالب
+% دستوراتی برای اضافه کردن کلمه «فصل» در فهرست مطالب با استفاده از titletoc
+\titlecontents{chapter}
+  [5em]
+  {\addvspace{1em}\bfseries}
+  {\contentslabel[\chaptername~\thecontentslabel:]{5em}}
+  {\hspace*{-5em}}
+  {\titlerule*[0.5pc]{.}\contentspage}
 
-\newlength\mylenprt
-\newlength\mylenchp
-\newlength\mylenapp
+\titlecontents{section}
+  [5em]
+  {}
+  {\contentslabel{2em}}
+  {\hspace*{-2em}}
+  {\titlerule*[0.5pc]{.}\contentspage}
 
-\renewcommand\cftpartpresnum{\partname~}
-\renewcommand\cftchappresnum{\chaptername~}
-\renewcommand\cftchapaftersnum{:}
+\titlecontents{subsection}
+  [8em]
+  {}
+  {\contentslabel{3em}}
+  {\hspace*{-3em}}
+  {\titlerule*[0.5pc]{.}\contentspage}
 
-\settowidth\mylenprt{\cftpartfont\cftpartpresnum\cftpartaftersnum}
-\settowidth\mylenchp{\cftchapfont\cftchappresnum\cftchapaftersnum}
-\settowidth\mylenapp{\cftchapfont\appendixname~\cftchapaftersnum}
-\addtolength\mylenprt{\cftpartnumwidth}
-\addtolength\mylenchp{\cftchapnumwidth}
-\addtolength\mylenapp{\cftchapnumwidth}
-
-\setlength\cftpartnumwidth{\mylenprt}
-\setlength\cftchapnumwidth{\mylenchp}	
+\titlecontents{subsubsection}
+  [12em]
+  {}
+  {\contentslabel{4em}}
+  {\hspace*{-4em}}
+  {\titlerule*[0.5pc]{.}\contentspage}
 
 \makeatletter
 {\def\thebibliography#1{\chapter*{\refname\@mkboth
