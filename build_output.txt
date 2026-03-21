@@ -1,0 +1,11 @@
+xelatex: security risk: running with elevated privileges
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+miktex-dvipdfmx: security risk: running with elevated privileges
+! Interruption.
+\__text_change_case_auxii:nnnn ...case_boundary_#2
+                                                  _#4:Nnnnw}\__text_change_c...
+l.859 
+      
+? 
