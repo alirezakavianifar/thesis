@@ -1,0 +1,244 @@
+\chapter{روش پیشنهادی \lr{RS-DRL}: معماری و مدل فرآیندی (نسخه فرآیندگرا)}
+\label{ch:chapter5-process}
+
+\section{مقدمه و چشم‌انداز معماری: رویکرد فرآیندگرا}
+\label{sec:ch5-overview}
+
+سیستم‌های خودوفقی که در شرایط عدم قطعیت عمل می‌کنند، علاوه بر تصمیم‌گیری مؤثر در زمان اجرا، نیازمند جداسازی معماری دقیق بین مؤلفه‌های پایش، یادگیری، راستی‌آزمایی و اجرا هستند. در حالی که معماری مرجع \lr{RS-DRL} این عناصر را به صورت مفهومی‌معرفی می‌کند، این فصل یک \textbf{پالایش سیستماتیک فرآیندگرا} را ارائه می‌دهد تا منطق بازگشتی و جریان کنترلی حاکم بر تعامل آن‌ها را ثبت نماید.
+
+ساختار این فصل بر پایه فرآیند تطبیق زمان اجرا استوار است، نه بر پایه اجزای نرم‌افزاری صلب. اصل سازمان‌دهنده اصلی، \textbf{پیشرفت فرآیند} است؛ بدین معنا که هر بخش به چرخه داده از حس‌گر تا عمل‌گر پاسخ می‌دهد. به منظور مدیریت پیچیدگی، نقشه سلسله‌مراتبی نمایش داده شده در شکل \ref{fig:diagram-map} به‌عنوان راهنمای ناوبری در مدل‌های فرآیندی عمل می‌کند.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{../../figures/diagram-map.png}
+  \caption{نقشه سلسله‌مراتب فرآیندهای سیستم مبتنی بر RS-DRL (نمودار D1). این نقشه ارتباط بین جریان یکپارچه مرکزی و فرآیندهای تفصیلی ادراک، تصمیم‌گیری و یادگیری را نشان می‌دهد.}
+  \label{fig:diagram-map}
+\end{figure}
+
+این سازمان‌دهی سلسله‌مراتبی تضمین می‌کند که تمامی‌جنبه‌های سیستم (از استنتاج زمان اجرا تا آموزش ناهمگام) در یک مدل واحد و سازگار بازنمایی شوند.
+
+\section{حلقه خودوفقی در سطح سیستم (جریان یکپارچه)}
+\label{sec:system-loop}
+
+در بالاترین سطح انتزاع، سیستم یک فرآیند غالب را انجام می‌دهد: تطبیق مستمر تحت عدم قطعیت. مؤلفه \lr{RS-DRL} به‌عنوان یک ماژول هوشمند در بطن این حلقه ادغام شده است. این جریان با چرخه چهار مرحله اصلی (شامل ۹ زیرمرحله عملیاتی) زیر تشریح می‌شود که مسیر داده از ادراک تا تغییر فیزیکی را دنبال می‌کند:
+
+\begin{enumerate}
+  \item \textbf{پایش و ساخت وضعیت (مراحل ۱-۴):} دریافت علائم محیطی و تبدیل آن‌ها به قرارداد بردار حالت.
+  \item \textbf{راه‌اندازی تطبیق و برنامه‌ریزی (مراحل ۵-۷):} تشخیص نقض اهداف و استنتاج بهترین گزینه تطبیقی توسط مدل آموزش‌دیده.
+  \item \textbf{راستی‌آزمایی و بازخورد (مراحل ۷-۸):} ارزیابی خروجی یادگیرنده در برابر مدل صوری صریح و تولید پاداش آموزشی.
+  \item \textbf{اجرای قطعی (مراحل ۸-۹):} استقرار فیزیکی تغییرات در سیستم مدیریت‌شونده.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{../../figures/rs-drl-integration-overview.png}
+  \caption{نمای کلی فرآیند یکپارچه خودوفقی در سطح سیستم. این نمودار توالی نه گانه مراحل زمانی از مشاهده سنسور تا بازپیکربندی سیستم را به تصویر می‌کشد.}
+  \label{fig:integration-overview}
+\end{figure}
+
+جدول \ref{tab:process-classification} فرآیندهای اصلی را بر اساس ماهیت زمانی آن‌ها طبقه‌بندی می‌کند. یک تصمیم مهم معماری در اینجا، \textbf{جداسازی زمانی (\lr{Temporal Separation})} بین چرخه بحرانی تصمیم‌گیری (میلی‌ثانیه) و فرآیند یادگیری سنگین (ناهمگام) در پس‌زمینه است.
+
+\begin{table}[H]
+\centering
+\caption{طبقه‌بندی زمانی فرآیندهای معماری RS-DRL}
+\label{tab:process-classification}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{فرآیند} & \textbf{ماهیت زمانی} & \textbf{توضیح عملکردی} \\ \hline
+پایش (\lr{Monitoring}) & مستمر (\lr{Continuous}) & پایش دائمی‌علائم حیاتی شبکه \\ \hline
+پیش‌بینی (\lr{Prediction}) & رویدادمحور (\lr{Event-driven}) & واکنش سریع به تریگرهای تحلیل‌گر \\ \hline
+راستی‌آزمایی (\lr{Verification}) & مشروط (\lr{Conditional}) & اعتبارسنجی گزینه‌ها پیش از اجرا \\ \hline
+آموزش (\lr{Training}) & ناهمگام (\lr{Asynchronous}) & به‌روزرسانی سیاست‌ها در پس‌زمینه \\ \hline
+\end{tabular}
+\end{table}
+
+\section{نگاشت به چارچوب \lr{MAPE-K}: لنز طبقه‌بندی}
+\label{sec:mape-k-mapping}
+
+در این بخش، مدل مرجع \lr{MAPE-K} به‌عنوان یک «لنز طبقه‌بندی» برای تفکیک مسئولیت‌های هر بخش از مدل فرآیندی عمل می‌کند (شکل \ref{fig:mape-k-view}).
+
+\begin{itemize}
+  \item \textbf{پایش} (بخش \ref{subsec:monitoring-feature}): مسئول جمع‌آوری داده‌ها و ساخت بردار وضعیت فشرده $s_t$ (مراحل ۱-۴).
+  \item \textbf{تحلیل} (بخش \ref{subsec:analysis-context}): ارزیابی انحراف از اهداف \lr{QoS} و صدور سیگنال برنامه‌ریزی (مراحل ۴-۵).
+  \item \textbf{برنامه‌ریزی} (بخش \ref{subsec:planning-prediction}): هسته استنتاج \lr{DQN} که بهترین گزینه را پیشنهاد می‌دهد (مراحل ۵-۷).
+  \item \textbf{اجرا} (بخش \ref{subsec:verification} و شکل \ref{fig:execution}): استقرار دستورالعمل‌های بازپیکربندی در لایه شبکه (مراحل ۸-۹).
+  \item \textbf{مخزن دانش}: مخزن مشترک همگام‌ساز برای مدل‌ها، تجربیات بازپخش و قراردادهای پیکربندی.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{../../figures/mape-k-adaptation-control-loop.png}
+  \caption{نگاشت حلقه تطبیق RS-DRL به معماری مرجع MAPE-K (نمودار D3). این مدل ساختاری برای جداسازی دغدغه‌های پایش، تصمیم‌گیری و دانش ارائه می‌دهد.}
+  \label{fig:mape-k-view}
+\end{figure}
+
+\section{فرآیند تصمیم‌گیری آنلاین تطبیق}
+\label{sec:online-decision}
+
+این بخش مسیر داده را در زمان اجرا، از لحظه مشاهده علائم محیطی تا لحظه اجرای بازپیکربندی، تشریح می‌کند.
+
+\subsection{پایش و ساخت وضعیت: فرآیند ادراک}
+\label{subsec:monitoring-feature}
+
+در سیستم مدل‌سازی‌ شده (\lr{DeltaIoT})، بردار وضعیت از سه متغیر اساسی به صورت زیر تشکیل می‌شود:
+\begin{equation}
+s_t = \langle E, P, L \rangle
+\label{eq:state_vector_new}
+\end{equation}
+که در آن $E$ مصرف انرژی، $P$ نرخ اتلاف بسته و $L$ تاخیر شبکه است.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{../../figures/monitoring-state-construction.png}
+  \caption{فرآیند پایش و ساخت بردار وضعیت (نمودار D5). این نمودار تبدیل داده‌های خام سنسور به بردار وضعیت فشرده را نمایش می‌دهد.}
+  \label{fig:monitoring}
+\end{figure}
+
+\subsection{تحلیل و تشخیص ضرورت تطبیق}
+\label{subsec:analysis-context}
+تحلیل‌گر بردار حالت را دریافت کرده و با آستانه‌های کیفی مقایسه می‌کند. در صورت نقض اهداف، سیگنال «نیاز به تطبیق» صادر می‌شود.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{../../figures/mape-k-analysis-phase.png}
+  \caption{نمودار فعالیت فرآیند تحلیل و تشخیص ضرورت تطبیق. خروجی این مرحله یک سیگنال اعلان برای واحد برنامه‌ریز است.}
+  \label{fig:analysis}
+\end{figure}
+
+\subsection{برنامه‌ریزی: استنتاج گزینه تطبیقی}
+\label{subsec:planning-prediction}
+برنامه‌ریز مدل آموزش‌دیده \lr{RS-DRL} را فراخوانی کرده و مقادیر $Q$ را تخمین می‌زند. این فرآیند یک \textbf{استنتاج خالص} (\lr{Pure Inference}) است و وزن‌های شبکه در این مسیر تغییر نمی‌کنند.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{../../figures/adaptation-option-prediction.png}
+  \caption{مسیر تصمیم‌گیری زمان اجرا: استنتاج سریع گزینه تطبیقی توسط مدل RS-DRL (نمودار D2).}
+  \label{fig:prediction}
+\end{figure}
+
+\subsection{راستی‌آزمایی صوری با \lr{UPPAAL-SMC}}
+\label{subsec:verification}
+
+تصمیم پیشنهادی توسط موتور \lr{UPPAAL-SMC} از طریق وارسی مدل آماری (\lr{Statistical Model Checking}) بررسی می‌گردد. در نسخه جاری پیاده‌سازی، این زیرفرآیند یک \textbf{سیگنال پاداش زمین‌گیر شده} تولید می‌کند که بر اساس مدل‌های صوری دقیق محاسبه می‌شود:
+
+\begin{enumerate}
+  \item \textbf{تولید پاداش صوری (\lr{SMC-Reward}):}
+  تابع $SMC\_Verify(s, a)$ یک مقدار دودویی برمی‌گرداند: $r_{smc} \in \{0, 1\}$. اگر مدل صوری \lr{UPPAAL-SMC} تأیید کند که گزینه $a$ در وضعیت $s$ اهداف کیفیت خدمات (\lr{QoS}) را برآورده می‌سازد، مقدار $1$ بازگردانده می‌شود؛ در غیر این صورت مقدار $0$ برمی‌گردد.
+  \item \textbf{سیگنال ترکیبی پاداش:} پاداش نهایی برای ذخیره در بافر بازپخش به صورت $r = r_{env} \times r_{smc}$ تعریف می‌شود. این حاصل‌ضرب تضمین می‌کند که تنها تجربیاتی که هم از محیط و هم از مدل صوری تأیید شده‌اند، پاداش مثبت دریافت می‌کنند.
+\end{enumerate}
+
+\begin{framed}
+\noindent\textbf{توجه (محدودیت نسخه فعلی در قیاس با کار آینده):}
+در نسخه فعلی پیاده‌سازی، خروجی \lr{UPPAAL-SMC} صرفاً برای تولید پاداش مبتنی بر مدل صوری استفاده می‌شود و گزینه پیشنهادی بدون توجه به نتیجه راستی‌آزمایی اجرا می‌گردد. توسعه آینده این مرحله را به یک لایه فیلترینگ سخت تحت عنوان «شکل‌دهی ایمن (\lr{Safe Reshaping})» ارتقا خواهد داد که در آن گزینه‌های رد شده توسط \lr{UPPAAL-SMC} از اجرا بازداشته می‌شوند.
+\end{framed}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{../../figures/adaptation-option-verification.png}
+  \caption{زیرفرآیند اعتبارسنجی صوری و ارزیابی عدم قطعیت گزینه‌های پیشنهادی (نمودار D4).}
+  \label{fig:verification}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{../../figures/mape-k-execution-phase.png}
+  \caption{فرآیند اجرای پیکربندی جدید و تعامل با لایه شبکه در سیستم مدیریت‌شونده.}
+  \label{fig:execution}
+\end{figure}
+
+\section{معماری داخلی و یادگیری ناهمگام \lr{RS-DRL}}
+\label{sec:internal-arch}
+
+معماری \lr{RS-DRL} به صورت مدولار بر پایه سه مسیر فرآیندی یکپارچه در شکل \ref{fig:internal-architecture-diagram} سازمان‌دهی شده است.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{../../figures/rs-drl-integrated-system.png}
+  \caption{معماری داخلی یکپارچه RS-DRL. این نمودار تعامل زیرفرآیندهای استنتاج زمان اجرا و یادگیری ناهمگام را نشان می‌دهد (نمودار D1).}
+  \label{fig:internal-architecture-diagram}
+\end{figure}
+
+\section{هسته یادگیری: شکل‌دهی تصادفی پاداش}
+\label{sec:learning}
+
+نوآوری کلیدی \lr{RS-DRL}، بازطراحی تصادفی تجربیات شکست‌خورده ($r_i=0$) به موفق ($r_i=1$) در حین آموزش برای فرار از قله‌های محلی است:
+\begin{equation}
+\tilde{r}_i = \begin{cases} 
+1 & \text{if } r_i = 0 \text{ and } \text{rand}(0,1) < \rho \\
+r_i & \text{otherwise}
+\end{cases}
+\label{eq:shaping_math_final}
+\end{equation}
+
+الگوریتم \ref{alg:rs_drl_final} منطق یکپارچه آموزش را نشان می‌دهد. به منظور دقت و بازتولیدپذیری، این الگوریتم صراحتاً نحوه استفاده از خروجی راستی‌آزمایی ($r_{smc} \in \{0,1\}$) و اعمال شکل‌دهی پاداش در مینی‌بچ را نمایان می‌سازد. توجه شود که $SMC\_Verify$ تنها برای محاسبه پاداش آموزشی به کار می‌رود و در نسخه جاری مانع اجرای گزینه نمی‌شود.
+
+\begin{algorithm}[H]
+\caption{الگوریتم جامع آموزش و به‌روزرسانی RS-DRL}
+\label{alg:rs_drl_final}
+\begin{algorithmic}[1]
+\STATE Initialize main network $\theta$ and target network $\theta'$
+\FOR{each training episode}
+  \STATE $s \leftarrow GetInitialState()$
+  \WHILE{episode not finished}
+    \STATE $a \leftarrow SelectAction(s, \theta, \epsilon\text{-greedy})$
+    \STATE $(s', r_{env}) \leftarrow Environment.Step(a)$
+    \STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$ \COMMENT{$r_{smc} \in \{0,1\}$: UPPAAL-SMC confirms QoS satisfaction}
+    \STATE $r \leftarrow r_{env} \times r_{smc}$ \COMMENT{Reward=1 only if env AND formal model both confirm success}
+    \STATE Store transition $(s, a, r, s')$ in Replay Buffer $\mathcal{D}$
+    \STATE Sample random minibatch $B = \{(s_i, a_i, r_i, s'_i)\}_{i=1}^N$ from $\mathcal{D}$
+    \FOR{each transition $i$ in $B$}
+      \IF{$r_i = 0$ \textbf{and} $rand(0,1) < \rho$}
+        \STATE $\tilde{r}_i \leftarrow 1$ \COMMENT{Random Optimistic Shaping}
+      \ELSE
+        \STATE $\tilde{r}_i \leftarrow r_i$
+      \ENDIF
+      \STATE $y_i \leftarrow \tilde{r}_i + \gamma \max_{a'} Q(s'_i, a'; \theta')$ \COMMENT{TD target with shaped reward}
+      \STATE $\theta \leftarrow \theta - \alpha \nabla_\theta \mathbb{E}[(y_i - Q(s_i, a_i; \theta))^2]$
+    \ENDFOR
+    \STATE $\theta' \leftarrow \tau\theta + (1-\tau)\theta'$ \COMMENT{Soft update of target network}
+    \STATE $s \leftarrow s'$
+  \ENDWHILE
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{../../figures/rs-drl-training-process.png}
+  \caption{نمودار فعالیت فرآیند آموزش ناهمگام و به‌روزرسانی سیاست‌ها در RS-DRL.}
+  \label{fig:activity-training}
+\end{figure}
+
+\section{مدیریت دانش و جداسازی زمانی}
+\label{sec:knowledge}
+
+جدول \ref{tab:interaction} هماهنگی جریانات ناهمگام را از طریق مخزن دانش توصیف می‌کند.
+
+\begin{table}[H]
+\centering
+\caption{قراردادهای تعاملی و همگام‌سازی جریانات آنلاین و ناهمگام}
+\label{tab:interaction}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{فرآیند} & \textbf{دسترسی به دانش} & \textbf{زمان‌بندی} & \textbf{تاثیر بر تأخیر} \\ \hline
+استنتاج (\lr{Inference}) & فقط‌خواندنی & رویدادمحور & ناچیز (میلی‌ثانیه) \\ \hline
+فیدبک (\lr{Reward}) & نوشتنی & انتهای گام & بسیار کم \\ \hline
+آموزش (\lr{Training}) & خواندن/نوشتن & ایزوله (ناهمگام) & صفر \\ \hline
+\end{tabular}
+\end{table}
+
+\section{نگاشت به پرسش‌های پژوهش (\lr{RQs})}
+\label{sec:rq-mapping}
+
+\begin{itemize}
+  \item \textbf{RQ1 (فرار از بهینه‌ محلی):} خوش‌بینی تصادفی تعبیه شده در بخش \ref{sec:learning} کاوش هدفمند را تقویت می‌کند.
+  \item \textbf{RQ2 (ادغام یادگیری و بازپخش):} الگوریتم \ref{alg:rs_drl_final} ادغام صریح مکانیزم شکل‌دهی را در مینی‌بچ نشان می‌دهد.
+  \item \textbf{RQ3 (مقیاس‌پذیری):} استفاده از استنتاج خالص (بخش \ref{subsec:planning-prediction}) پاسخ‌گویی به ۴۰۹۶ گزینه را میسر می‌سازد.
+  \item \textbf{RQ4 (مقایسه):} طراحی مستقل از دامنه در قیاس با روش‌هایی نظیر \lr{HER} تبیین گردید.
+\end{itemize}
+
+\section{خلاصه فصل}
+\label{sec:summary-process}
+
+این فصل معماری و مدل فرآیندی \lr{RS-DRL} را تبیین کرد. نشان داده شد که یکپارچگی سیستم \lr{MAPE-K} با یادگیری هوشمند و تایید صوری مدل، بستری برای تصمیم‌گیری ایمن و بهبود سیاست ناهمگام فراهم می‌کند. نوآوری اصلی در فرآیند پاداش تصادفی، ضمانتی برای کاوش مؤثر در محیط‌های بلادرنگ بزرگ است. نشان داده شد که اگرچه در این مرحله از راستی‌آزمایی برای پاداش‌دهی استفاده شده است، توسعه آتی می‌تواند آن را به‌عنوان یک لایه فیلترینگ سخت در زمان اجرا (\lr{Safe Reshaping}) ارتقا دهد.
+\newpage
