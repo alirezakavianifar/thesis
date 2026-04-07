@@ -20,7 +20,7 @@
 \section{حلقه خودوفقی در سطح سیستم (جریان یکپارچه)}
 \label{sec:system-loop}
 
-در بالاترین سطح انتزاع، سیستم یک فرآیند غالب را انجام می‌دهد: تطبیق مستمر تحت عدم قطعیت. مؤلفه \lr{RS-DRL} به‌عنوان یک ماژول هوشمند در بطن این حلقه ادغام شده است. این جریان با چرخه چهار مرحله اصلی (شامل ۹ زیرمرحله عملیاتی) زیر تشریح می‌شود که مسیر داده از ادراک تا تغییر فیزیکی را دنبال می‌کند:
+در بالاترین سطح انتزاع، سیستم یک فرآیند غالب را انجام می‌دهد: تطبیق مستمر تحت عدم قطعیت. مؤلفه \lr{RS-DRL} به‌عنوان یک ماژول هوشمند در بطن این حلقه ادغام شده است. این جریان با چرخه چهار مرحله‌ای اساسی زیر تشریح می‌شود که مسیر داده از ادراک تا تغییر فیزیکی را دنبال می‌کند:
 
 \begin{enumerate}
   \item \textbf{پایش و ساخت وضعیت (مراحل ۱-۴):} دریافت علائم محیطی و تبدیل آن‌ها به قرارداد بردار حالت.
@@ -32,7 +32,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{../../figures/rs-drl-integration-overview.png}
-  \caption{نمای کلی فرآیند یکپارچه خودوفقی در سطح سیستم. این نمودار توالی نه گانه مراحل زمانی از مشاهده سنسور تا بازپیکربندی سیستم را به تصویر می‌کشد.}
+  \caption{نمای کلی فرآیند یکپارچه خودوفقی در سطح سیستم. این نمودار توالی چهار فاز اصلی مراحل زمانی از مشاهده سنسور تا بازپیکربندی سیستم را به تصویر می‌کشد.}
   \label{fig:integration-overview}
 \end{figure}
 
@@ -182,12 +182,12 @@ r_i & \text{otherwise}
   \WHILE{episode not finished}
     \STATE $a \leftarrow SelectAction(s, \theta, \epsilon\text{-greedy})$
     \STATE $(s', r_{env}) \leftarrow Environment.Step(a)$
-    \STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$ \COMMENT{$r_{smc} \in \{0,1\}$: UPPAAL-SMC confirms QoS satisfaction}
+    \STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$ \COMMENT{UPPAAL-SMC: $r_{smc} \in \{0, 1\}$ confirms QoS}
     \STATE $r \leftarrow r_{env} \times r_{smc}$ \COMMENT{Reward=1 only if env AND formal model both confirm success}
     \STATE Store transition $(s, a, r, s')$ in Replay Buffer $\mathcal{D}$
     \STATE Sample random minibatch $B = \{(s_i, a_i, r_i, s'_i)\}_{i=1}^N$ from $\mathcal{D}$
     \FOR{each transition $i$ in $B$}
-      \IF{$r_i = 0$ \textbf{and} $rand(0,1) < \rho$}
+      \IF{$r_i = 0$ \textbf{and} $rand(0, 1) < \rho$}
         \STATE $\tilde{r}_i \leftarrow 1$ \COMMENT{Random Optimistic Shaping}
       \ELSE
         \STATE $\tilde{r}_i \leftarrow r_i$
