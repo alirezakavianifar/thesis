@@ -1,0 +1,250 @@
+\documentclass[11pt,a4paper]{article}
+
+% Required packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{adjustbox}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[hidelinks]{hyperref}
+
+\captionsetup{
+    font=small,
+    labelfont=bf
+}
+
+\title{Thesis Structure (6-Chapter Model)\\[0.3cm]\small{Randomized Reward Shaping Deep Reinforcement Learning\\for Self-Adaptive Systems}}
+\author{Alireza Kavianifar}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% ============================================================================
+% CHAPTER 1: Introduction
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 1: Introduction} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 1: Introduction}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{1.\arabic{section}}
+\renewcommand{\thesubsection}{1.\arabic{section}.\arabic{subsection}}
+
+\section{Background and Context: Self-Adaptive Systems}
+\subsection{Motivation and Examples}
+\subsection{The MAPE-K Feedback Loop}
+\subsection{Limitations of Static and Rule-Based Adaptation}
+
+\section{The Challenge of Runtime Uncertainty}
+\subsection{Foundations of Uncertainty in Self-Adaptive Systems}
+\subsection{Motivating Case Study: The DeltaIoT System (A First Look)}
+\subsection{Sources and Impact of Uncertainty in DeltaIoT}
+
+\section{Learning-Based Adaptation: The Promise and Pitfalls of Reinforcement Learning}
+\subsection{Why RL for Runtime Decision-Making?}
+\subsection{Limits of Classic RL in Large, Discrete Adaptation Spaces}
+
+\section{Problem Statement and Research Questions}
+\section{Proposed Solution: Reward-Shaped Deep Reinforcement Learning (RS-DRL)}
+\textit{Integrated within the MAPE-K (Monitor-Analyze-Plan-Execute-Knowledge) feedback loop architecture.}
+
+\subsection{Core Idea: Randomized Reward Reshaping ($\rho$-factor) during Experience Replay}
+\textit{Controlled by a reshaping factor $\rho$ determining the proportion of failed experiences to reshape.}
+
+\section{Key Contributions of the Thesis}
+\section{Thesis Outline}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 2: Foundations and State of the Art
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 2: Foundations and State of the Art} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 2: Foundations and State of the Art}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{2.\arabic{section}}
+\renewcommand{\thesubsection}{2.\arabic{section}.\arabic{subsection}}
+
+\section{Foundations of Self-Adaptive Systems}
+\subsection{Core Concepts and Architectural Patterns}
+\subsection{Modeling and Managing Uncertainty in SAS}
+
+\section{Reinforcement Learning for System Adaptation}
+\subsection{Fundamentals of RL (MDPs, Q-Learning)}
+\subsection{Deep Reinforcement Learning for Large Discrete Action Spaces (DQN)}
+\subsection{The Concept of ``Continuous'' Learning in this Thesis (Streaming Adaptation Cycles)}
+
+\section{Related Work: Techniques for Managing Large Adaptation Spaces}
+\subsection{Machine Learning-Based Methods (e.g., ML4EAS)}
+\subsection{Search-Based Methods (e.g., Genetic Algorithms)}
+\subsection{Reinforcement Learning-Based Methods (e.g., Epsilon-Greedy DQN, DLASER)}
+\subsection{Reward Shaping and Experience Relabeling (HER, Soft HER)}
+
+\section{Synthesis and Identification of the Research Gap}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 3: System Model and Problem Formalization
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 3: System Model and Problem Formalization} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 3: System Model and Problem Formalization}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{3.\arabic{section}}
+\renewcommand{\thesubsection}{3.\arabic{section}.\arabic{subsection}}
+
+\section{Motivating Case Study: The DeltaIoT System}
+\subsection{System Overview and Sources of Uncertainty}
+\subsection{Adaptation Space and Configuration Representation}
+
+\section{A Formal Model for Self-Adaptive Decision Making under Uncertainty}
+\subsection{State Space Definition ($S = \{Energy, Packet Loss, Latency\}$)}
+\subsection{Action Space: Discrete Adaptation Options}
+\subsection{Reward Function Formulation for Single and Multi-Objective Goals}
+\subsubsection{Equation 1: Multi-Objective Reward (Article Eq. 11)}
+\subsubsection{Equation 2: Single-Objective Reward (Article Eq. 12)}
+\subsubsection{Table 1: Reward Formulation for TTS and TT Goals (Article Table 2)}
+
+\section{Problem Statement: Learning an Optimal Adaptation Policy with Continuous Runtime Operation}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 4: The RS-DRL Method: Architecture and Algorithm
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 4: The RS-DRL Method: Architecture and Algorithm} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 4: The RS-DRL Method: Architecture and Algorithm}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{4.\arabic{section}}
+\renewcommand{\thesubsection}{4.\arabic{section}.\arabic{subsection}}
+
+\section{Overview of the Proposed Approach}
+
+\section{System Architecture: Integrating RS-DRL with the MAPE-K Loop}
+\subsection{Managed System and Managing System}
+\subsection{Detailed Interaction of the 9-Stage Adaptation Loop}
+
+\section{The RS-DRL Algorithm}
+\subsection{Core Algorithm: DQN for Streaming Adaptation Cycles}
+\textit{Addressing the limits of classic RL through continuous, streaming learning interaction.}
+\subsection{The Reward Shaping Function (Algorithm 2)}
+\subsection{Comparison to Hindsight Experience Replay (HER) and other baselines}
+
+\section{Key Implementation Details for Reproducibility}
+\subsection{State Construction from Monitored Data}
+\subsection{Runtime Verification with UPPAAL-SMC and ActivFORMS}
+\subsection{Hyperparameter Selection and Optimization (Grid Search and rho Tuning)}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 5: Experimental Evaluation
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 5: Experimental Evaluation} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 5: Experimental Evaluation}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{5.\arabic{section}}
+\renewcommand{\thesubsection}{5.\arabic{section}.\arabic{subsection}}
+
+\section{Evaluation Goals and Research Questions}
+
+\section{Experimental Setup}
+\subsection{Case Study Instances: DeltaIoTv1, v1.1, v2}
+\subsection{Datasets: Environmental Traces and Drift Parameters}
+\subsection{Implementation Platform: Gymnasium, Stable-Baselines3}
+
+\section{Baselines and Comparative Methods}
+\subsection{Epsilon-Greedy DQN}
+\subsection{RS-DRL with HER / Soft HER}
+\subsection{DLASER, DLASER+, and ML4EAS}
+\subsection{Exhaustive Search Reference Baseline}
+\subsection{Justification for Baseline Selection: Limitations and Comparison Protocols}
+
+\section{Evaluation Metrics}
+\subsection{Learning Performance: Asymptotic Performance, Time to Threshold, and Total Performance}
+\subsection{System Performance: Packet Loss, Latency, Energy Consumption}
+
+\section{Results and Analysis}
+\subsection{Learning Curves and Convergence Behavior}
+\subsection{Per-Objective Performance Comparison}
+\subsection{Comparative Evaluation Against All Baselines}
+\subsection{Ablation Study: Sensitivity to the Reshaping Factor (rho)}
+\subsection{Scalability Analysis (216 $\rightarrow$ 4,096 adaptation options)}
+
+\section{Statistical Validation (t-tests and p-values)}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 6: Discussion, Future Work, and Conclusions
+% ============================================================================
+\vspace*{1cm}
+{\centering \huge \textbf{Chapter 6: Discussion, Future Work, and Conclusions} \par}
+\addcontentsline{toc}{section}{\textbf{Chapter 6: Discussion, Future Work, and Conclusions}}
+\vspace{1cm}
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{6.\arabic{section}}
+\renewcommand{\thesubsection}{6.\arabic{section}.\arabic{subsection}}
+
+\section{Discussion of Key Findings}
+\subsection{Theorizing the Mechanism: Why RS-DRL Works}
+\subsection{Analysis of Trade-offs (e.g., Latency vs. Packet Loss)}
+\subsection{Implications for Self-Adaptive Systems Engineering}
+
+\section{Limitations and Threats to Validity}
+\subsection{Internal, External, and Construct Validity}
+\subsection{Limitations of the RS-DRL Approach (e.g., dependence on rho, discrete action spaces)}
+
+\section{Directions for Future Research}
+\subsection{Towards Adaptive Reshaping Strategies (Self-Tuning rho)}
+\subsection{Extending RS-DRL to Continuous and Safety-Critical Domains}
+\subsection{Cross-Domain Validation and Theoretical Analysis}
+
+\section{Conclusion}
+\subsection{Summary of the Research Problem and Proposed Solution}
+\subsection{Recap of Contributions and Empirical Evidence}
+\subsection{Final Remarks}
+
+\newpage
+
+% ============================================================================
+% REFERENCES & APPENDICES
+% ============================================================================
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\section*{Appendix A --- Full Process Workflows}
+\addcontentsline{toc}{section}{Appendix A --- Full Process Workflows}
+
+\section*{Appendix B --- Full Algorithm Listings}
+\addcontentsline{toc}{section}{Appendix B --- Full Algorithm Listings}
+
+\section*{Appendix C --- Extended Experimental Results}
+\addcontentsline{toc}{section}{Appendix C --- Extended Experimental Results}
+
+\section*{Appendix D --- Implementation Artifacts \& Replication Package}
+\addcontentsline{toc}{section}{Appendix D --- Implementation Artifacts \& Replication Package}
+
+\end{document}

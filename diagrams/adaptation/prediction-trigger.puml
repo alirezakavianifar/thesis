@@ -1,0 +1,52 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Prediction Trigger\n(Focused Sub-Process)
+
+start
+
+partition "MAPE-K : Analyze" {
+    :Detect goal violation\nor risk;
+    note right
+      Goals violated or
+      no longer achievable
+    end note
+    
+    :Notify Adaptation Option Predictor;
+    note right
+      (5) Analyzer notifies
+      Adaptation Option Predictor
+      embedded in Planner
+    end note
+}
+
+note right
+  Event-driven trigger:
+  Prediction occurs only
+  when adaptation is required
+end note
+
+stop
+
+@enduml

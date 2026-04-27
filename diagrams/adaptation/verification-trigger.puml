@@ -1,0 +1,59 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Verification Trigger and Model Parameterization\n(Focused Sub-Process)
+
+start
+
+partition "Verification Trigger" {
+    :Receive candidate\nadaptation option;
+    note right
+      Candidate option from
+      Adaptation Option Selector
+    end note
+    
+    :Receive current\nsystem state;
+    note right
+      Current state vector
+      for context
+    end note
+}
+
+partition "Runtime Model Manager" {
+    :Retrieve runtime model;
+    note right
+      Model reflects current
+      architecture and context
+    end note
+    
+    :Parameterize model with\nstate & adaptation option;
+    note right
+      Creates specific instance
+      for analysis
+    end note
+}
+
+stop
+
+@enduml

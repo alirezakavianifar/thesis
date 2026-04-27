@@ -1,0 +1,112 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title MAPE-K Adaptation Control Loop\n(UML Activity Diagram – Fig.4 Traceable)
+
+start
+
+partition "MAPE-K : Monitor" {
+    :Observe managed system\nand environment;
+    note right
+      (1) Runtime data observed
+      from managed system
+    end note
+    :Collect runtime metrics;
+    :Update Knowledge repository;
+}
+
+partition "MAPE-K : Analyze" {
+    :Evaluate current state\nagainst adaptation goals;
+    note right
+      (4) Monitor forwards
+      data to Analyzer
+    end note
+
+    if (Goals violated\nor at risk?) then (yes)
+        :Trigger adaptation;
+        note right
+          (5) Analyzer notifies
+          Adaptation Option Predictor
+        end note
+    else (no)
+        :No adaptation required;
+    endif
+}
+
+if (Goals violated\nor at risk?) is (no) then
+    :Observe managed system\nand environment;
+    note right
+      Loop back to Monitor
+      when no adaptation needed
+    end note
+endif
+
+partition "MAPE-K : Plan" {
+    :Invoke Adaptation Option Predictor;
+    note right
+      Delegates decision to
+      learned RS-DRL model
+    end note
+
+    :Retrieve trained model\nfrom Knowledge repository;
+    note right
+      (6) Trained model
+      retrieved
+    end note
+
+    :Predict adaptation option;
+    note right
+      (7) Adaptation option
+      predicted
+    end note
+}
+
+partition "MAPE-K : Execute" {
+    :Executor retrieves adaptation details;
+    note right
+      (8) Executor retrieves
+      adaptation option details
+    end note
+
+    :Executor applies adaptation\nto managed system;
+    note right
+      (9) Adaptation executed
+    end note
+}
+
+partition "Managed System" {
+    :System behavior changes;
+    :Environment reacts;
+}
+
+:Observe managed system\nand environment;
+note right
+  Loop back to Monitor
+  after adaptation execution
+end note
+
+stop
+
+@enduml
+

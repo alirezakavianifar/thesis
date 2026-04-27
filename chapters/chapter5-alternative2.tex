@@ -1,0 +1,718 @@
+\documentclass[11pt,a4paper]{article}
+
+% Required packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{adjustbox}
+
+\captionsetup{
+    font=small,
+    labelfont=bf
+}
+
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{Chapter 5: Architecture and Process Model\\of the RS-DRL-Based Self-Adaptive System\\(Alternative 2 - Clean Skeleton)}
+\author{Thesis Documentation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% Set chapter counter to 5 so sections are numbered 5.1, 5.2, etc.
+\setcounter{section}{0}
+\renewcommand{\thesection}{5.\arabic{section}}
+\renewcommand{\thesubsection}{5.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{5.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+% ============================================================================
+% SECTION 5.1: Chapter Overview and Scope
+% ============================================================================
+
+\section{Chapter Overview and Scope}
+\label{sec:overview}
+
+This chapter presents the architecture and process model of the RS-DRL-based self-adaptive system. The chapter focuses on architectural structure and process flow, maintaining clear separation between system design (presented here) and algorithmic implementation details (presented in subsequent chapters or appendices).
+
+\subsection{Purpose of Chapter 5}
+
+Chapter 5 addresses the architectural organization of the proposed self-adaptive system, explaining how components are structured, how processes flow through the system, and how runtime adaptation is coordinated with asynchronous learning. The chapter emphasizes architectural responsibility and design rationale rather than algorithmic mechanics or experimental results.
+
+\subsection{Relationship to the Proposed Method}
+
+This chapter corresponds to the "Proposed Method" section of the thesis, detailing the architectural realization of the RS-DRL approach. While the article presents RS-DRL as an integrated method, this chapter decomposes the architecture into understandable components and processes, enabling readers to comprehend system organization before examining implementation details or evaluation results.
+
+\subsection{Focus on Architectural Structure and Process Flow}
+
+The chapter maintains strict focus on:
+\begin{itemize}
+    \item \textbf{Structural organization}: How components are arranged and interact
+    \item \textbf{Process flow}: How data and control flow through the system
+    \item \textbf{Design rationale}: Why architectural decisions were made
+\end{itemize}
+
+The chapter explicitly excludes:
+\begin{itemize}
+    \item Experimental results and evaluation (covered in Chapter 6)
+    \item Deep algorithmic mathematics (covered in appendices)
+    \item Background concepts (covered in earlier chapters)
+\end{itemize}
+
+\subsection{Chapter Organization}
+
+The chapter is organized as follows:
+
+\begin{itemize}
+    \item Section~\ref{sec:system-architecture}: System-level architectural view
+    \item Section~\ref{sec:process-flow}: End-to-end adaptation process flow
+    \item Section~\ref{sec:mape-k-mapping}: Mapping to MAPE-K reference model
+    \item Section~\ref{sec:monitoring}: Runtime monitoring and state construction
+    \item Section~\ref{sec:decision-process}: Runtime adaptation decision process
+    \item Section~\ref{sec:execution}: Execution and system reconfiguration
+    \item Section~\ref{sec:feedback}: RS-DRL feedback and learning overview
+    \item Section~\ref{sec:learning}: Asynchronous RS-DRL learning and policy update
+    \item Section~\ref{sec:knowledge}: Knowledge management and process coordination
+    \item Section~\ref{sec:summary}: Chapter summary
+\end{itemize}
+
+% ============================================================================
+% SECTION 5.2: System-Level Self-Adaptive Architecture
+% ============================================================================
+
+\section{System-Level Self-Adaptive Architecture}
+\label{sec:system-architecture}
+
+This section provides a high-level view of the RS-DRL-based self-adaptive system, establishing the architectural foundation for subsequent detailed descriptions.
+
+\subsection{High-Level System View}
+
+The RS-DRL-based self-adaptive system consists of two primary architectural components:
+
+\begin{itemize}
+    \item \textbf{Managed System}: Executes application logic and generates runtime data
+    \item \textbf{Managing System}: Implements adaptation logic using MAPE-K enhanced with RS-DRL
+\end{itemize}
+
+This architectural separation reflects a fundamental design principle: the managed system focuses on domain-specific functionality, while the managing system focuses on adaptation control.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.95\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{image/RS-DRL.png}}
+    \caption{RS-DRL integration architecture showing the separation between managed and managing systems, 
+    with RS-DRL enhancing the MAPE-K adaptation framework.}
+    \label{fig:system-architecture}
+\end{figure}
+
+\subsection{Separation Between Managed and Managing Systems}
+
+The interface between managed and managing systems is defined by:
+
+\begin{itemize}
+    \item \textbf{Upward flow}: Runtime data streams from managed to managing system
+    \item \textbf{Downward flow}: Adaptation actions from managing to managed system
+\end{itemize}
+
+This clean interface enables the managing system to adapt the managed system without requiring modifications to application logic.
+
+\subsection{Continuous Adaptation Loop as Primary Abstraction}
+
+At the highest level, the system operates as a continuous adaptation loop:
+
+\begin{enumerate}
+    \item \textbf{Sense}: Monitor system state and environmental conditions
+    \item \textbf{Decide}: Evaluate adaptation needs and select appropriate actions
+    \item \textbf{Act}: Execute selected adaptations
+    \item \textbf{Learn}: Refine adaptation policies based on outcomes
+\end{enumerate}
+
+This loop executes continuously, enabling the system to maintain adaptation goals under changing conditions.
+
+\subsection{End-to-End Adaptation Flow}
+
+The continuous adaptation loop is realized through an end-to-end adaptation flow that will be detailed in Section~\ref{sec:process-flow}. This flow provides traceability throughout the chapter, enabling readers to understand how high-level architectural concepts map to specific system behaviors.
+
+% ============================================================================
+% SECTION 5.3: End-to-End Self-Adaptation Process Flow
+% ============================================================================
+
+\section{End-to-End Self-Adaptation Process Flow}
+\label{sec:process-flow}
+
+This section presents a stage-based overview of the complete adaptation cycle, providing the reference process flow used for traceability in subsequent sections.
+
+\subsection{Stage-Based Process Overview}
+
+The adaptation cycle is decomposed into nine stages that capture the complete flow from sensing to learning:
+
+\begin{enumerate}
+    \item \textbf{Stage 1}: Runtime data collection from managed system
+    \item \textbf{Stage 2}: State forwarding to RS-DRL module
+    \item \textbf{Stage 3}: Asynchronous model training and storage
+    \item \textbf{Stage 4}: State forwarding to Analyzer
+    \item \textbf{Stage 5}: Adaptation triggering
+    \item \textbf{Stage 6}: Trained model retrieval
+    \item \textbf{Stage 7}: Adaptation option prediction
+    \item \textbf{Stage 8}: Adaptation option retrieval
+    \item \textbf{Stage 9}: Adaptation application
+\end{enumerate}
+
+These stages provide a common vocabulary for discussing system behavior throughout the chapter.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.95\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/rs-drl-integration-overview.pdf}}
+    \caption{End-to-end self-adaptation process flow showing the nine stages from sensing through learning.}
+    \label{fig:process-flow}
+\end{figure}
+
+\subsection{Identification of Sensing, Decision-Making, Execution, and Learning}
+
+The nine stages can be grouped into four primary process categories:
+
+\begin{itemize}
+    \item \textbf{Sensing} (Stages 1, 2, 4): Monitoring and state construction
+    \item \textbf{Decision-Making} (Stages 5, 6, 7): Analysis, planning, and prediction
+    \item \textbf{Execution} (Stages 8, 9): Adaptation enactment
+    \item \textbf{Learning} (Stages 2, 3): Model training and update
+\end{itemize}
+
+This categorization helps readers understand the functional organization of the system.
+
+\subsection{Distinction Between Runtime Adaptation and Asynchronous Learning}
+
+A critical architectural design decision is the temporal separation between runtime adaptation (Stages 1, 4--9) and asynchronous learning (Stages 2--3):
+
+\begin{itemize}
+    \item \textbf{Runtime adaptation}: Operates synchronously with system execution, using pre-trained models
+    \item \textbf{Asynchronous learning}: Operates in background, refining models without disrupting runtime
+\end{itemize}
+
+This separation ensures runtime stability while enabling continuous policy improvement.
+
+\subsection{Reference Process Flow for Traceability}
+
+All subsequent sections reference these nine stages when describing component behaviors and interactions. This traceability mechanism enables readers to understand how detailed descriptions relate to the overall system flow.
+
+% ============================================================================
+% SECTION 5.4: Mapping to MAPE-K Reference Model
+% ============================================================================
+
+\section{Mapping the Proposed Architecture to the MAPE-K Model}
+\label{sec:mape-k-mapping}
+
+This section provides a conceptual mapping of the proposed system to the MAPE-K architectural pattern, establishing connections to established self-adaptation frameworks.
+
+\subsection{Conceptual Mapping to MAPE-K Components}
+
+The RS-DRL-based architecture maps to MAPE-K components as follows:
+
+\begin{itemize}
+    \item \textbf{Monitor}: Observes managed system and constructs state representations (Stages 1, 2, 4)
+    \item \textbf{Analyze}: Evaluates state against goals and triggers adaptation (Stages 4, 5)
+    \item \textbf{Plan}: Selects adaptation options using RS-DRL policies (Stages 5, 6, 7)
+    \item \textbf{Execute}: Applies selected adaptations to managed system (Stages 8, 9)
+    \item \textbf{Knowledge}: Stores models, options, and state history (Stages 3, 6, 8)
+\end{itemize}
+
+\subsection{Role of RS-DRL within MAPE-K Loop}
+
+RS-DRL is positioned as an enhancement to the \textbf{Plan} phase, providing learned intelligence for adaptation option selection. The RS-DRL module does not replace MAPE-K components but rather enriches planning capability with data-driven decision-making.
+
+The RS-DRL module spans multiple MAPE-K phases:
+\begin{itemize}
+    \item Receives input from Monitor (Stage 2)
+    \item Supports decision-making in Plan (Stages 6--7)
+    \item Stores learned knowledge (Stage 3)
+\end{itemize}
+
+This cross-cutting nature reflects RS-DRL's role as an intelligent decision service rather than a standalone component.
+
+\subsection{Responsibilities of MAPE-K Components}
+
+Each MAPE-K component has clearly defined responsibilities:
+
+\begin{itemize}
+    \item \textbf{Monitor}: Perception and state abstraction
+    \item \textbf{Analyze}: Goal evaluation and adaptation triggering
+    \item \textbf{Plan}: Decision-making using learned policies
+    \item \textbf{Execute}: Adaptation enactment
+    \item \textbf{Knowledge}: Coordination and persistence
+\end{itemize}
+
+These responsibilities maintain clear separation of concerns across the architecture.
+
+\subsection{Temporal Classification of Processes}
+
+Processes are classified by temporal characteristics:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\textbf{Process} & \textbf{Temporal Nature} \\
+\hline
+Monitoring & Continuous \\
+Analysis & Event-driven \\
+Planning & Event-driven \\
+Execution & Event-driven \\
+Learning & Asynchronous \\
+\end{tabular}
+\caption{Temporal classification of architectural processes.}
+\label{tab:temporal-classification}
+\end{table}
+
+This classification justifies architectural decisions regarding process separation and coordination.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.9\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/mape-k-loop.pdf}}
+    \caption{MAPE-K validation view showing how RS-DRL enhances the planning phase within the adaptation control loop.}
+    \label{fig:mape-k}
+\end{figure}
+
+% ============================================================================
+% SECTION 5.5: Runtime Monitoring and State Construction
+% ============================================================================
+
+\section{Runtime Monitoring and State Construction}
+\label{sec:monitoring}
+
+This section describes the monitoring process that transforms raw runtime data into decision-ready state representations.
+
+\subsection{Runtime Data Collection}
+
+The monitoring process begins with runtime data collection from the managed system and environment (Stage 1). Data sources include:
+
+\begin{itemize}
+    \item System performance metrics (latency, throughput)
+    \item Resource utilization (CPU, memory, network)
+    \item Environmental conditions (workload, request patterns)
+\end{itemize}
+
+\subsection{State Construction as Interface}
+
+Raw data is transformed into a validated state vector that serves as the interface between monitoring and decision-making. The state construction process:
+
+\begin{enumerate}
+    \item Preprocesses raw data (filtering, normalization)
+    \item Extracts goal-relevant features
+    \item Validates state vector consistency
+\end{enumerate}
+
+The state vector $s_t \in \mathbb{R}^d$ provides a compact, consistent representation used by all downstream components.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.9\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/monitoring-state-construction.pdf}}
+    \caption{Monitoring and state construction process transforming raw data into validated state vectors.}
+    \label{fig:monitoring}
+\end{figure}
+
+\subsection{Dissemination of State Information}
+
+Once constructed, the state vector is disseminated to:
+
+\begin{itemize}
+    \item \textbf{Analyzer} (Stage 4): For goal evaluation
+    \item \textbf{RS-DRL module} (Stage 2): For learning or inference
+    \item \textbf{Knowledge repository}: For historical reference
+\end{itemize}
+
+\subsection{Boundary Between Perception and Action}
+
+The monitoring process ends once a validated state vector exists and has been disseminated. This boundary ensures clear separation between perception (monitoring) and action (planning and execution).
+
+% ============================================================================
+% SECTION 5.6: Runtime Adaptation Decision Process
+% ============================================================================
+
+\section{Runtime Adaptation Decision Process}
+\label{sec:decision-process}
+
+This section describes the runtime decision-making process, encompassing analysis, planning, and verification.
+
+\subsection{Analysis and Adaptation Triggering}
+
+\subsubsection{Evaluation of System State Against Goals}
+
+The Analyzer receives state vectors from the Monitor (Stage 4) and evaluates whether the current system state satisfies adaptation goals. Goals may include:
+
+\begin{itemize}
+    \item Performance targets (response time, throughput)
+    \item Resource constraints (energy, memory)
+    \item Quality-of-service requirements
+\end{itemize}
+
+\subsubsection{Detection of Goal Violations}
+
+When the Analyzer detects that adaptation goals are violated or at risk, it triggers the planning phase (Stage 5). The triggering decision is based on:
+
+\begin{itemize}
+    \item Current goal satisfaction status
+    \item Predicted future violations
+    \item Risk assessment under uncertainty
+\end{itemize}
+
+\subsubsection{Conditions for Adaptation Triggering}
+
+Adaptation is triggered when:
+\begin{enumerate}
+    \item Goals are currently violated
+    \item Goals are predicted to be violated soon
+    \item System state indicates increased risk
+\end{enumerate}
+
+If no triggering condition is met, the system continues normal operation without adaptation.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.7\textwidth,height=0.5\textheight,center,keepaspectratio}{\includegraphics{figures/mape-k-analysis-phase.pdf}}
+    \caption{Analysis and adaptation triggering process evaluating system state against goals.}
+    \label{fig:analysis}
+\end{figure}
+
+\subsection{Planning and Adaptation Option Prediction}
+
+\subsubsection{Retrieval of Learned RS-DRL Policy}
+
+Upon receiving the adaptation trigger (Stage 5), the planning process retrieves the trained RS-DRL model from the Knowledge repository (Stage 6). The model encodes learned adaptation policies that map states to adaptation options.
+
+\subsubsection{Prediction of Suitable Adaptation Options}
+
+The Adaptation Option Predictor evaluates all available adaptation options using the retrieved model. For each option $a$, the predictor estimates its expected long-term value:
+
+\[
+Q(s_t, a; \theta) \rightarrow \text{expected value of option } a \text{ in state } s_t
+\]
+
+where $\theta$ represents the learned model parameters.
+
+\subsubsection{Decision-Making Based on Learned Estimates}
+
+The predictor selects the adaptation option with the highest estimated value:
+
+\[
+a^* = \arg\max_{a \in \mathcal{A}} Q(s_t, a; \theta)
+\]
+
+This selection leverages learned knowledge to make informed decisions under uncertainty.
+
+\subsubsection{Emphasis on Inference-Only Behavior}
+
+At runtime, the planning process performs \textbf{pure inference}---it uses pre-trained models to evaluate options but performs no learning, no replay memory sampling, and no policy updates. This ensures predictable response times and runtime stability.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.8\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/adaptation-prediction.pdf}}
+    \caption{Planning and adaptation option prediction using learned RS-DRL policies.}
+    \label{fig:prediction}
+\end{figure}
+
+\subsection{Adaptation Option Verification Under Uncertainty}
+
+\subsubsection{Validation of Predicted Options}
+
+The predicted adaptation option undergoes verification to provide decision justification under uncertainty. Verification evaluates whether the predicted option is likely to satisfy adaptation goals given current uncertainties.
+
+\subsubsection{Use of Runtime Models}
+
+Verification employs runtime models that abstract system behavior and environmental uncertainties. These models are parameterized with:
+\begin{itemize}
+    \item Current system state
+    \item Candidate adaptation option
+    \item Uncertainty parameters
+\end{itemize}
+
+\subsubsection{Generation of Quality Estimates}
+
+Through statistical model checking (using UPPAAL-SMC), verification generates quality estimates including:
+
+\begin{itemize}
+    \item Goal satisfaction probabilities
+    \item Expected quality-of-service metrics
+    \item Confidence intervals for predictions
+\end{itemize}
+
+These estimates justify adaptation decisions, providing trustworthiness for learning-based choices.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.9\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/adaptation-verification.pdf}}
+    \caption{Adaptation option verification using runtime models and statistical model checking.}
+    \label{fig:verification}
+\end{figure}
+
+% ============================================================================
+% SECTION 5.7: Execution and System Reconfiguration
+% ============================================================================
+
+\section{Execution and System Reconfiguration}
+\label{sec:execution}
+
+This section describes how selected adaptations are applied to the managed system.
+
+\subsection{Retrieval of Adaptation Option Specifications}
+
+The Executor retrieves detailed specifications for the selected adaptation option from the Knowledge repository (Stage 8). Specifications define:
+
+\begin{itemize}
+    \item Configuration parameters to modify
+    \item Resource allocations to adjust
+    \item Component interactions to reconfigure
+\end{itemize}
+
+\subsection{Application of Selected Adaptation}
+
+The Executor translates the adaptation specification into concrete system modifications (Stage 9). The application process:
+
+\begin{enumerate}
+    \item Validates adaptation safety
+    \item Applies configuration changes
+    \item Verifies successful application
+\end{enumerate}
+
+\subsection{Effect on System Behavior and Environment}
+
+Adaptation execution alters system behavior, affecting:
+
+\begin{itemize}
+    \item Performance characteristics
+    \item Resource consumption
+    \item Quality-of-service attributes
+\end{itemize}
+
+These effects are observed by the monitoring process in subsequent cycles.
+
+\subsection{Reintegration into Continuous Monitoring Loop}
+
+After adaptation execution, the system returns to the monitoring phase (Stage 1), closing the adaptation loop. The continuous cycle ensures perpetual adaptation to changing conditions.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.6\textwidth,height=0.45\textheight,center,keepaspectratio}{\includegraphics{figures/mape-k-execution-phase.pdf}}
+    \caption{Execution and system reconfiguration process applying selected adaptations.}
+    \label{fig:execution}
+\end{figure}
+
+% ============================================================================
+% SECTION 5.8: RS-DRL Feedback and Learning Overview
+% ============================================================================
+
+\section{RS-DRL Feedback and Learning Overview}
+\label{sec:feedback}
+
+This section provides a high-level view of how runtime adaptation outcomes inform learning.
+
+\subsection{Role of Feedback in Linking Runtime and Learning}
+
+Feedback serves as the bridge between runtime adaptation and learning, enabling the system to improve policies based on adaptation outcomes. The feedback mechanism:
+
+\begin{enumerate}
+    \item Observes adaptation effects
+    \item Evaluates outcome quality
+    \item Generates learning signals
+\end{enumerate}
+
+\subsection{High-Level View of Reward Generation}
+
+Reward signals are generated from verification outcomes, capturing:
+
+\begin{itemize}
+    \item Quality-of-service metrics
+    \item Goal satisfaction indicators
+    \item Adaptation effectiveness measures
+\end{itemize}
+
+These rewards guide the learning process toward policies that achieve adaptation goals.
+
+\subsection{Separation Between Feedback Generation and Learning}
+
+The architecture maintains clear separation between:
+
+\begin{itemize}
+    \item \textbf{Feedback generation}: Transforms outcomes into learning signals (this section)
+    \item \textbf{Policy learning}: Consumes signals to update models (Section~\ref{sec:learning})
+\end{itemize}
+
+This separation enables independent evolution of feedback mechanisms and learning algorithms.
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.7\textwidth,height=0.5\textheight,center,keepaspectratio}{\includegraphics{figures/verification-quality-evaluation.pdf}}
+    \caption{Feedback generation transforming adaptation outcomes into learning signals.}
+    \label{fig:feedback}
+\end{figure}
+
+% ============================================================================
+% SECTION 5.9: Asynchronous RS-DRL Learning and Policy Update
+% ============================================================================
+
+\section{Asynchronous RS-DRL Learning and Policy Update}
+\label{sec:learning}
+
+This section provides an overview of the RS-DRL learning process that refines adaptation policies.
+
+\subsection{Overview of RS-DRL Learning Lifecycle}
+
+The learning lifecycle operates asynchronously with runtime adaptation:
+
+\begin{enumerate}
+    \item \textbf{Experience collection}: Gather state-action-reward-state tuples
+    \item \textbf{Experience storage}: Maintain replay memory of past experiences
+    \item \textbf{Model training}: Update policy using sampled experiences
+    \item \textbf{Model storage}: Persist updated model for runtime use (Stage 3)
+\end{enumerate}
+
+This lifecycle repeats over multiple episodes, progressively improving adaptation policies.
+
+\subsection{Experience Collection and Replay}
+
+During training episodes, the system collects experiences through environment interaction:
+
+\[
+\langle s_t, a_t, r_t, s_{t+1} \rangle
+\]
+
+These experiences are stored in replay memory, enabling:
+\begin{itemize}
+    \item Sample-efficient learning
+    \item Breaking temporal correlations
+    \item Learning from rare events
+\end{itemize}
+
+\subsection{Placement of Novel Reward-Shaping Mechanism}
+
+The \textbf{reward-shaping mechanism} represents the key innovation of the RS-DRL approach. This mechanism:
+
+\begin{itemize}
+    \item Selectively reshapes failed experiences
+    \item Treats certain failures as optimistic successes
+    \item Accelerates learning in heterogeneous environments
+    \item Promotes policy generalization
+\end{itemize}
+
+The reward-shaping process operates during model training, transforming the experience distribution to facilitate faster convergence while maintaining long-term policy quality.
+
+\subsection{Model Update and Storage}
+
+Model training updates the deep Q-network parameters through:
+
+\begin{enumerate}
+    \item Sampling minibatches from replay memory
+    \item Computing temporal difference targets
+    \item Performing gradient descent on loss function
+    \item Updating target network periodically
+\end{enumerate}
+
+The updated model is stored in the Knowledge repository (Stage 3), making it available for future runtime adaptation (Stage 6).
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{width=0.95\textwidth,height=0.85\textheight,center,keepaspectratio}{\includegraphics{figures/rs-drl-training.pdf}}
+    \caption{Asynchronous RS-DRL learning process including experience replay and novel reward-shaping mechanism.}
+    \label{fig:learning}
+\end{figure}
+
+% ============================================================================
+% SECTION 5.10: Knowledge Management and Process Coordination
+% ============================================================================
+
+\section{Knowledge Management and Process Coordination}
+\label{sec:knowledge}
+
+This section describes how the Knowledge repository coordinates processes with different temporal characteristics.
+
+\subsection{Role of Knowledge Repository as Shared Memory}
+
+The Knowledge repository serves as shared system memory, storing:
+
+\begin{itemize}
+    \item \textbf{Trained models}: RS-DRL policies learned through training
+    \item \textbf{Adaptation options}: Specifications for available adaptations
+    \item \textbf{State history}: Historical state vectors for reference
+\end{itemize}
+
+\subsection{Read--Write Interactions}
+
+Knowledge coordination occurs through well-defined read-write contracts:
+
+\begin{itemize}
+    \item \textbf{Monitor writes}: State vectors for historical reference (Stage 1)
+    \item \textbf{Learning writes}: Trained models after training episodes (Stage 3)
+    \item \textbf{Planning reads}: Trained models for decision-making (Stage 6)
+    \item \textbf{Execution reads}: Adaptation specifications for enactment (Stage 8)
+\end{itemize}
+
+\subsection{Coordination of Heterogeneous Processes}
+
+The Knowledge repository enables processes with different temporal characteristics to synchronize:
+
+\begin{itemize}
+    \item \textbf{Continuous monitoring}: Writes state continuously
+    \item \textbf{Event-driven planning}: Reads models when triggered
+    \item \textbf{Asynchronous learning}: Writes models after episodes
+\end{itemize}
+
+This coordination maintains consistency without tight coupling between processes.
+
+\subsection{Consistency and Separation of Concerns}
+
+Knowledge management ensures:
+
+\begin{itemize}
+    \item \textbf{Consistency}: All components operate on coherent information
+    \item \textbf{Separation}: Clear boundaries between component responsibilities
+    \item \textbf{Persistence}: Critical information survives component failures
+\end{itemize}
+
+% ============================================================================
+% SECTION 5.11: Chapter Summary
+% ============================================================================
+
+\section{Chapter Summary}
+\label{sec:summary}
+
+This chapter presented the architecture and process model of the RS-DRL-based self-adaptive system.
+
+\subsection{Recap of Architectural Structure and Process Flow}
+
+The chapter established:
+
+\begin{itemize}
+    \item \textbf{System architecture}: Separation between managed and managing systems
+    \item \textbf{Process flow}: Nine-stage adaptation cycle from sensing through learning
+    \item \textbf{MAPE-K mapping}: Integration with established self-adaptation patterns
+    \item \textbf{Component responsibilities}: Clear separation of monitoring, analysis, planning, execution, and learning
+    \item \textbf{Temporal organization}: Distinction between runtime adaptation and asynchronous learning
+\end{itemize}
+
+\subsection{Positioning Within Overall Thesis}
+
+This chapter provides the architectural foundation for understanding the RS-DRL approach. The chapter:
+
+\begin{itemize}
+    \item Builds on background concepts (Chapters 1--4)
+    \item Precedes experimental evaluation (Chapter 6)
+    \item Establishes terminology and concepts used throughout remaining chapters
+\end{itemize}
+
+\subsection{Transition to Subsequent Chapters}
+
+Having established the architectural structure and process model, the thesis proceeds to:
+
+\begin{itemize}
+    \item \textbf{Chapter 6}: Experimental evaluation demonstrating effectiveness
+    \item \textbf{Chapter 7}: Discussion of results and implications
+    \item \textbf{Chapter 8}: Conclusions and future work
+\end{itemize}
+
+The architectural foundation provided here enables systematic evaluation and interpretation of experimental results in subsequent chapters.
+
+\end{document}

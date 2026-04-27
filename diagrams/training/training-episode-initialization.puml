@@ -1,0 +1,51 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Episode Initialization and State Reception\n(Focused Sub-Process)
+
+start
+
+partition "Episode Control" {
+    :Initialize training episode;
+    note right
+      Reset episode-specific
+      variables and prepare
+      for new learning cycle
+    end note
+    
+    :Receive current state s_t;
+    note right
+      (2) State received from
+      Monitor via RS-DRL module
+    end note
+}
+
+note right
+  State vector serves as
+  input to learning process
+end note
+
+stop
+
+@enduml

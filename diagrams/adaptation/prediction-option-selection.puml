@@ -1,0 +1,50 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Option Selection\n(Focused Sub-Process)
+
+start
+
+partition "MAPE-K : Plan\n(Adaptation Option Predictor)" {
+    :Select best adaptation option\n(argmax Q);
+    note right
+      Runtime: ε ≈ 0
+      (pure exploitation)
+      Chooses option with
+      highest Q-value
+    end note
+}
+
+partition "Forward to Executor" {
+    :Forward predicted option;
+    note right
+      (7) Adaptation option
+      predicted and forwarded
+      to Executor
+    end note
+}
+
+stop
+
+@enduml

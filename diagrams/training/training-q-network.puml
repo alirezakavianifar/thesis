@@ -1,0 +1,63 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Q-Network Training and Model Updates\n(Focused Sub-Process)
+
+start
+
+partition "Model Training" {
+    :Compute TD targets\n(using reshaped rewards);
+    note right
+      y = r + γ max Q(s', a'; θ⁻)
+      Uses target network θ⁻
+    end note
+    
+    :Compute loss;
+    note right
+      Loss = (y - Q(s, a; θ))²
+      Mean squared error
+    end note
+    
+    :Perform gradient descent\n(update Q-network);
+    note right
+      Backpropagation updates
+      Q-network parameters θ
+    end note
+    
+    :Periodically update\ntarget network;
+    note right
+      Copy θ → θ⁻ at
+      regular intervals
+    end note
+    
+    :Decay exploration rate ε;
+    note right
+      Shift from exploration
+      to exploitation
+    end note
+}
+
+stop
+
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title RS-DRL Reward Shaping Micro-Process\n(Minibatch Level)
+
+start
+
+:Sample minibatch B from replay buffer;
+note right
+  Replay buffer remains unchanged
+end note
+
+:Iterate over experiences e ∈ B;
+
+if (Is experience a failure?) then (yes)
+    :Generate random value r ∈ [0,1];
+    if (r ≤ reshaping probability p) then (yes)
+        :Rewrite reward as optimistic success;
+        note right
+          Failure is probabilistically
+          reinterpreted
+        end note
+    else (no)
+        :Keep original reward;
+    endif
+else (no)
+    :Keep original reward;
+endif
+
+:Assemble reshaped minibatch B';
+note right
+  Only minibatch is modified
+end note
+
+:Use B' for Q-network update;
+
+stop
+
+@enduml
+

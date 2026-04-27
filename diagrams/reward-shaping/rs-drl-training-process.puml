@@ -1,0 +1,111 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title RS-DRL Training & Reward Shaping Process\n(UML Activity Diagram – Deep Dive)
+
+start
+
+partition "Episode Control" {
+    :Initialize training episode;
+    :Receive current state s_t;
+    note right
+      Initial state vector
+      from environment
+    end note
+}
+
+partition "Action Selection" {
+    :Select action a_t\n(ε-greedy using Q-network);
+}
+
+partition "Environment Interaction" {
+    :Execute action a_t;
+    :Observe reward r_t;
+    :Observe next state s_t+1;
+}
+
+partition "Replay Memory" {
+    :Store experience\n<s_t, a_t, r_t, s_t+1>;
+    if (Replay buffer\nsufficiently full?) then (yes)
+        :Sample minibatch B;
+    else (no)
+        :Continue interaction;
+        :Receive current state s_t;
+        note right
+          Loop back to collect
+          more experience
+        end note
+    endif
+}
+
+partition "Reward Shaping\n(Novel Contribution)" {
+    :Identify failed experiences\n(r = 0) in B;
+    :Compute K = floor(ρ · |B|);
+
+    if (Number of failures ≥ K?) then (yes)
+        :Randomly select K failed experiences;
+    else (no)
+        :Select all failed experiences;
+    endif
+
+    :Reshape selected rewards\n(r ← 1);
+    note right
+      Reward reshaping applies ONLY
+      to the minibatch.
+      Replay buffer remains unchanged.
+    end note
+}
+
+partition "Model Training" {
+    :Compute TD targets\n(using reshaped rewards);
+    :Compute loss;
+    :Perform gradient descent\n(update Q-network);
+    :Periodically update\ntarget network;
+    :Decay exploration rate ε;
+}
+
+partition "Trained Models Repository" {
+    :Store updated model\nin Knowledge repository;
+    note right
+      Trained model stored
+      for use by Adaptation Option Predictor.
+      Training occurs offline
+      or episodically.
+    end note
+}
+
+partition "Episode Control" {
+    :Check episode termination;
+    if (More episodes?) then (yes)
+        :Receive current state s_t;
+        note right
+          Loop back for
+          next episode
+        end note
+    else (no)
+        stop
+    endif
+}
+
+@enduml

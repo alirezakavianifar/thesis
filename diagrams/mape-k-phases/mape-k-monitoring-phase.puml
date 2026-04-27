@@ -1,0 +1,58 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title MAPE-K Monitoring Phase\n(Focused Sub-Process)
+
+start
+
+partition "MAPE-K : Monitor" {
+    :Observe managed system\nand environment;
+    note right
+      (1) Runtime data observed
+      from managed system
+    end note
+    
+    :Collect runtime metrics;
+    note right
+      System state,
+      performance metrics,
+      environment conditions
+    end note
+    
+    :Update Knowledge repository;
+    note right
+      Historical record of
+      system behavior
+    end note
+}
+
+note right
+  Continuous observation
+  ensures up-to-date
+  system information
+end note
+
+stop
+
+@enduml

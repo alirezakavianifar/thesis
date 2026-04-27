@@ -1,67 +1,83 @@
-\documentclass[oneside,openany,phd]{TMU-Thesis}
+\documentclass[12pt,a4paper]{report} % فونت ۱۲ برای متن اصلی طبق استاندارد مدرس
 
-% مشخصات پایان‌نامه را در فایلهای faTitle و enTitle وارد نمایید.
-% در اینجا برای یکپارچگی، همینجا وارد می‌کنیم
+% بسته‌های مورد نیاز
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{adjustbox}
+\usepackage[right=3cm,left=2.5cm,top=2.5cm,bottom=2.5cm]{geometry} % حاشیه استاندارد مدرس
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[hidelinks,pdfencoding=auto]{hyperref}
+\usepackage{bookmark}
+\usepackage{tocloft}
+\usepackage{setspace}
 
-% مشخصات فارسی
-\university{تربیت مدرس}
-\faculty{مهندسی برق و کامپیوتر}
-\department{گروه هوش مصنوعی و رباتیکز}
-\subject{مهندسی کامپیوتر}
-\field{نرم‌افزار}
-\credits{---} % در رساله دکتری معمولا به صورت واحدی ذکر نمی‌شود یا فیلد خالی است
-\title{یادگیری تقویتی عمیق با شکل‌دهی تصادفی پاداش برای مدیریت عدم قطعیت در سیستم‌های خودوفقی}
-\firstsupervisor{دکتر ...}
-% \secondsupervisor{استاد راهنمای دوم}
-\firstadvisor{دکتر ...}
-% \secondadvisor{استاد مشاور دوم}
-\name{علیرضا}
-\surname{کاویانی‌فر}
-\studentID{...}
-\thesisdate{بهمن ۱۴۰۴}
+% تنظیم فاصله خطوط ۱.۵ (استاندارد مدرس)
+\setstretch{1.5}
 
-% مشخصات انگلیسی
-\latinuniversity{Tarbiat Modares University}
-\latinfaculty{Faculty of Electrical and Computer Engineering}
-\latinsubject{Computer Engineering}
-\latinfield{Software}
-\latintitle{Randomized Reward-Shaped Deep Reinforcement Learning for Managing Uncertainty in Self-Adaptive Systems}
-\firstlatinsupervisor{Dr. ...}
-\firstlatinadvisor{Dr. ...}
-\latinname{Alireza}
-\latinsurname{Kavianifar}
-\latinthesisdate{February 2026}
-\latinkeywords{Self-Adaptive Systems, Deep Reinforcement Learning, Reward Shaping, Uncertainty}
+% تنظیمات ظاهر فهرست برای تورفتگی (Indentation)
+\setlength{\cftsubsubsecindent}{6em}
+\raggedbottom % جلوگیری از کشیده شدن مطالب برای پر کردن پایین صفحه
 
-% فراخوانی بسته‌ها و دستورات استاندارد
-\input{commands}
-
-% تنظیمات اختصاصی برای فهرست مطالب (TOC)
-\setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
-
-% بازگرداندن نقاط رابط (Dot Leaders) که در Cleanup حذف شده بود
+% تنظیم نقاط رابط در فهرست (Dot Leaders)
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
 
-% تنظیمات تورفتگی و ظاهر
-\setlength{\cftsubsubsecindent}{6em}
-\setlength{\cftaftertoctitleskip}{10pt} % رفع فاصله زیاد بعد از عنوان فهرست
-\raggedbottom
+% بسته زی‌پرشین برای پشتیبانی از فارسی (همیشه آخرین بسته باشد)
+\usepackage[natdigit]{xepersian}
+
+% تنظیم فونت بر اساس استانداردهای دانشگاه تربیت مدرس (TMU)
+\settextfont{B Nazanin}
+\setlatintextfont{Times New Roman}
+% \setdigitfont{B Nazanin} % برخی نسخه‌های این فونت مشکل انکودینگ برای اعداد دارند
+
+% تنظیم فرمت شماره‌گذاری بخش‌ها به صورت ۱-۱-
+\SepMark{-}
 
 \begin{document}
-\AutoPersianDigits
-\setstretch{1.5}
+\pagestyle{plain} % Ensure page numbers are always at the bottom center
+\AutoPersianDigits % تبدیل خودکار تمام اعداد انگلیسی به فارسی در متن خروجی
 
-\pagenumbering{harfi}
-\firstPage
-\besmPage
-\davaranPage
-% در این قسمت اسامی‌داوران در فایل اصلی باید دستی وارد شوند، اینجا از ساختار پیش‌فرض استفاده می‌کنیم
+% ============================================================================
+% صفحه عنوان رسمی (Title Page)
+% ============================================================================
+\begin{titlepage}
+\begin{center}
+    % \includegraphics[width=2.5cm]{logo_tmu.png} % در صورت وجود فایل لوگو نمایش داده می‌شود
+    \\[0.5cm]
+    \large \textbf{دانشگاه تربیت مدرس} \\
+    \large \textbf{دانشکده مهندسی برق و کامپیوتر} \\
+    \vspace{2cm}
+    
+    \Large \textbf{رساله تحصیلی جهت اخذ درجه دکتری تخصصی} \\
+    \Large \textbf{در رشته مهندسی کامپیوتر - نرم‌افزار} \\
+    \vspace{1.5cm}
+    
+    \huge یادگیری تقویتی عمیق با شکل‌دهی تصادفی پاداش برای مدیریت عدم قطعیت در سیستم‌های خودوفقی \\
+    \vspace{2cm}
+    
+    \Large \textbf{نگارش:} \\
+    \Large \textbf{علیرضا کاویانی‌فر} \\
+    \vspace{1.5cm}
+    
+    \Large \textbf{استاد راهنما:} \\
+    \Large \textbf{دکتر ...} \\
+    \vspace{1cm}
+    
+    \Large \textbf{استاد مشاور:} \\
+    \Large \textbf{دکتر ...} \\
+    \vspace{2cm}
+    
+    \Large \textbf{بهمن ۱۴۰۴}
+\end{center}
+\end{titlepage}
 
-\esalatPage
-\mojavezPage
+% ============================================================================
+% بخش‌های پیش از متن اصلی (Preliminary Pages)
+% ============================================================================
+\pagenumbering{harfi} % شماره‌گذاری صفحات مقدماتی به صورت حروف (الف، ب، ...)
 
 \chapter*{تقدیم}
 \addcontentsline{toc}{chapter}{تقدیم}
@@ -70,24 +86,36 @@
 \end{center}
 \newpage
 
-\begin{acknowledgementpage}
+\chapter*{قدردانی}
+\addcontentsline{toc}{chapter}{قدردانی}
 (متن تشکر و قدردانی از اساتید راهنما، مشاور و دوستان)
-\signature 
-\end{acknowledgementpage}
+\newpage
 
-\keywords{سیستم‌های خودوفقی، یادگیری تقویتی عمیق، شکل‌دهی پاداش، عدم قطعیت}
-\fa-abstract{
-(خلاصه‌ای از چالش، راهکار و نتایج کلیدی در ۳۰۰ تا ۵۰۰ کلمه)
-}
-\abstractPage
+\chapter*{چکیده}
+\addcontentsline{toc}{chapter}{چکیده}
+
+سیستم‌های نرم‌افزاری معاصر به طور فزاینده‌ای در محیط‌های پویا و همراه با عدم قطعیت عمل می‌کنند. این عدم قطعیت‌ها که ناشی از عواملی مانند تداخل شبکه، نوسانات بار ترافیکی یا تغییرات محیطی هستند، می‌توانند به طور جدی اهداف کیفی سیستم را به خطر اندازند. سیستم‌های خودوفقی (\lr{Self-Adaptive Systems}) با بهره‌گیری از حلقه‌های بازخوردی، راهکاری بنیادین برای مقابله با این چالش ارائه می‌دهند. با این حال، چالش اصلی زمانی بروز می‌کند که این سیستم‌ها با فضای وفقی بزرگ و گسسته (شامل صدها یا هزاران گزینه پیکربندی) مواجه می‌شوند. روش‌های موجود، از جمله روش‌های مبتنی بر یادگیری ماشین، جستجو، و حتی یادگیری تقویتی کلاسیک، در چنین فضاهایی با مشکلاتی نظیر نیاز به داده‌های برچسب‌دار، عدم مقیاس‌پذیری، و مهم‌تر از همه، گرفتار شدن در بهینه‌های محلی و عدم توانایی تعمیم به شرایط محیطی جدید مواجه هستند.
+
+هدف اصلی این رساله، توسعه و اعتبارسنجی روشی نوین مبتنی بر یادگیری تقویتی عمیق با مکانیسم شکل‌دهی تصادفی پاداش (\lr{Randomized Reward-Shaped Deep Reinforcement Learning -- RS-DRL}) برای مدیریت کارآمد عدم قطعیت در این سیستم‌ها است. روش پیشنهادی، هسته یادگیری خود را بر پایه شبکه‌های کیو-عمیق (\lr{DQN}) استوار ساخته و آن را درون چارچوب استاندارد مدیریت خودمختار \lr{MAPE-K} یکپارچه می‌سازد. نوآوری اصلی رساله، مکانیسم «شکل‌دهی تصادفی پاداش» است که طی آن، زیرمجموعه‌ای تصادفی از تجربیات ناموفق گذشته در حافظه بازپخش، با تخصیص یک پاداش خوش‌بینانه (موفقیت فرضی) بازطراحی می‌شوند. این فرایند ساده اما مؤثر، عامل یادگیرنده را قادر می‌سازد تا بدون نیاز به بازآموزی پرهزینه و مکرر، از بهینه‌های محلی فرار کرده و سیاستی مقاوم در برابر تغییرات محیطی بیاموزد. این روش بر خلاف رویکردهای متکی بر هدف (نظیر \lr{HER})، هیچ دانش دامنه یا هدف صریحی از پیش تعیین‌شده‌ای نیاز ندارد.
+
+ارزیابی تجربی این رساله بر روی مطالعه موردی معتبر \lr{DeltaIoT} در شبکه‌های حسگر بی‌سیم و در سناریوهای مختلف (با فضاهای وفقی ۲۱۶، ۱۲۹۶ و ۴۰۹۶ گزینه‌ای) انجام شده است. نتایج حاکی از برتری قاطع روش \lr{RS-DRL} نسبت به روش‌های پایه پیشرفته از جمله \lr{DQN} حریصانه (\lr{$\varepsilon$-greedy})، \lr{HER}، \lr{Soft HER}، \lr{ML4EAS} و \lr{DLASER+} می‌باشد. به عنوان مثال، در بهینه‌سازی چندهدفه، روش پیشنهادی به پاداش مجانبی $0.9905 \pm 0.0268$ دست یافت که در مقایسه با روش \lr{DQN} پایه با پاداش $0.4559 \pm 0.2233$ یک پیشرفت چشمگیر است. همچنین در هدف آستانه‌ای \lr{TT}، روش \lr{RS-DRL} موفق به کاهش نرخ اتلاف بسته تا ۲۲٫۲۳\% و کاهش تأخیر تا ۳۹٫۰۷\% در مقایسه با بهترین روش رقیب (\lr{DLASER+}) گردید. تحلیل‌های آماری معنادار (با ۲۵ مورد از ۲۸ مقایسه معنی‌دار و اکثراً با \lr{p-value} کمتر از ۰٫۰۰۱) صحت و استواری نتایج را تأیید می‌کنند.
+
+\textbf{نوآوری‌های اصلی این رساله} عبارتند از: (۱) ابداع مکانیسم شکل‌دهی تصادفی پاداش برای یادگیری تقویتی عمیق به منظور فرار از بهینه‌های محلی بدون نیاز به بازآموزی. (۲) ارائه معماری تلفیقی یکپارچه که یادگیری ناهمگام \lr{RS-DRL} را با حلقه کنترلی \lr{MAPE-K} برای تصمیم‌گیری ایمن و مؤثر در زمان اجرا ترکیب می‌کند. (۳) اثبات تجربی مقیاس‌پذیری و کارایی روش پیشنهادی در فضاهای وفقی گسسته و بسیار بزرگ (تا ۴۰۹۶ گزینه) در محیط‌های پویا. یافته‌های این رساله نشان می‌دهد که رویکرد \lr{RS-DRL} یک استراتژی بهینه‌سازی مقاوم، کارآمد و خودوفق برای نسل بعدی سیستم‌های نرم‌افزاری پیچیده است که در شرایط عدم قطعیت و پویایی عمل می‌کنند.
+
+\medskip
+\noindent\textbf{واژگان کلیدی:} سیستم‌های خودوفقی، یادگیری تقویتی عمیق، شکل‌دهی تصادفی پاداش، مدیریت عدم قطعیت، فضاهای وفقی بزرگ، اینترنت اشیاء، شبکه‌های حسگر بی‌سیم.
+
+\newpage
 
 \tableofcontents
 \newpage
 
 \listoftables
+\addcontentsline{toc}{chapter}{فهرست جداول}
 \newpage
 
 \listoffigures
+\addcontentsline{toc}{chapter}{فهرست شکل‌ها}
 \newpage
 
 \chapter*{فهرست علائم و اختصارات}
@@ -98,11 +126,13 @@
 % ============================================================================
 % متن اصلی رساله
 % ============================================================================
-\pagenumbering{arabic}
-\pagestyle{fancy}
+\pagenumbering{arabic} % شروع شماره‌گذاری اصلی (۱، ۲، ۳، ...)
 
+% ============================================================================
 % فصل ۱: مقدمه
+% ============================================================================
 \chapter{مقدمه}
+
 \section{پیش‌زمینه و مفاهیم: سیستم‌های خودوفقی}
 \subsection{انگیزه‌های پژوهش و مثال‌های عینی}
 \subsection{حلقه بازخورد \lr{MAPE-K}}
@@ -122,16 +152,19 @@
 \section{راهکار پیشنهادی: یادگیری تقویتی عمیق با شکل‌دهی پاداش (\lr{RS-DRL})}
 \textit{ادغام شده در معماری حلقه بازخورد \lr{MAPE-K} (\lr{Monitor-Analyze-Plan-Execute-Knowledge})}
 
-\subsection{ایده اصلی: شکل‌دهی تصادفی پاداش (فاکتور \texorpdfstring{$\rho$}{rho}) در طول بازپخش تجربه}
-\textit{کنترل شده توسط یک فاکتور شکل‌دهی \texorpdfstring{$\rho$}{rho} که نسبت تجربیات ناموفق برای شکل‌دهی مجدد را تعیین می‌کند.}
+\subsection{ایده اصلی: شکل‌دهی تصادفی پاداش (فاکتور \texorpdfstring{$\rho$}{ρ}) در طول بازپخش تجربه}
+\textit{کنترل شده توسط یک فاکتور شکل‌دهی $\rho$ که نسبت تجربیات ناموفق برای شکل‌دهی مجدد را تعیین می‌کند.}
 
 \section{مشارکت‌های کلیدی رساله}
 \section{ساختار کلی رساله}
 
 \newpage
 
+% ============================================================================
 % فصل ۲: مبانی و پیشینه تحقیق
+% ============================================================================
 \chapter{مبانی و پیشینه تحقیق}
+
 \section{مبانی سیستم‌های خودوفقی}
 \subsection{مفاهیم اصلی و الگوهای معماری}
 \subsection{مدل‌سازی و مدیریت عدم قطعیت در سیستم‌های خودوفقی}
@@ -142,17 +175,20 @@
 \subsection{مفهوم یادگیری «مداوم» در این رساله (حلقه‌های وفقی جریانی)}
 
 \section{کار‌های مرتبط: شیوه‌های مدیریت فضاهای وفقی بزرگ}
-\subsection{روش‌های مبتنی بر یادگیری ماشین (به‌عنوان مثال \lr{ML4EAS})}
-\subsection{روش‌های مبتنی بر جستجو (به‌عنوان مثال الگوریتم‌های ژنتیک)}
-\subsection{روش‌های مبتنی بر یادگیری تقویتی (مانند \lr{Epsilon-Greedy DQN} و \texorpdfstring{\\}{}\lr{DLASER})}
+\subsection{روش‌های مبتنی بر یادگیری ماشین (به عنوان مثال \lr{ML4EAS})}
+\subsection{روش‌های مبتنی بر جستجو (به عنوان مثال الگوریتم‌های ژنتیک)}
+\subsection{روش‌های مبتنی بر یادگیری تقویتی (مانند \lr{Epsilon-Greedy DQN} و \lr{DLASER})}
 \subsection{شکل‌دهی پاداش و بازپخش تجربه با نگاه به گذشته (\lr{HER} و \lr{Soft HER})}
 
 \section{سنتز و شناسایی شکاف تحقیقاتی}
 
 \newpage
 
+% ============================================================================
 % فصل ۳: مدل سیستم و فرمول‌بندی مسئله
+% ============================================================================
 \chapter{مدل سیستم و فرمول‌بندی مسئله}
+
 \section{مطالعه موردی انگیزشی: سیستم \lr{DeltaIoT}}
 \subsection{مرور کلی سیستم و منابع عدم قطعیت}
 \subsection{فضای وفقی و بازنمایی پیکربندی}
@@ -170,8 +206,11 @@
 
 \newpage
 
+% ============================================================================
 % فصل ۴: روش \lr{RS-DRL}: معماری و الگوریتم
+% ============================================================================
 \chapter{روش \lr{RS-DRL}: معماری و الگوریتم}
+
 \section{مرور کلی رویکرد پیشنهادی}
 
 \section{معماری سیستم: ادغام \lr{RS-DRL} با حلقه \lr{MAPE-K}}
@@ -187,12 +226,16 @@
 \section{جزئیات کلیدی پیاده‌سازی برای بازتولیدپذیری}
 \subsection{ساخت حالت از داده‌های پایش شده}
 \subsection{اعتبارسنجی زمان اجرا با \lr{UPPAAL-SMC} و \lr{ActivFORMS}}
-\subsection{انتخاب و بهینه‌سازی ابرپارامترها (جستجوی شبکه‌ای و تنظیم \texorpdfstring{$\rho$}{rho})}
+\subsection{انتخاب و بهینه‌سازی ابرپارامترها (جستجوی شبکه‌ای و تنظیم \texorpdfstring{$\rho$}{ρ})}
 
 \newpage
 
+% ============================================================================
 % فصل ۵: ارزیابی تجربی
+% ============================================================================
 \chapter{ارزیابی تجربی}
+\textit{(در این فصل به ارزیابی تجربی روش پیشنهادی و مقایسه آن با روش‌های پایه پرداخته می‌شود.)}
+
 \section{اهداف ارزیابی و سوالات تحقیق}
 
 \section{تنظیمات آزمایشگاهی}
@@ -201,40 +244,49 @@
 \subsection{پلتفرم پیاده‌سازی: \lr{Gymnasium} و \lr{Stable-Baselines3}}
 
 \section{روش‌های پایه و مقایسه}
+\textit{(معیار انتخاب و معرفی روش‌های مورد مقایسه)}
+
 \subsection{روش \lr{Epsilon-Greedy DQN}}
 \subsection{روش \lr{RS-DRL} به همراه \lr{HER / Soft HER}}
 \subsection{روش‌های \lr{DLASER}، \lr{DLASER+} و \lr{ML4EAS}}
 \subsection{روش مرجع جستجوی کامل (\lr{Exhaustive Search})}
 \subsection{توجیه انتخاب روش‌های پایه: محدودیت‌ها و پروتکل‌های مقایسه}
 
+\bigskip % فاصله استاندارد به جای فاصله سخت
+
 \section{معیارهای ارزیابی}
 \subsection{عملکرد یادگیری: عملکرد مجانبی، زمان تا آستانه و عملکرد کل}
 \subsection{عملکرد سیستم: از دست رفتن بسته، تاخیر، مصرف انرژی}
+
+\bigskip
 
 \section{نتایج و تحلیل‌ها}
 \subsection{منحنی‌های یادگیری و رفتار همگرایی}
 \subsection{مقایسه عملکرد به ازای هر هدف}
 \subsection{ارزیابی مقایسه‌ای در برابر تمام روش‌های پایه}
-\subsection{مطالعه ابلیشن (\lr{Ablation}): حساسیت به فاکتور شکل‌دهی (\texorpdfstring{$\rho$}{rho})}
+\subsection{مطالعه ابلیشن (\lr{Ablation}): حساسیت به فاکتور شکل‌دهی (\texorpdfstring{$\rho$}{ρ})}
 \subsection{تحلیل مقیاس‌پذیری (از ۲۱۶ به ۴۰۹۶ گزینه وفقی)}
 
 \section{اعتبارسنجی آماری (آزمون‌های \lr{t} و مقادیر \lr{p})}
 
 \newpage
 
+% ============================================================================
 % فصل ۶: بحث، کارهای آینده و نتیجه‌گیری
+% ============================================================================
 \chapter{بحث، کارهای آینده و نتیجه‌گیری}
+
 \section{بحث در مورد یافته‌های کلیدی}
 \subsection{نظریه‌پردازی مکانیزم: چرا \lr{RS-DRL} کار می‌کند؟}
-\subsection{تحلیل تعاملات و مصالحه‌ها (به‌عنوان مثال، تاخیر در مقابل از دست رفتن بسته)}
+\subsection{تحلیل تعاملات و مصالحه‌ها (به عنوان مثال، تاخیر در مقابل از دست رفتن بسته)}
 \subsection{پیامدهای مهندسی سیستم‌های خودوفقی}
 
 \section{محدودیت‌ها و تهدیدات اعتبار}
 \subsection{اعتبار داخلی، خارجی و سازه}
-\subsection{محدودیت‌های رویکرد \lr{RS-DRL} (وابستگی به \texorpdfstring{$\rho$}{rho}، فضاهای عمل گسسته)}
+\subsection{محدودیت‌های رویکرد \lr{RS-DRL} (وابستگی به \texorpdfstring{$\rho$}{ρ}، فضاهای عمل گسسته)}
 
 \section{مسیرهایی برای تحقیقات آینده}
-\subsection{به سوی استراتژی‌های شکل‌دهی وفقی (تنظیم خودکار \texorpdfstring{$\rho$}{rho})}
+\subsection{به سوی استراتژی‌های شکل‌دهی وفقی (تنظیم خودکار \texorpdfstring{$\rho$}{ρ})}
 \subsection{گسترش \lr{RS-DRL} به دامنه‌های پیوسته و حساس به ایمنی}
 \subsection{اعتبارسنجی بین‌دامنه و تحلیل‌های نظری}
 
@@ -245,31 +297,54 @@
 
 \newpage
 
+% ============================================================================
 % کتابنامه و پیوست‌ها
-\pagestyle{empty}
-{
-\onehalfspacing
-\bibliographystyle{ieeetr-fa}
-\nocite{*}
-\bibliography{MyReferences}
-}
+% ============================================================================
+\chapter*{کتابنامه}
+\addcontentsline{toc}{chapter}{کتابنامه}
+\clearpage
 
-\pagestyle{fancy}
-\appendix
-\chapter{جریان‌های کاری کامل فرآیند}
-\newpage
-\chapter{لیست کامل الگوریتم‌ها}
-\newpage
-\chapter{نتایج تجربی گسترده}
-\newpage
-\chapter{مصنوعات پیاده‌سازی و پکیج بازتولید}
+\chapter*{پیوست الف - جریان‌های کاری کامل فرآیند}
+\addcontentsline{toc}{chapter}{پیوست الف - جریان‌های کاری کامل فرآیند}
+\clearpage
+
+\chapter*{پیوست ب - لیست کامل الگوریتم‌ها}
+\addcontentsline{toc}{chapter}{پیوست ب - لیست کامل الگوریتم‌ها}
+\clearpage
+
+\chapter*{پیوست ج - نتایج تجربی گسترده}
+\addcontentsline{toc}{chapter}{پیوست ج - نتایج تجربی گسترده}
+\clearpage
+
+\chapter*{پیوست د - مصنوعات پیاده‌سازی و پکیج بازتولید}
+\addcontentsline{toc}{chapter}{پیوست د - مصنوعات پیاده‌سازی و پکیج بازتولید}
+\clearpage
 
 \newpage
 
-% چکیده و عنوان انگلیسی
-\en-abstract{
+% ============================================================================
+% چکیده و عنوان انگلیسی (پایان رساله)
+% ============================================================================
+\begin{latin}
+\chapter*{Abstract}
 (English summary of the thesis, required at the end by TMU guidelines)
-}
-\latinfirstPage
+\newpage
+
+\begin{center}
+    \vspace*{2cm}
+    \huge \textbf{Tarbiat Modares University} \\
+    \Large \textbf{Faculty of Electrical and Computer Engineering} \\[2cm]
+    
+    \huge \textbf{Randomized Reward-Shaped Deep Reinforcement Learning for Managing Uncertainty in Self-Adaptive Systems} \\[2cm]
+    
+    \Large \textbf{By: Alireza Kavianifar} \\[1cm]
+    
+    \Large \textbf{Supervisor: Dr. ...} \\[1cm]
+    
+    \Large \textbf{Advisor: Dr. ...} \\[1cm]
+    
+    \Large \textbf{February 2026}
+\end{center}
+\end{latin}
 
 \end{document}

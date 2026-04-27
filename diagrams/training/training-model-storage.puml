@@ -1,0 +1,46 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title Model Storage and Repository Management\n(Focused Sub-Process)
+
+start
+
+partition "Trained Models Repository" {
+    :Store updated model\nin Knowledge repository;
+    note right
+      (3) Model stored in
+      Knowledge repository
+    end note
+}
+
+note right
+  Trained model available for
+  Adaptation Option Predictor.
+  Training occurs offline
+  or episodically.
+end note
+
+stop
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title MAPE-K Planning Phase\n(Focused Sub-Process)
+
+start
+
+partition "MAPE-K : Plan" {
+    :Invoke Adaptation Option Predictor;
+    note right
+      Delegates decision to
+      learned RS-DRL model
+    end note
+
+    :Retrieve trained model\nfrom Knowledge repository;
+    note right
+      (6) Trained model
+      retrieved
+    end note
+
+    :Predict adaptation option;
+    note right
+      (7) Adaptation option
+      predicted using DQN
+    end note
+}
+
+note right
+  Separation between
+  control logic (MAPE-K)
+  and intelligence (RS-DRL)
+end note
+
+stop
+
+@enduml

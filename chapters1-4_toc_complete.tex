@@ -1,0 +1,1337 @@
+\documentclass[11pt,a4paper]{article}
+
+% Required packages
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{adjustbox}
+
+\captionsetup{
+    font=small,
+    labelfont=bf
+}
+
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{Complete Table of Contents\\Chapters 1--4\\[0.3cm]\small{Randomized Reward Shaping Deep Reinforcement Learning\\for Self-Adaptive Systems}}
+\author{Alireza Kavianifar}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% ============================================================================
+% CHAPTER 1: INTRODUCTION
+% ============================================================================
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{1.\arabic{section}}
+\renewcommand{\thesubsection}{1.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{1.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\section{Background and Context}
+
+This section establishes the foundational context for self-adaptive systems and their role in managing runtime uncertainty.
+
+\subsection{Self-Adaptive Systems: motivation and examples}
+
+Self-adaptive systems autonomously adjust their behavior in response to changing environmental conditions and internal states. Examples include IoT networks, cloud computing infrastructures, and autonomous vehicles that must maintain quality-of-service goals despite unpredictable operating conditions.
+
+\subsection{The MAPE-K feedback loop and the Managed/Managing System abstraction}
+
+The MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge) feedback loop provides a reference architecture for self-adaptive systems. The Managed System executes application logic, while the Managing System implements adaptation logic through continuous monitoring, analysis, planning, and execution cycles.
+
+\subsection{Limitations of rule-based and static adaptation}
+
+Traditional rule-based adaptation approaches struggle with:
+\begin{itemize}
+    \item Large adaptation spaces where manual rule definition becomes intractable
+    \item Dynamic environments where pre-defined rules cannot anticipate all scenarios
+    \item Complex trade-offs between multiple quality-of-service objectives
+    \item Inability to learn from experience and improve over time
+\end{itemize}
+
+\section{Runtime Uncertainty in Self-Adaptive Systems}
+
+Uncertainty represents a fundamental challenge for adaptation decision-making, requiring systems to make effective choices despite incomplete or imperfect information.
+
+\subsection{Sources of uncertainty (environmental, system-level)}
+
+Uncertainty arises from multiple sources:
+\begin{itemize}
+    \item \textbf{Environmental uncertainty}: Unpredictable interference, network conditions, workload variations
+    \item \textbf{System-level uncertainty}: Hardware failures, software bugs, resource contention
+    \item \textbf{Model uncertainty}: Imperfect models of system behavior and environment dynamics
+    \item \textbf{Goal uncertainty}: Evolving or conflicting adaptation objectives
+\end{itemize}
+
+\subsection{Impact of uncertainty on adaptation decisions (examples from DeltaIoT)}
+
+Using the DeltaIoT case study, we demonstrate how uncertainty affects adaptation outcomes. For example, network interference variations can cause the same configuration to produce different quality-of-service results, making it difficult to predict which adaptation option will achieve goals.
+
+\section{Learning-based Adaptation: Why Reinforcement Learning?}
+
+Reinforcement learning offers a principled framework for learning adaptation policies through trial-and-error interaction with uncertain environments.
+
+\subsection{RL benefits for runtime decision-making}
+
+Reinforcement learning provides:
+\begin{itemize}
+    \item Automatic policy learning without manual rule engineering
+    \item Ability to balance exploration and exploitation
+    \item Handling of delayed rewards and long-term consequences
+    \item Adaptation to changing environment dynamics
+\end{itemize}
+
+\subsection{Limits of classic RL in large adaptation spaces}
+
+Classic RL approaches face challenges in self-adaptive systems:
+\begin{itemize}
+    \item Sample inefficiency in large discrete action spaces
+    \item Difficulty generalizing across heterogeneous environments
+    \item Convergence to local optima
+    \item High computational cost of retraining
+\end{itemize}
+
+\section{What ``Continuous'' Means in This Thesis}
+
+Clarifying terminology is essential to avoid confusion with continuous-action reinforcement learning.
+
+\subsection{Continuous = continuous runtime learning / streaming adaptation cycles (not continuous-action control)}
+
+In this thesis, ``continuous'' refers to:
+\begin{itemize}
+    \item \textbf{Continuous runtime learning}: Ongoing policy improvement through streaming adaptation cycles
+    \item \textbf{Continuous operation}: Uninterrupted system operation during learning
+    \item \textbf{NOT continuous-action spaces}: We use discrete adaptation options (DQN), not continuous control (PPO/DDPG)
+\end{itemize}
+
+\section{Problem Statement (precise formulation extracted from the article)}
+
+\textbf{Research Problem}: How can self-adaptive systems effectively learn adaptation policies in large discrete adaptation spaces under runtime uncertainty, while maintaining continuous operation and achieving rapid convergence across heterogeneous environments?
+
+The problem encompasses:
+\begin{itemize}
+    \item Large adaptation spaces (hundreds to thousands of discrete options)
+    \item Runtime uncertainty from environmental and system-level sources
+    \item Need for sample-efficient learning
+    \item Requirement for policy generalization across diverse conditions
+    \item Constraint of continuous system operation during learning
+\end{itemize}
+
+\section{Proposed Solution Overview: RS-DRL (high-level)}
+
+We propose Randomized Reward Shaping Deep Reinforcement Learning (RS-DRL), a novel approach that enhances DQN with selective reward reshaping to accelerate learning and improve generalization.
+
+\subsection{Key idea: randomized reward reshaping during experience replay}
+
+The core innovation is a randomized reward reshaping mechanism that:
+\begin{itemize}
+    \item Selectively reshapes failed experiences during replay
+    \item Treats certain failures as optimistic successes with probability $\rho$
+    \item Accelerates learning by providing additional positive signals
+    \item Promotes policy generalization across heterogeneous environments
+    \item Operates during training without affecting runtime decision-making
+\end{itemize}
+
+\subsection{Architectural placement within MAPE-K (on-demand retraining \& async learning)}
+
+RS-DRL integrates with MAPE-K through:
+\begin{itemize}
+    \item \textbf{Planning phase enhancement}: Learned policies guide adaptation option selection
+    \item \textbf{Asynchronous learning}: Policy training occurs independently of runtime adaptation
+    \item \textbf{On-demand retraining}: Triggered when environment changes are detected
+    \item \textbf{Knowledge repository}: Stores trained models for runtime use
+\end{itemize}
+
+\section{Research Objectives and Research Questions}
+
+\textbf{Primary Objective}: Develop and validate a learning-based approach for self-adaptive systems that achieves effective adaptation in large discrete spaces under uncertainty.
+
+\textbf{Research Questions}:
+\begin{enumerate}
+    \item How can reward shaping accelerate learning in large discrete adaptation spaces?
+    \item What mechanisms enable policy generalization across heterogeneous environments?
+    \item How does RS-DRL compare to baseline DQN and state-of-the-art approaches?
+    \item What architectural patterns support integration of learning with MAPE-K?
+\end{enumerate}
+
+\section{Contributions of the Thesis (expanded from the article's contribution list)}
+
+This thesis makes the following contributions:
+
+\begin{enumerate}
+    \item \textbf{Novel Algorithm}: RS-DRL with randomized reward reshaping mechanism
+    \item \textbf{Architectural Integration}: Process model for integrating RS-DRL with MAPE-K
+    \item \textbf{Empirical Validation}: Comprehensive evaluation on DeltaIoT case study
+    \item \textbf{Generalization Analysis}: Demonstration of cross-environment policy transfer
+    \item \textbf{Comparative Study}: Benchmarking against DQN, HER, and search-based methods
+\end{enumerate}
+
+\section{Research Methodology Overview}
+
+The research follows a systematic methodology combining theoretical modeling, algorithm design, and empirical validation.
+
+\subsection{Theoretical modeling and RL formulation}
+
+\begin{itemize}
+    \item Formalize self-adaptive system as Markov Decision Process
+    \item Define state space, action space, and reward functions
+    \item Establish theoretical foundations for reward shaping
+    \item Analyze convergence properties
+\end{itemize}
+
+\subsection{Algorithm design and reward shaping experiments}
+
+\begin{itemize}
+    \item Design RS-DRL algorithm with randomized reward reshaping
+    \item Implement using Stable-Baselines3 DQN framework
+    \item Conduct ablation studies on reshaping probability $\rho$
+    \item Optimize hyperparameters through systematic experimentation
+\end{itemize}
+
+\subsection{Case study (DeltaIoT): datasets, training regime, evaluation metrics}
+
+\begin{itemize}
+    \item Use DeltaIoT IoT network as motivating case study
+    \item Train on datasets from Gheibi \& Weyns with varying uncertainty
+    \item Evaluate using metrics: cumulative reward, convergence speed, generalization
+    \item Compare against baseline and state-of-the-art approaches
+\end{itemize}
+
+\section{Thesis Organization (brief outline of subsequent chapters)}
+
+The remainder of this thesis is organized as follows:
+
+\begin{itemize}
+    \item \textbf{Chapter 2}: Foundations and related work on self-adaptive systems, RL, and reward shaping
+    \item \textbf{Chapter 3}: System model and problem formulation using DeltaIoT case study
+    \item \textbf{Chapter 4}: Architecture and RS-DRL method with process model
+    \item \textbf{Chapter 5}: Experimental evaluation and results analysis
+    \item \textbf{Chapter 6}: Discussion, limitations, and future work
+    \item \textbf{Chapter 7}: Conclusions and contributions summary
+\end{itemize}
+
+\newpage
+
+% ============================================================================
+% CHAPTER 2: FOUNDATIONS AND RELATED WORK
+% ============================================================================
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{2.\arabic{section}}
+\renewcommand{\thesubsection}{2.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{2.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\section{Self-Adaptive Systems: Concepts and Architectural Patterns}
+
+This section establishes the foundational concepts of self-adaptive systems and the MAPE-K reference architecture.
+
+\subsection{MAPE-K detailed (Monitor, Analyze, Plan, Execute, Knowledge)}
+
+The MAPE-K feedback loop consists of five components:
+
+\begin{itemize}
+    \item \textbf{Monitor}: Collects runtime data from managed system and environment
+    \item \textbf{Analyze}: Evaluates current state against adaptation goals
+    \item \textbf{Plan}: Selects adaptation actions to achieve goals
+    \item \textbf{Execute}: Applies selected adaptations to managed system
+    \item \textbf{Knowledge}: Stores models, policies, and system state history
+\end{itemize}
+
+Each component has well-defined responsibilities and interfaces, enabling modular design and systematic reasoning about adaptation behavior.
+
+\subsection{Managed vs Managing System abstraction and temporal classification (monitoring vs asynchronous learning)}
+
+The Managed/Managing System abstraction separates:
+
+\begin{itemize}
+    \item \textbf{Managed System}: Executes application logic, provides observability
+    \item \textbf{Managing System}: Implements adaptation logic through MAPE-K
+\end{itemize}
+
+Temporal classification distinguishes:
+\begin{itemize}
+    \item \textbf{Continuous processes}: Monitoring (always active)
+    \item \textbf{Event-driven processes}: Analysis, Planning, Execution (triggered by conditions)
+    \item \textbf{Asynchronous processes}: Learning (decoupled from runtime adaptation)
+\end{itemize}
+
+\section{Uncertainty in Self-Adaptive Systems}
+
+Uncertainty is pervasive in self-adaptive systems and fundamentally affects adaptation decision-making.
+
+\subsection{Taxonomy of uncertainties (environmental, systemic, goal drift)}
+
+We adopt a taxonomy that categorizes uncertainty sources:
+
+\begin{itemize}
+    \item \textbf{Environmental uncertainty}: External factors (interference, workload, user behavior)
+    \item \textbf{Systemic uncertainty}: Internal factors (hardware variability, software bugs)
+    \item \textbf{Model uncertainty}: Imperfect models of system and environment
+    \item \textbf{Goal uncertainty}: Evolving or conflicting objectives
+\end{itemize}
+
+\subsection{Effects of uncertainty on verification and adaptation (motivating evidence from DeltaIoT)}
+
+Using DeltaIoT as evidence, we demonstrate:
+
+\begin{itemize}
+    \item Same configuration produces different QoS under varying interference
+    \item Verification results show probability distributions, not deterministic outcomes
+    \item Adaptation decisions must account for uncertainty to avoid goal violations
+    \item Learning-based approaches can adapt to uncertainty through experience
+\end{itemize}
+
+Figure 2 from the article shows how packet loss varies across interference levels, motivating the need for uncertainty-aware adaptation.
+
+\section{Reinforcement Learning Foundations for SAS}
+
+This section establishes RL foundations relevant to self-adaptive systems.
+
+\subsection{MDPs, policy/value formulation and why RL suits adaptation problems}
+
+\textbf{Markov Decision Process (MDP)} formulation:
+\begin{itemize}
+    \item State space $\mathcal{S}$: System and environment observations
+    \item Action space $\mathcal{A}$: Available adaptation options
+    \item Transition function $P(s'|s,a)$: State dynamics
+    \item Reward function $R(s,a,s')$: Quality-of-service feedback
+    \item Discount factor $\gamma$: Future reward weighting
+\end{itemize}
+
+\textbf{Policy and value functions}:
+\begin{itemize}
+    \item Policy $\pi(a|s)$: Probability of selecting action $a$ in state $s$
+    \item State-value $V^\pi(s)$: Expected return from state $s$ under policy $\pi$
+    \item Action-value $Q^\pi(s,a)$: Expected return from taking action $a$ in state $s$
+\end{itemize}
+
+RL suits adaptation because it:
+\begin{itemize}
+    \item Handles sequential decision-making under uncertainty
+    \item Learns from experience without requiring complete system models
+    \item Balances immediate and long-term objectives through discount factor
+    \item Adapts to changing environment dynamics
+\end{itemize}
+
+\subsection{Known challenges: local optima, generalization, retraining cost}
+
+Classic RL faces challenges in self-adaptive systems:
+
+\begin{itemize}
+    \item \textbf{Local optima}: Greedy policies may converge to suboptimal solutions
+    \item \textbf{Sample inefficiency}: Large action spaces require many experiences
+    \item \textbf{Generalization}: Policies may not transfer across environments
+    \item \textbf{Retraining cost}: Computational overhead of policy updates
+    \item \textbf{Exploration-exploitation}: Balancing learning and performance
+\end{itemize}
+
+\section{Deep Reinforcement Learning in Large Discrete Adaptation Spaces}
+
+Deep RL extends classic RL to handle large state and action spaces through function approximation.
+
+\subsection{DQN architecture and rationale for discrete adaptation options (why DQN was chosen in the article)}
+
+\textbf{Deep Q-Network (DQN)} architecture:
+\begin{itemize}
+    \item Neural network approximates $Q(s,a)$ function
+    \item Input: State representation $s \in \mathbb{R}^d$
+    \item Output: Q-values for all actions $[Q(s,a_1), \ldots, Q(s,a_n)]$
+    \item Loss: Temporal difference error minimization
+\end{itemize}
+
+\textbf{Why DQN for self-adaptive systems}:
+\begin{itemize}
+    \item Adaptation spaces are naturally discrete (configuration options)
+    \item DQN handles large discrete action spaces efficiently
+    \item Single forward pass evaluates all options simultaneously
+    \item Proven stability and convergence properties
+\end{itemize}
+
+\subsection{Experience replay, target networks, stability techniques used}
+
+DQN employs several techniques for stable learning:
+
+\begin{itemize}
+    \item \textbf{Experience replay}: Store experiences $(s,a,r,s')$ in memory, sample randomly for training
+    \item \textbf{Target network}: Separate network for computing TD targets, updated periodically
+    \item \textbf{$\epsilon$-greedy exploration}: Balance exploration and exploitation
+    \item \textbf{Gradient clipping}: Prevent exploding gradients
+    \item \textbf{Reward normalization}: Stabilize learning across different scales
+\end{itemize}
+
+\section{Reward Shaping and Experience Relabeling (state of the art)}
+
+Reward shaping techniques modify reward signals to accelerate learning and improve generalization.
+
+\subsection{HER and goal-conditioned methods --- contrast to RS-DRL (no pre-defined goals)}
+
+\textbf{Hindsight Experience Replay (HER)}:
+\begin{itemize}
+    \item Relabels failed experiences with achieved goals
+    \item Requires explicit goal representation in state space
+    \item Effective for sparse reward environments
+    \item Assumes goals can be extracted from final states
+\end{itemize}
+
+\textbf{Contrast with RS-DRL}:
+\begin{itemize}
+    \item RS-DRL does not require pre-defined goal representations
+    \item Reshaping based on reward thresholds, not goal achievement
+    \item Applicable to multi-objective optimization without explicit goals
+    \item Randomized reshaping provides stochastic exploration benefit
+\end{itemize}
+
+\subsection{Other generalization techniques}
+
+Additional techniques for improving RL generalization:
+\begin{itemize}
+    \item \textbf{Domain randomization}: Train on diverse environment variations
+    \item \textbf{Meta-learning}: Learn to adapt quickly to new environments
+    \item \textbf{Transfer learning}: Initialize policies from related tasks
+    \item \textbf{Curriculum learning}: Gradually increase task difficulty
+\end{itemize}
+
+\section{Related Work: classification and gaps}
+
+This section surveys existing approaches to learning-based adaptation and identifies research gaps.
+
+\subsection{ML-based methods, search-based planners, RL-based adaptation --- strengths and weaknesses (article's survey)}
+
+\textbf{Machine Learning-based methods}:
+\begin{itemize}
+    \item Supervised learning for adaptation prediction
+    \item Strengths: Fast inference, interpretable models
+    \item Weaknesses: Require labeled training data, limited to seen scenarios
+\end{itemize}
+
+\textbf{Search-based planners}:
+\begin{itemize}
+    \item Optimization algorithms (genetic algorithms, simulated annealing)
+    \item Strengths: No training required, handle complex objectives
+    \item Weaknesses: Computational overhead, may not scale to large spaces
+\end{itemize}
+
+\textbf{RL-based adaptation}:
+\begin{itemize}
+    \item Learn policies through trial-and-error
+    \item Strengths: Adapt to uncertainty, improve over time
+    \item Weaknesses: Sample inefficiency, generalization challenges
+\end{itemize}
+
+\subsection{Identified gap: scalable, uncertainty-aware, continuous runtime DRL for large adaptation spaces}
+
+\textbf{Research gap}: Existing approaches lack:
+\begin{itemize}
+    \item Scalable learning in large discrete adaptation spaces (100s-1000s options)
+    \item Effective generalization across heterogeneous environments
+    \item Sample-efficient learning under runtime uncertainty
+    \item Continuous operation during learning (asynchronous training)
+    \item Principled reward shaping for multi-objective adaptation
+\end{itemize}
+
+RS-DRL addresses this gap through randomized reward reshaping and asynchronous learning architecture.
+
+\section{Chapter Summary (lead into Chapter 3's formal modeling)}
+
+This chapter established foundational concepts:
+\begin{itemize}
+    \item Self-adaptive systems and MAPE-K architecture
+    \item Uncertainty taxonomy and impact on adaptation
+    \item Reinforcement learning formulation and DQN architecture
+    \item Reward shaping techniques and related work
+    \item Research gap motivating RS-DRL approach
+\end{itemize}
+
+Chapter 3 formalizes the adaptation problem using the DeltaIoT case study, providing concrete MDP formulation and experimental setup.
+
+\newpage
+
+% ============================================================================
+% CHAPTER 3: SYSTEM MODEL AND PROBLEM FORMULATION
+% ============================================================================
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{3.\arabic{section}}
+\renewcommand{\thesubsection}{3.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{3.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\section{Motivating Case Study: DeltaIoT System (detailed description)}
+
+DeltaIoT serves as the motivating case study, providing a concrete context for evaluating RS-DRL.
+
+\subsection{Network, motes, links, configuration parameters and examples}
+
+\textbf{DeltaIoT system architecture}:
+\begin{itemize}
+    \item IoT sensor network with multiple motes (sensor nodes)
+    \item Wireless communication links subject to interference
+    \item Gateway collecting sensor data
+    \item Quality-of-service requirements: packet loss, latency, energy consumption
+\end{itemize}
+
+\textbf{Configuration parameters}:
+\begin{itemize}
+    \item Transmission power levels (affects range and energy)
+    \item Distribution strategy (single-path vs multi-path routing)
+    \item Packet size (affects transmission time and reliability)
+\end{itemize}
+
+\textbf{Example configurations}:
+\begin{itemize}
+    \item Low power + single-path: Energy-efficient but vulnerable to interference
+    \item High power + multi-path: Reliable but energy-intensive
+    \item Medium power + adaptive routing: Balanced trade-off
+\end{itemize}
+
+\section{Modeling Uncertainty in DeltaIoT and SAS}
+
+Uncertainty in DeltaIoT arises from environmental interference and message load variability.
+
+\subsection{Interference/noise ranges, message-load variability, data shifts (Fig.2 evidence)}
+
+\textbf{Interference uncertainty}:
+\begin{itemize}
+    \item Interference levels vary from 0.0 to 1.0 (normalized)
+    \item Affects packet loss probability and transmission reliability
+    \item Figure 2 shows packet loss increasing with interference
+    \item Same configuration produces different outcomes under different interference
+\end{itemize}
+
+\textbf{Message load variability}:
+\begin{itemize}
+    \item Number of messages varies over time
+    \item Affects network congestion and latency
+    \item Creates temporal dependencies in adaptation decisions
+\end{itemize}
+
+\textbf{Data shifts}:
+\begin{itemize}
+    \item Training and deployment environments may differ
+    \item Requires policy generalization across interference ranges
+    \item Motivates need for robust learning approaches
+\end{itemize}
+
+\subsection{How uncertainty affects QoS metrics (packet loss, latency, energy)}
+
+\textbf{Packet loss}:
+\begin{itemize}
+    \item Increases with interference and low transmission power
+    \item Probabilistic: same configuration yields different loss rates
+    \item Critical metric for reliability requirements
+\end{itemize}
+
+\textbf{Latency}:
+\begin{itemize}
+    \item Affected by retransmissions due to packet loss
+    \item Increases with network congestion
+    \item Important for time-sensitive applications
+\end{itemize}
+
+\textbf{Energy consumption}:
+\begin{itemize}
+    \item Increases with transmission power and retransmissions
+    \item Trade-off with reliability and latency
+    \item Critical for battery-powered sensor nodes
+\end{itemize}
+
+\section{Adaptation Space and Configuration Representation}
+
+The adaptation space defines the set of available configuration options.
+
+\subsection{Definition: adaptation option, parameter encoding, scale (216 / 1,296 / 4,096)}
+
+\textbf{Adaptation option}: A complete system configuration specifying all parameter values.
+
+\textbf{Parameter encoding}:
+\begin{itemize}
+    \item Transmission power: 3 levels (low, medium, high)
+    \item Distribution strategy: 2 options (single-path, multi-path)
+    \item Packet size: 3 sizes (small, medium, large)
+    \item Additional parameters depending on experiment setup
+\end{itemize}
+
+\textbf{Adaptation space scale}:
+\begin{itemize}
+    \item Small: 216 discrete options
+    \item Medium: 1,296 discrete options
+    \item Large: 4,096 discrete options
+\end{itemize}
+
+These scales represent realistic adaptation spaces in self-adaptive systems, challenging for both search-based and learning-based approaches.
+
+\subsection{Implications for search/learning complexity}
+
+\textbf{Search complexity}:
+\begin{itemize}
+    \item Exhaustive search requires evaluating all options
+    \item Verification cost per option: 100s of simulations
+    \item Total search time becomes prohibitive in large spaces
+\end{itemize}
+
+\textbf{Learning complexity}:
+\begin{itemize}
+    \item Large action spaces require more training experiences
+    \item Risk of overfitting to training environments
+    \item Need for sample-efficient learning algorithms
+\end{itemize}
+
+\section{RL Formalization for the Adaptive Problem (exact equations from paper)}
+
+This section provides the formal MDP formulation for DeltaIoT adaptation.
+
+\subsection{State space definition (e.g., $S = (E, P, L)$)}
+
+\textbf{State representation}: $s_t = (E_t, P_t, L_t)$ where:
+\begin{itemize}
+    \item $E_t$: Energy consumption level
+    \item $P_t$: Packet loss rate
+    \item $L_t$: Latency measure
+\end{itemize}
+
+Additional state features may include:
+\begin{itemize}
+    \item Current configuration parameters
+    \item Recent trend indicators
+    \item Environmental observations (interference estimates)
+\end{itemize}
+
+State space dimensionality: $s \in \mathbb{R}^d$ where $d$ depends on feature engineering.
+
+\subsection{Action space: discrete adaptation options and encoding}
+
+\textbf{Action space}: $\mathcal{A} = \{a_1, a_2, \ldots, a_n\}$ where $n \in \{216, 1296, 4096\}$
+
+\textbf{Action encoding}:
+\begin{itemize}
+    \item Each action $a_i$ corresponds to a unique configuration
+    \item Integer encoding: $a_i \in \{0, 1, \ldots, n-1\}$
+    \item One-hot encoding for neural network input (if needed)
+\end{itemize}
+
+\subsection{Reward functions: multi-objective normalization, threshold/setpoint formulations (include equations 11--12 and Table 2)}
+
+\textbf{Multi-objective reward function}:
+
+\begin{equation}
+r_t = w_E \cdot r_E(s_t) + w_P \cdot r_P(s_t) + w_L \cdot r_L(s_t)
+\end{equation}
+
+where $w_E + w_P + w_L = 1$ are objective weights.
+
+\textbf{Threshold-based formulation} (Equation 11 from article):
+
+\begin{equation}
+r_i(s_t) = \begin{cases}
+1 & \text{if } m_i(s_t) \leq \theta_i \\
+-1 & \text{otherwise}
+\end{cases}
+\end{equation}
+
+where $m_i(s_t)$ is metric $i$ value and $\theta_i$ is threshold.
+
+\textbf{Setpoint-based formulation} (Equation 12 from article):
+
+\begin{equation}
+r_i(s_t) = 1 - \frac{|m_i(s_t) - \theta_i|}{\theta_i}
+\end{equation}
+
+\textbf{Table 2}: Reward function parameters
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\textbf{Metric} & \textbf{Threshold $\theta_i$} & \textbf{Weight $w_i$} \\
+\hline
+Energy & 0.5 & 0.33 \\
+Packet Loss & 0.1 & 0.34 \\
+Latency & 100 ms & 0.33 \\
+\end{tabular}
+\caption{Reward function parameters for DeltaIoT experiments.}
+\end{table}
+
+\subsection{Transition dynamics (how verifier / ActivFORMS produces next states)}
+
+\textbf{Transition function}: $s_{t+1} \sim P(s'|s_t, a_t)$
+
+\textbf{Verification-based transitions}:
+\begin{itemize}
+    \item UPPAAL-SMC statistical model checker simulates system behavior
+    \item ActivFORMS execution engine provides runtime verification
+    \item Multiple simulation runs produce probability distributions
+    \item Next state sampled from distribution: $s_{t+1} \sim P(\cdot|s_t, a_t)$
+\end{itemize}
+
+\textbf{Stochastic transitions}:
+\begin{itemize}
+    \item Same $(s_t, a_t)$ pair can produce different $s_{t+1}$
+    \item Captures uncertainty in system behavior
+    \item Requires learning robust policies
+\end{itemize}
+
+\section{Continuous / Streaming Training Assumptions}
+
+This section clarifies the continuous learning paradigm used in RS-DRL.
+
+\subsection{Treating adaptation cycles as a continuous stream (training horizons and validation splits per instance)}
+
+\textbf{Continuous stream paradigm}:
+\begin{itemize}
+    \item Adaptation cycles arrive continuously during operation
+    \item Each cycle generates experience tuple $(s_t, a_t, r_t, s_{t+1})$
+    \item Experiences stored in replay memory for training
+    \item No episodic boundaries in runtime operation
+\end{itemize}
+
+\textbf{Training horizons}:
+\begin{itemize}
+    \item Training occurs over fixed time horizons (e.g., 1000 cycles)
+    \item Validation performed on separate environment instances
+    \item Cross-validation across interference levels
+\end{itemize}
+
+\subsection{Temporal separation: runtime adaptation vs asynchronous learning (design assumption)}
+
+\textbf{Key architectural assumption}: Runtime adaptation and learning are temporally separated.
+
+\textbf{Runtime adaptation}:
+\begin{itemize}
+    \item Uses pre-trained model for inference
+    \item Pure forward pass through neural network
+    \item No gradient computation or weight updates
+    \item Fast, deterministic decision-making
+\end{itemize}
+
+\textbf{Asynchronous learning}:
+\begin{itemize}
+    \item Occurs in background process
+    \item Samples experiences from replay memory
+    \item Updates model weights through gradient descent
+    \item Stores updated model for future runtime use
+\end{itemize}
+
+This separation ensures runtime stability while enabling continuous improvement.
+
+\section{Verification \& Runtime Models for Option Analysis}
+
+Verification provides quality estimates for adaptation options under uncertainty.
+
+\subsection{UPPAAL-SMC models and ActivFORMS execution engine (role in reward calculation)}
+
+\textbf{UPPAAL-SMC}:
+\begin{itemize}
+    \item Statistical model checker for stochastic timed automata
+    \item Simulates system behavior under uncertainty
+    \item Produces probability estimates for property satisfaction
+    \item Used during training to evaluate adaptation options
+\end{itemize}
+
+\textbf{ActivFORMS}:
+\begin{itemize}
+    \item Runtime verification engine
+    \item Executes formal models with current state parameters
+    \item Provides quality-of-service predictions
+    \item Generates reward signals for learning
+\end{itemize}
+
+\textbf{Role in reward calculation}:
+\begin{enumerate}
+    \item Agent selects action $a_t$ in state $s_t$
+    \item Verifier evaluates $(s_t, a_t)$ using formal models
+    \item Simulation produces QoS metrics: $(E, P, L)$
+    \item Reward computed from metrics: $r_t = f(E, P, L)$
+    \item Next state extracted from simulation: $s_{t+1}$
+\end{enumerate}
+
+\section{Formal Problem Statement (thesis version) --- precise objective and constraints (ready to feed Chapter 4)}
+
+\textbf{Formal Problem Statement}:
+
+Given:
+\begin{itemize}
+    \item Self-adaptive system with discrete adaptation space $\mathcal{A}$, $|\mathcal{A}| \in [100, 10000]$
+    \item State space $\mathcal{S} \subset \mathbb{R}^d$ representing system and environment
+    \item Stochastic transition dynamics $P(s'|s,a)$ with runtime uncertainty
+    \item Multi-objective reward function $R(s,a,s')$ encoding QoS goals
+    \item Heterogeneous environment instances $\mathcal{E} = \{e_1, \ldots, e_k\}$
+\end{itemize}
+
+Find:
+\begin{itemize}
+    \item Policy $\pi^*: \mathcal{S} \rightarrow \mathcal{A}$ that maximizes expected cumulative reward:
+    \begin{equation}
+    \pi^* = \arg\max_\pi \mathbb{E}_{\tau \sim \pi, e \sim \mathcal{E}} \left[ \sum_{t=0}^T \gamma^t R(s_t, a_t, s_{t+1}) \right]
+    \end{equation}
+\end{itemize}
+
+Subject to constraints:
+\begin{itemize}
+    \item Sample efficiency: Learn with limited training experiences
+    \item Generalization: Policy performs well across all $e \in \mathcal{E}$
+    \item Continuous operation: System remains operational during learning
+    \item Computational feasibility: Training and inference within resource bounds
+\end{itemize}
+
+This formulation guides the RS-DRL architecture and algorithm design in Chapter 4.
+
+\newpage
+
+% ============================================================================
+% CHAPTER 4: ARCHITECTURE AND RS-DRL METHOD
+% ============================================================================
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{4.\arabic{section}}
+\renewcommand{\thesubsection}{4.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{4.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+\section{Chapter overview \& architectural perspective (scope, process-oriented organization)}
+
+This chapter presents the RS-DRL architecture and method, organized by process flow rather than component structure.
+
+\textbf{Chapter scope}:
+\begin{itemize}
+    \item System-level architecture integrating RS-DRL with MAPE-K
+    \item Nine-stage adaptation cycle from monitoring to execution
+    \item Asynchronous learning process with reward reshaping
+    \item Knowledge management and process coordination
+\end{itemize}
+
+\textbf{Process-oriented organization}:
+\begin{itemize}
+    \item Each section answers: ``What happens next, and why?''
+    \item MAPE-K serves as explanatory lens, not primary structure
+    \item Decomposed figures aligned with section boundaries
+    \item Complete workflows provided in appendices
+\end{itemize}
+
+\section{System-level Self-Adaptation Loop (nine-stage continuous adaptation cycle)}
+
+The RS-DRL-based self-adaptive system operates through a nine-stage continuous cycle.
+
+\subsection{Stage 1: Runtime data collection (sensors $\rightarrow$ Monitor)}
+
+\textbf{Process}: Monitor collects runtime data from managed system and environment.
+
+\textbf{Data sources}:
+\begin{itemize}
+    \item System metrics: energy consumption, packet loss, latency
+    \item Environment observations: interference estimates, workload
+    \item Configuration state: current parameter values
+\end{itemize}
+
+\textbf{Output}: Raw sensor data ready for preprocessing.
+
+\subsection{Stage 2: State forwarding to RS-DRL module (experience collection)}
+
+\textbf{Process}: Validated state vector forwarded to RS-DRL module for experience collection.
+
+\textbf{Experience tuple construction}:
+\begin{itemize}
+    \item Previous state $s_t$
+    \item Action taken $a_t$
+    \item Reward received $r_t$
+    \item Current state $s_{t+1}$
+\end{itemize}
+
+\textbf{Storage}: Experience $(s_t, a_t, r_t, s_{t+1})$ stored in replay memory.
+
+\subsection{Stage 3: Asynchronous model training and storage (replay $\rightarrow$ train $\rightarrow$ store)}
+
+\textbf{Process}: Background learning process trains model using replay memory.
+
+\textbf{Training steps}:
+\begin{enumerate}
+    \item Sample minibatch from replay memory
+    \item Apply randomized reward reshaping
+    \item Compute TD targets and loss
+    \item Update Q-network weights via gradient descent
+    \item Store updated model in Knowledge repository
+\end{enumerate}
+
+\textbf{Asynchronous execution}: Training occurs independently of runtime adaptation.
+
+\subsection{Stage 4: State forwarding to Analyzer}
+
+\textbf{Process}: State vector forwarded to Analyzer for goal evaluation.
+
+\textbf{Analyzer input}:
+\begin{itemize}
+    \item Current state $s_t$
+    \item Adaptation goals and thresholds
+    \item Historical state trajectory
+\end{itemize}
+
+\subsection{Stage 5: Adaptation triggering (Analyzer detects violations)}
+
+\textbf{Process}: Analyzer evaluates whether adaptation is needed.
+
+\textbf{Triggering conditions}:
+\begin{itemize}
+    \item QoS metric exceeds threshold
+    \item Trend indicates future violation
+    \item Environment change detected
+    \item Periodic adaptation schedule
+\end{itemize}
+
+\textbf{Output}: Adaptation trigger signal sent to Planner.
+
+\subsection{Stage 6: Trained model retrieval}
+
+\textbf{Process}: Planner retrieves latest trained model from Knowledge repository.
+
+\textbf{Model selection}:
+\begin{itemize}
+    \item Latest successfully trained model
+    \item Model validated on current environment type
+    \item Fallback to previous model if training failed
+\end{itemize}
+
+\subsection{Stage 7: Adaptation option prediction (Adaptation Option Predictor)}
+
+\textbf{Process}: Planner uses model to predict best adaptation option.
+
+\textbf{Prediction steps}:
+\begin{enumerate}
+    \item Forward pass: $Q(s_t, \cdot) = \text{model}(s_t)$
+    \item Compute Q-values for all actions
+    \item Select action: $a_t = \arg\max_a Q(s_t, a)$ (greedy) or $\epsilon$-greedy
+\end{enumerate}
+
+\textbf{Output}: Predicted adaptation option $a_t$.
+
+\subsection{Stage 8: Adaptation option retrieval \& verification}
+
+\textbf{Process}: Executor retrieves detailed specification and verifies option.
+
+\textbf{Verification}:
+\begin{itemize}
+    \item UPPAAL-SMC simulates $(s_t, a_t)$ configuration
+    \item Estimates QoS metrics and goal satisfaction probability
+    \item Provides decision justification
+\end{itemize}
+
+\textbf{Output}: Verified adaptation specification ready for execution.
+
+\subsection{Stage 9: Adaptation application (Executor)}
+
+\textbf{Process}: Executor applies adaptation to managed system.
+
+\textbf{Execution steps}:
+\begin{enumerate}
+    \item Translate adaptation option to system commands
+    \item Apply configuration changes to managed system
+    \item Verify successful reconfiguration
+    \item Log adaptation event
+\end{enumerate}
+
+\textbf{Loop closure}: Monitoring resumes (Stage 1), closing the adaptation loop.
+
+\section{Mapping RS-DRL to MAPE-K (conceptual mapping and roles)}
+
+This section provides conceptual mapping of RS-DRL stages to MAPE-K components.
+
+\textbf{MAPE-K mapping}:
+\begin{itemize}
+    \item \textbf{Monitor} (Stages 1, 2, 4): Data collection, state construction, dissemination
+    \item \textbf{Analyze} (Stages 4, 5): Goal evaluation, adaptation triggering
+    \item \textbf{Plan} (Stages 5, 6, 7): Model retrieval, option prediction
+    \item \textbf{Execute} (Stages 8, 9): Verification, adaptation application
+    \item \textbf{Knowledge} (Stages 3, 6, 8): Model storage, option repository, state history
+\end{itemize}
+
+\textbf{RS-DRL role}: Enhances Planning phase with learned intelligence, operates asynchronously in Knowledge component.
+
+\section{Runtime Monitoring and State Construction}
+
+Monitoring transforms raw sensor data into validated state representations.
+
+\subsection{Data collection, preprocessing, feature extraction, state vector construction}
+
+\textbf{Data collection}:
+\begin{itemize}
+    \item Sensors provide raw measurements
+    \item Sampling rate: continuous or periodic
+    \item Data buffering for temporal features
+\end{itemize}
+
+\textbf{Preprocessing}:
+\begin{itemize}
+    \item Filtering: Remove noise and outliers
+    \item Normalization: Scale features to $[0,1]$ or standardize
+    \item Aggregation: Compute moving averages, trends
+\end{itemize}
+
+\textbf{Feature extraction}:
+\begin{itemize}
+    \item QoS metrics: energy, packet loss, latency
+    \item Derived features: rates of change, violation indicators
+    \item Context features: current configuration, time of day
+\end{itemize}
+
+\textbf{State vector construction}:
+\begin{itemize}
+    \item Assemble features into vector $s_t \in \mathbb{R}^d$
+    \item Validate: Check for missing values, range violations
+    \item Disseminate: Forward to Analyzer and RS-DRL module
+\end{itemize}
+
+\section{Analysis and Adaptation Triggering}
+
+Analysis evaluates system state against adaptation goals and triggers planning when needed.
+
+\subsection{Change detection \& thresholding assumptions (when retraining is triggered)}
+
+\textbf{Goal evaluation}:
+\begin{itemize}
+    \item Compare metrics against thresholds: $m_i(s_t) \leq \theta_i$
+    \item Evaluate multi-objective satisfaction
+    \item Detect trends indicating future violations
+\end{itemize}
+
+\textbf{Adaptation triggering}:
+\begin{itemize}
+    \item Immediate: Threshold violation detected
+    \item Predictive: Trend analysis predicts violation
+    \item Periodic: Time-based adaptation schedule
+\end{itemize}
+
+\textbf{Retraining triggers}:
+\begin{itemize}
+    \item Environment change detected (interference shift)
+    \item Policy performance degradation
+    \item Sufficient new experiences collected
+    \item Scheduled retraining interval
+\end{itemize}
+
+\section{Planning \& Adaptation Option Prediction}
+
+Planning uses the trained RS-DRL model to select adaptation options.
+
+\subsection{Adaptation Option Selector ($\epsilon$-greedy + DQN) \& architecture of predictor}
+
+\textbf{Adaptation Option Predictor architecture}:
+\begin{itemize}
+    \item Input layer: State vector $s_t \in \mathbb{R}^d$
+    \item Hidden layers: Fully connected neural network
+    \item Output layer: Q-values for all actions $Q(s_t, a_i)$, $i = 1, \ldots, n$
+\end{itemize}
+
+\textbf{Action selection}:
+\begin{itemize}
+    \item Training: $\epsilon$-greedy exploration
+    \begin{equation}
+    a_t = \begin{cases}
+    \text{random action} & \text{with probability } \epsilon \\
+    \arg\max_a Q(s_t, a) & \text{with probability } 1-\epsilon
+    \end{cases}
+    \end{equation}
+    \item Runtime: Greedy selection ($\epsilon = 0$)
+    \begin{equation}
+    a_t = \arg\max_a Q(s_t, a)
+    \end{equation}
+\end{itemize}
+
+\textbf{Pure inference at runtime}: No learning, no replay sampling, no weight updates.
+
+\section{Verification of Adaptation Options}
+
+Verification provides quality estimates and decision justification for selected options.
+
+\subsection{Runtime model checking with UPPAAL-SMC \& how verifier informs reward}
+
+\textbf{Verification process}:
+\begin{enumerate}
+    \item Parameterize runtime model with $(s_t, a_t)$
+    \item Execute UPPAAL-SMC statistical model checking
+    \item Run multiple simulations (e.g., 1000 runs)
+    \item Collect QoS metrics from simulations
+    \item Compute quality estimates and probabilities
+\end{enumerate}
+
+\textbf{Dual role of verification}:
+\begin{itemize}
+    \item \textbf{Runtime}: Provides decision justification and confidence estimates
+    \item \textbf{Learning}: Generates reward signals $r_t$ from QoS metrics
+\end{itemize}
+
+\textbf{Reward generation}:
+\begin{equation}
+r_t = f(\text{QoS metrics from verification})
+\end{equation}
+
+where $f$ is the multi-objective reward function defined in Section 3.4.3.
+
+\section{Execution and Adaptation Application}
+
+Execution translates selected adaptation options into system reconfigurations.
+
+\subsection{Executor behavior and coordination with Knowledge repository}
+
+\textbf{Adaptation specification retrieval}:
+\begin{itemize}
+    \item Query Knowledge repository with action ID $a_t$
+    \item Retrieve complete configuration specification
+    \item Includes all parameter values and dependencies
+\end{itemize}
+
+\textbf{Execution process}:
+\begin{enumerate}
+    \item Validate adaptation specification
+    \item Translate to system-specific commands
+    \item Apply configuration changes atomically
+    \item Verify successful reconfiguration
+    \item Update system state in Knowledge
+\end{enumerate}
+
+\textbf{Error handling}:
+\begin{itemize}
+    \item Rollback on execution failure
+    \item Fallback to safe default configuration
+    \item Log error for analysis
+\end{itemize}
+
+\section{Asynchronous RS-DRL Learning and Policy Update (core algorithmic chapter)}
+
+This section presents the core RS-DRL algorithm with randomized reward reshaping.
+
+\subsection{Overall RS-DRL algorithm (Algorithm 1) and parameters ($\eta$, $\gamma$, $\epsilon$, $\rho$)}
+
+\textbf{Algorithm 1: RS-DRL Training}
+
+\textbf{Parameters}:
+\begin{itemize}
+    \item $\eta$: Learning rate
+    \item $\gamma$: Discount factor
+    \item $\epsilon$: Exploration rate
+    \item $\rho$: Reward reshaping probability
+\end{itemize}
+
+\textbf{Algorithm outline}:
+\begin{enumerate}
+    \item Initialize Q-network $Q(s,a;\theta)$ and target network $Q(s,a;\theta^-)$
+    \item Initialize replay memory $\mathcal{D}$
+    \item For each training episode:
+    \begin{enumerate}
+        \item Observe initial state $s_0$
+        \item For each time step $t$:
+        \begin{enumerate}
+            \item Select action $a_t$ using $\epsilon$-greedy policy
+            \item Execute action, observe reward $r_t$ and next state $s_{t+1}$
+            \item Store experience $(s_t, a_t, r_t, s_{t+1})$ in $\mathcal{D}$
+            \item Sample minibatch from $\mathcal{D}$
+            \item Apply randomized reward reshaping (Algorithm 2)
+            \item Compute TD targets and update Q-network
+        \end{enumerate}
+        \item Periodically update target network: $\theta^- \leftarrow \theta$
+    \end{enumerate}
+    \item Store trained model in Knowledge repository
+\end{enumerate}
+
+\subsection{Replay Memory \& randomized reward reshaping (Algorithm 2) --- rationale \& implementation}
+
+\textbf{Algorithm 2: Randomized Reward Reshaping}
+
+\textbf{Input}: Minibatch of experiences $\{(s_i, a_i, r_i, s'_i)\}$
+
+\textbf{Output}: Reshaped minibatch $\{(s_i, a_i, \tilde{r}_i, s'_i)\}$
+
+\textbf{Algorithm}:
+\begin{enumerate}
+    \item For each experience $(s_i, a_i, r_i, s'_i)$ in minibatch:
+    \begin{enumerate}
+        \item If $r_i < 0$ (failed experience):
+        \begin{enumerate}
+            \item With probability $\rho$: $\tilde{r}_i = |r_i|$ (reshape to positive)
+            \item With probability $1-\rho$: $\tilde{r}_i = r_i$ (keep original)
+        \end{enumerate}
+        \item Else: $\tilde{r}_i = r_i$ (keep positive rewards unchanged)
+    \end{enumerate}
+    \item Return reshaped minibatch
+\end{enumerate}
+
+\textbf{Rationale}:
+\begin{itemize}
+    \item Treats certain failures as optimistic successes
+    \item Provides additional positive learning signals
+    \item Accelerates exploration of promising regions
+    \item Promotes generalization across environments
+    \item Randomization prevents overfitting to reshaped distribution
+\end{itemize}
+
+\textbf{Implementation details}:
+\begin{itemize}
+    \item Reshaping applied during training only, not at runtime
+    \item Probability $\rho$ is hyperparameter (typically 0.1-0.3)
+    \item Original experiences preserved in replay memory
+    \item Reshaping creates temporary training signal
+\end{itemize}
+
+\subsection{Model training, target networks, loss function, stability practices}
+
+\textbf{TD target computation}:
+\begin{equation}
+y_i = r_i + \gamma \max_{a'} Q(s'_i, a'; \theta^-)
+\end{equation}
+
+\textbf{Loss function}:
+\begin{equation}
+\mathcal{L}(\theta) = \mathbb{E}_{(s,a,r,s') \sim \mathcal{D}} \left[ (y - Q(s,a;\theta))^2 \right]
+\end{equation}
+
+\textbf{Gradient update}:
+\begin{equation}
+\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}(\theta)
+\end{equation}
+
+\textbf{Target network update}:
+\begin{itemize}
+    \item Periodic hard update: $\theta^- \leftarrow \theta$ every $C$ steps
+    \item Or soft update: $\theta^- \leftarrow \tau \theta + (1-\tau) \theta^-$
+\end{itemize}
+
+\textbf{Stability practices}:
+\begin{itemize}
+    \item Gradient clipping: Prevent exploding gradients
+    \item Reward normalization: Stabilize learning across scales
+    \item Experience replay: Break temporal correlations
+    \item Target network: Stabilize TD targets
+    \item Learning rate scheduling: Reduce $\eta$ over time
+\end{itemize}
+
+\section{Knowledge Management and Process Coordination}
+
+Knowledge serves as shared memory coordinating heterogeneous processes.
+
+\subsection{Knowledge repository design (models, adaptation options, state history)}
+
+\textbf{Knowledge components}:
+\begin{itemize}
+    \item \textbf{Model repository}: Trained Q-networks, metadata, versioning
+    \item \textbf{Adaptation option catalog}: Configuration specifications, parameters
+    \item \textbf{State history}: Time-series of system states and adaptations
+    \item \textbf{Replay memory}: Experience tuples for training
+\end{itemize}
+
+\textbf{Data structures}:
+\begin{itemize}
+    \item Models: Serialized neural network weights, architecture specs
+    \item Options: JSON/XML configuration files
+    \item History: Time-series database or log files
+    \item Replay: Circular buffer or database
+\end{itemize}
+
+\subsection{Read/write coordination contracts and heterogeneous process synchronization}
+
+\textbf{Read/write contracts}:
+\begin{itemize}
+    \item \textbf{Monitor writes}: State vectors (Stage 1)
+    \item \textbf{Learning writes}: Trained models (Stage 3)
+    \item \textbf{Planner reads}: Trained models (Stage 6)
+    \item \textbf{Executor reads}: Adaptation specifications (Stage 8)
+\end{itemize}
+
+\textbf{Synchronization mechanisms}:
+\begin{itemize}
+    \item Atomic writes: Ensure model updates are complete
+    \item Versioning: Track model versions, enable rollback
+    \item Locks: Prevent concurrent write conflicts
+    \item Notifications: Signal when new models available
+\end{itemize}
+
+\textbf{Temporal decoupling}:
+\begin{itemize}
+    \item Runtime processes read latest available model
+    \item Learning processes write asynchronously
+    \item No blocking between runtime and learning
+\end{itemize}
+
+\section{Implementation details \& hyperparameter choices}
+
+This section provides practical implementation details for reproducibility.
+
+\subsection{Gymnasium environment, Stable-Baselines3 DQN extension, dataset traces (Gheibi \& Weyns)}
+
+\textbf{Gymnasium environment}:
+\begin{itemize}
+    \item Custom environment wrapping DeltaIoT simulator
+    \item State space: $\mathbb{R}^d$ (continuous)
+    \item Action space: Discrete($n$) where $n \in \{216, 1296, 4096\}$
+    \item Reward: Multi-objective function from Section 3.4.3
+    \item Episode termination: Fixed horizon or goal achievement
+\end{itemize}
+
+\textbf{Stable-Baselines3 DQN extension}:
+\begin{itemize}
+    \item Base: SB3 DQN implementation
+    \item Extension: Custom callback for reward reshaping
+    \item Integration: Modify replay buffer sampling
+    \item Logging: Track reshaping statistics
+\end{itemize}
+
+\textbf{Dataset traces}:
+\begin{itemize}
+    \item Source: Gheibi \& Weyns DeltaIoT datasets
+    \item Interference levels: 0.0, 0.2, 0.4, 0.6, 0.8, 1.0
+    \item Message loads: Low, medium, high
+    \item Training/validation split: 70/30 or cross-validation
+\end{itemize}
+
+\textbf{Hyperparameter choices}:
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+Learning rate $\eta$ & 0.0001 \\
+Discount factor $\gamma$ & 0.99 \\
+Exploration rate $\epsilon$ & 0.1 (decayed) \\
+Reshaping probability $\rho$ & 0.2 \\
+Replay buffer size & 100,000 \\
+Minibatch size & 64 \\
+Target update frequency & 1,000 steps \\
+Network architecture & [128, 128] \\
+\end{tabular}
+\caption{RS-DRL hyperparameter settings.}
+\end{table}
+
+\section{Chapter summary and transition to evaluation (Chapter 5)}
+
+This chapter presented the RS-DRL architecture and method:
+
+\textbf{Key contributions}:
+\begin{itemize}
+    \item Nine-stage adaptation cycle integrating RS-DRL with MAPE-K
+    \item Temporal separation of runtime adaptation and asynchronous learning
+    \item Randomized reward reshaping algorithm for accelerated learning
+    \item Knowledge-based coordination of heterogeneous processes
+    \item Practical implementation using Gymnasium and Stable-Baselines3
+\end{itemize}
+
+\textbf{Architectural principles}:
+\begin{itemize}
+    \item Process-oriented organization for traceability
+    \item Verification as justification for learning-based decisions
+    \item Asynchronous learning for continuous operation
+    \item Modular design enabling independent component evolution
+\end{itemize}
+
+\textbf{Transition to evaluation}:
+
+Chapter 5 evaluates RS-DRL through comprehensive experiments on DeltaIoT:
+\begin{itemize}
+    \item Learning performance: Convergence speed, sample efficiency
+    \item Generalization: Cross-environment policy transfer
+    \item Comparison: Baseline DQN, HER, search-based methods
+    \item Ablation studies: Impact of reshaping probability $\rho$
+    \item Scalability: Performance across adaptation space sizes
+\end{itemize}
+
+\end{document}

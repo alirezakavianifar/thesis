@@ -1,0 +1,123 @@
+@startuml
+!define DPI 300
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam maxMessageSize 200
+skinparam activity {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontSize 11
+}
+skinparam partition {
+    BackgroundColor #F3E5F5
+    BorderColor #4A148C
+    FontSize 12
+    FontStyle bold
+}
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+skinparam padding 20
+skinparam minClassWidth 0
+skinparam minClassHeight 0
+skinparam shadowing false
+title RS-DRL–Integrated Self-Adaptive System\n(UML Activity Diagram with Fig.4 Traceability)
+
+start
+
+partition "Managed System" {
+    :Operate system;
+    :Produce runtime data\n(system state, environment data);
+    note right
+      (1) Runtime data produced
+      by managed system
+    end note
+}
+
+partition "MAPE-K : Monitor" {
+    :Collect runtime data;
+    :Extract features /\nstate vector;
+    note right
+      (4) Runtime data forwarded
+      to Analyzer
+    end note
+}
+
+partition "RS-DRL Module" {
+    :Receive state vector;
+    note right
+      (2) Monitor sends
+      runtime data to RS-DRL
+    end note
+
+    :Select adaptation option\n(ε-greedy policy);
+    :Verify option via\nruntime models (SMC);
+    :Compute reward;
+    :Store experience\nin replay memory;
+    :Apply reward shaping;
+    :Train / update DQN;
+
+    :Store trained model\nin Knowledge Repository;
+    note right
+      (3) Trained model stored
+      in Knowledge
+    end note
+}
+
+partition "MAPE-K : Analyze" {
+    :Analyze monitored data;
+    if (Goals violated or at risk?) then (yes)
+        :Notify Planner;
+        note right
+          (5) Analyzer notifies
+          Adaptation Option Predictor
+        end note
+    else (no)
+        :Continue monitoring;
+        stop
+    endif
+}
+
+partition "MAPE-K : Plan\n(Adaptation Option Predictor)" {
+    :Retrieve trained model;
+    note right
+      (6) Predictor retrieves
+      trained RS-DRL model
+    end note
+
+    :Predict best adaptation option;
+    note right
+      (7) Adaptation option
+      predicted
+    end note
+}
+
+partition "MAPE-K : Execute" {
+    :Retrieve adaptation details;
+    note right
+      (8) Executor retrieves
+      adaptation option details
+    end note
+
+    :Apply adaptation\nto Managed System;
+    note right
+      (9) Adaptation applied
+      to managed system
+    end note
+}
+
+partition "Managed System" {
+    :System behavior updated;
+    :Environment/system changes;
+    :End of adaptation episode;
+    note right
+      Next episode loops back
+      to "Operate system"
+    end note
+}
+
+stop
+
+@enduml
+
