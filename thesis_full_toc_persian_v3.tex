@@ -1192,31 +1192,33 @@ $0.9$ & مفرط (کورکورانه) & پایین (واگرا) & بی‌ثبا�
 \begin{algorithm}[H]
 \caption{الگوریتم ۱: آموزش و به‌روزرسانی جامع \lr{RS-DRL}}
 \label{alg:rs_drl_final}
+\begin{latin}
 \begin{algorithmic}[1]
-\STATE Initialize main network $\theta$ and target network $\theta'$ \COMMENT{تعریف شبکه‌های عصبی اصلی و هدف}
+\STATE Initialize main network $\theta$ and target network $\theta'$ \COMMENT{\rl{تعریف شبکه‌های عصبی اصلی و هدف}}
 \FOR{each training episode}
-  \STATE $s \leftarrow GetInitialState()$ \COMMENT{دریافت وضعیت اولیه از پلتفرم پایش}
+  \STATE $s \leftarrow GetInitialState()$ \COMMENT{\rl{دریافت وضعیت اولیه از پلتفرم پایش}}
   \WHILE{episode not finished}
-    \STATE $a \leftarrow SelectAction(s, \theta, \epsilon\text{-greedy})$ \COMMENT{انتخاب اقدام زمان اجرا با احتمال کاوش}
-    \STATE $(s', r_{env}) \leftarrow Environment.Step(a)$ \COMMENT{اعمال پیکربندی و دریافت پاداش شبکه}
-    \STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$ \COMMENT{فراخوانی اعتبارسنجی صوری UPPAAL-SMC به صورت احتمالی}
-    \STATE $r \leftarrow r_{env} \times r_{smc}$ \COMMENT{ادغام پاداش صوری و تجربی: موفقیت در صورت ارضای هر دو عامل}
-    \STATE Store transition $(s, a, r, s')$ in Replay Buffer $\mathcal{D}$ \COMMENT{ذخیره‌سازی تجربه در حافظه مشترک}
-    \STATE Sample random minibatch $B = \{(s_i, a_i, r_i, s'_i)\}_{i=1}^N$ from $\mathcal{D}$ \COMMENT{نمونه‌برداری از بافر}
+    \STATE $a \leftarrow SelectAction(s, \theta, \epsilon\text{-greedy})$ \COMMENT{\rl{انتخاب اقدام زمان اجرا با احتمال کاوش}}
+    \STATE $(s', r_{env}) \leftarrow Environment.Step(a)$ \COMMENT{\rl{اعمال پیکربندی و دریافت پاداش شبکه}}
+    \STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$ \COMMENT{\rl{فراخوانی اعتبارسنجی صوری UPPAAL-SMC به صورت احتمالی}}
+    \STATE $r \leftarrow r_{env} \times r_{smc}$ \COMMENT{\rl{ادغام پاداش صوری و تجربی: موفقیت در صورت ارضای هر دو عامل}}
+    \STATE Store transition $(s, a, r, s')$ in Replay Buffer $\mathcal{D}$ \COMMENT{\rl{ذخیره‌سازی تجربه در حافظه مشترک}}
+    \STATE Sample random minibatch $B = \{(s_i, a_i, r_i, s'_i)\}_{i=1}^N$ from $\mathcal{D}$ \COMMENT{\rl{نمونه‌برداری از بافر}}
     \FOR{each transition $i$ in $B$}
       \IF{$r_i = 0$ \textbf{and} $rand(0, 1) < \rho$}
-        \STATE $\tilde{r}_i \leftarrow 1$ \COMMENT{اعمال مکانیزم خوش‌بینی تصادفی برای خروج از بهینه محلی}
+        \STATE $\tilde{r}_i \leftarrow 1$ \COMMENT{\rl{اعمال مکانیزم خوش‌بینی تصادفی برای خروج از بهینه محلی}}
       \ELSE
         \STATE $\tilde{r}_i \leftarrow r_i$
       \ENDIF
-      \STATE $y_i \leftarrow \tilde{r}_i + \gamma \max_{a'} Q(s'_i, a'; \theta')$ \COMMENT{محاسبه تارگت بلمن با پاداش شکل‌یافته}
-      \STATE $\theta \leftarrow \theta - \alpha \nabla_\theta \mathbb{E}[(y_i - Q(s_i, a_i; \theta))^2]$ \COMMENT{به‌روزرسانی گرادیان شبکه اصلی}
+      \STATE $y_i \leftarrow \tilde{r}_i + \gamma \max_{a'} Q(s'_i, a'; \theta')$ \COMMENT{\rl{محاسبه تارگت بلمن با پاداش شکل‌یافته}}
+      \STATE $\theta \leftarrow \theta - \alpha \nabla_\theta \mathbb{E}[(y_i - Q(s_i, a_i; \theta))^2]$ \COMMENT{\rl{به‌روزرسانی گرادیان شبکه اصلی}}
     \ENDFOR
-    \STATE $\theta' \leftarrow \tau\theta + (1-\tau)\theta'$ \COMMENT{به‌روزرسانی نرم شبکه‌های هدف جهت حفظ پایداری}
+    \STATE $\theta' \leftarrow \tau\theta + (1-\tau)\theta'$ \COMMENT{\rl{به‌روزرسانی نرم شبکه‌های هدف جهت حفظ پایداری}}
     \STATE $s \leftarrow s'$
   \ENDWHILE
 \ENDFOR
 \end{algorithmic}
+\end{latin}
 \begin{flushleft}
 \footnotesize
 \textbf{نکته:} پارامتر $\rho$ (فاکتور شکل‌دهی) یک ابرپارامتر است که میزان خوش‌بینی عامل را در کشف مسیرهای جدید کنترل می‌کند. مقادیر بهینه آن در فصل \ref{chap:evaluation} تحلیل شده‌اند.
