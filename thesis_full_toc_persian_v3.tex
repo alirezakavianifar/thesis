@@ -111,7 +111,68 @@
 
 \chapter*{فهرست نشانه‌ها و اختصارات}
 \addcontentsline{toc}{chapter}{فهرست نشانه‌ها و اختصارات}
-(لیست نمادهای ریاضی مانند $\rho$، $\gamma$ و اختصارات مانند \lr{DRL}، \lr{SAS})
+
+\section*{نشانه‌های ریاضی}
+\noindent
+\begin{tabular}{|p{2.5cm}|p{11.5cm}|}
+\hline
+\textbf{نماد} & \textbf{توضیح و تعریف} \\ \hline
+$\mathcal{S}$ & فضای حالت سیستم (مجموعه تمام وضعیت‌های ممکن سیستم و محیط) \\ \hline
+$\mathcal{A}$ & فضای عمل یا گزینه‌های وفقی در دسترس \\ \hline
+$s$ & حالت یا وضعیت جاری سیستم ($s \in \mathcal{S}$) \\ \hline
+$a$ & عمل وفقی یا پیکربندی انتخاب‌شده ($a \in \mathcal{A}$) \\ \hline
+$\pi(a|s)$ & سیاست تطبیق عامل (نگاشت حالت‌ها به اعمال) \\ \hline
+$\pi^*$ & سیاست تطبیق بهینه \\ \hline
+$R(s, a)$ & تابع پاداش (بازخورد عددی محیط به عامل) \\ \hline
+$\gamma$ & نرخ تنزیل پاداش‌های آتی ($\gamma \in [0, 1)$) \\ \hline
+$V^\pi(s)$ & تابع ارزش حالت تحت سیاست $\pi$ \\ \hline
+$Q(s, a)$ & تابع ارزش عمل (مقدار کیو) \\ \hline
+$\theta$ & پارامترها و وزن‌های شبکه عصبی عمیق تقریب‌گر \\ \hline
+$\epsilon$ & احتمال کاوش تصادفی در الگوریتم حریصانه-اپسیلون \\ \hline
+$\mathcal{D}$ & بافر بازپخش تجربه عامل \\ \hline
+$\rho$ & مقدار پاداش خوش‌بینانه تزریق‌شده در مکانیسم شکل‌دهی پاداش تصادفی \\ \hline
+\end{tabular}
+
+\newpage
+
+\section*{اختصارات انگلیسی}
+\noindent
+\begin{tabular}{|p{2.5cm}|p{6.0cm}|p{5.1cm}|}
+\hline
+\textbf{اختصار} & \textbf{عبارت کامل انگلیسی} & \textbf{معادل فارسی} \\ \hline
+\lr{RS-DRL} & \lr{Randomized Reward-Shaped Deep Reinforcement Learning} & یادگیری تقویتی عمیق با شکل‌دهی تصادفی پاداش \\ \hline
+\lr{DRL} & \lr{Deep Reinforcement Learning} & یادگیری تقویتی عمیق \\ \hline
+\lr{SAS} & \lr{Self-Adaptive Systems} & سیستم‌های خودوفقی \\ \hline
+\lr{MAPE-K} & \lr{Monitor, Analyze, Plan, Execute over Shared Knowledge} & حلقه مدیریت خودمختار \\ \hline
+\lr{UPPAAL-SMC} & \lr{UPPAAL Statistical Model Checker} & ابزار بازبینی صوری آماری آپال \\ \hline
+\lr{SMC} & \lr{Statistical Model Checking} & بازبینی صوری آماری \\ \hline
+\lr{DQN} & \lr{Deep Q-Network} & شبکه کیو عمیق \\ \hline
+\lr{HER} & \lr{Hindsight Experience Replay} & بازپخش تجربه با نگاه به گذشته (هدف‌محور) \\ \hline
+\lr{Soft HER} & \lr{Soft Hindsight Experience Replay} & بازپخش تجربه با نگاه به گذشته نرم \\ \hline
+\lr{DLASER} & \lr{Dynamic Learning-based Adaptive System for Efficient Resource allocation} & سیستم وفقی مبتنی بر یادگیری پویا برای تخصیص منابع \\ \hline
+\lr{ML4EAS} & \lr{Machine Learning for Self-Adaptive Systems} & یادگیری ماشین برای سیستم‌های خودوفق خودمراقبتی \\ \hline
+\lr{DARTSim} & \lr{UAV Tactical Mission Simulator} & شبیه‌ساز مأموریت تاکتیکی پهپادها \\ \hline
+\end{tabular}
+
+\newpage
+
+\noindent
+\begin{tabular}{|p{2.5cm}|p{6.0cm}|p{5.1cm}|}
+\hline
+\textbf{اختصار} & \textbf{عبارت کامل انگلیسی} & \textbf{معادل فارسی} \\ \hline
+\lr{MDP} & \lr{Markov Decision Process} & فرآیند تصمیم‌گیری مارکوف \\ \hline
+\lr{POMDP} & \lr{Partially Observable Markov Decision Process} & فرآیند تصمیم‌گیری مارکوف بخشاً مشاهده‌پذیر \\ \hline
+\lr{PBRS} & \lr{Potential-Based Reward Shaping} & شکل‌دهی پاداش مبتنی بر پتانسیل \\ \hline
+\lr{QVR} & \lr{Q-Value Reshaping} & شکل‌دهی مقدار کیو \\ \hline
+\lr{QoS} & \lr{Quality of Service} & کیفیت خدمات \\ \hline
+\lr{KPI} & \lr{Key Performance Indicator} & شاخص کلیدی عملکرد \\ \hline
+\lr{IoT} & \lr{Internet of Things} & اینترنت اشیاء \\ \hline
+\lr{WSN} & \lr{Wireless Sensor Network} & شبکه حسگر بی‌سیم \\ \hline
+\lr{SNR} & \lr{Signal-to-Noise Ratio} & نسبت سیگنال به نویز \\ \hline
+\lr{TT} & \lr{Threshold Goal} & هدف آستانه‌ای مطلق \\ \hline
+\lr{TTS} & \lr{Threshold-based Transition System} & سیستم انتقال مبتنی بر آستانه \\ \hline
+\end{tabular}
+
 \newpage
 
 
@@ -807,7 +868,7 @@ $$\text{Latency}(a) < \theta_L$$
 
 \subsection{محیط انطباق آفلاین (\lr{Offline Replay Adapter})}
 
-به منظور غلبه بر محدودیت‌های پایداری اتصالات شبکه و داکر دسکتاپ در فاز آموزش، یک محیط انطباق آفلاین تحت عنوان \lr{OfflineDARTSimEnv} طراحی گردید. این آداپتور، تعامل بلادرنگ با شبیه‌ساز را با یک ساختار جستجوی هوشمند تراکنش‌های از پیش‌ثبت‌شده (\lr{Offline Collected Data}) جایگزین می‌کند. بر این اساس، بانک داده‌ای شامل ۵۰,۰۰۰ انتقال حالت جمع‌آوری‌شده از مأموریت‌های واقعی پهپاد در سناریوی پایه (\lr{Baseline}) لود شده و تراکنش‌های بعدی به صورت بازپخش ساختاریافته‌ی همان مسیرهای ثبت‌شده شبیه‌سازی می‌شوند. این رویکرد آفلاین منجر به تضمین کامل پایداری، سرعت بی‌سابقه فرآیند همگرایی یادگیری و تکرارپذیری مطلق آزمایش‌ها می‌گردد.
+به منظور غلبه بر محدودیت‌های پایداری اتصالات شبکه و داکر دسکتاپ در فاز آموزش، یک محیط انطباق آفلاین تحت عنوان \lr{OfflineDARTSimEnv} طراحی گردید. این آداپتور، تعامل بلادرنگ با شبیه‌ساز را با یک ساختار جستجوی هوشمند تراکنش‌های از پیش‌ثبت‌شده (\lr{Offline Collected Data}) جایگزین می‌کند. بر این اساس، بانک داده‌ای شامل ۵۰۰۰۰ انتقال حالت جمع‌آوری‌شده از مأموریت‌های واقعی پهپاد در سناریوی پایه (\lr{Baseline}) لود شده و تراکنش‌های بعدی به صورت بازپخش ساختاریافته‌ی همان مسیرهای ثبت‌شده شبیه‌سازی می‌شوند. این رویکرد آفلاین منجر به تضمین کامل پایداری، سرعت بی‌سابقه فرآیند همگرایی یادگیری و تکرارپذیری مطلق آزمایش‌ها می‌گردد.
 
 \subsection{طیف دشواری محیط و فضای طراحی سناریوها}
 \label{subsec:dartsim_scenarios}
