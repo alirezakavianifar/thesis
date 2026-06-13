@@ -65,3 +65,6 @@ tmp.txt
 push_error.txt
 __large_files.txt
 __tracked_files.txt
+
+# Compiled PDFs directory for individual chapters
+compiled_pdfs/
