@@ -195,3 +195,10 @@
    \sloppy
    \sfcode`\.=1000\relax}}
 \makeatother
+
+% Standalone configuration to support individual chapter compilation
+\ifdefined\ifstandalone
+\else
+  \newif\ifstandalone
+  \standalonetrue
+\fi

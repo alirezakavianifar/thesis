@@ -294,7 +294,7 @@ $$\nabla_\theta \mathbb{E} \left[ \left( r_t + \gamma \max_{a'} Q(s_{t+1}, a'; \
 
 
 \paragraph{فرمول‌بندی و عملکرد ریاضی مکانیزم شکل‌دهی تصادفی:}
-برای خروج از این تله ریاضی، در هر مینی‌بچ آموزش، به ازای هر تجربه $i$ با پاداش اولیه صفر ($r_i = 0$)، \lr{RS-DRL} با احتمال $\rho$ پاداش آن را به صورت خوش‌بینانه برابر با $1$ قرار می‌دهد. این فرآیند جایگزینی که در شکل \ref{fig:reward-shaping} ترسیم شده است، بر اساس رابطه زیر عمل می‌کند:
+برای خروج از این تله ریاضی، در هر مینی‌بچ آموزش، به ازای هر تجربه $i$ با پاداش اولیه صفر ($r_i = 0$)، \lr{RS-DRL} با احتمال $\rho$ پاداش آن را به صورت خوش‌بینانه برابر با $1$ قرار می‌دهد. این فرآیند جایگزینی که در شکل \ref{fig:reward-shaping-detail} ترسیم شده است، بر اساس رابطه زیر عمل می‌کند:
 \begin{equation}
 \tilde{r}_i = \begin{cases} 
 1 & \text{if } r_i = 0 \text{ and } \text{rand}(0,1) < \rho \\
@@ -311,7 +311,7 @@ $$y_i = \tilde{r}_i + \gamma \max_{a'} Q(s'_i, a'; \theta')$$
   \centering
   \includegraphics[width=0.85\textwidth]{figures/reward-shaping.png}
   \caption{منطق عملیاتی مکانیزم شکل‌دهی تصادفی پاداش. این نمودار فرآیند جایگزینی خوش‌بینانه پاداش‌های صفر با مقدار ۱ را بر اساس فاکتور $\rho$ نشان می‌دهد (برچسب‌گذاری مجدد خوش‌بینانه، نه روش‌های مبتنی بر پتانسیل).}
-  \label{fig:reward-shaping}
+  \label{fig:reward-shaping-detail}
 \end{figure}
 
 \paragraph{تحلیل حساسیت و پیش‌ارزیابی اولیه فاکتور شکل‌دهی $\rho$:}
@@ -535,6 +535,8 @@ $$N_{sim} \geq \frac{\ln(2/0.05)}{2(0.02)^2} = \frac{3.6888}{0.0008} \approx 461
 % ==================== chapters/chapter5.tex ====================
 
 
+\ifstandalone
 \bibliographystyle{ieeetr-fa}
 \bibliography{References,MyReferences}
+\fi
 \end{document}

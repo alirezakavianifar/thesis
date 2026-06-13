@@ -71,3 +71,6 @@ compiled_pdfs/
 
 # Compiled Word documents for individual chapters
 compiled_docx/
+
+# Test compile directory
+test_compile/
