@@ -111,7 +111,10 @@
 % دستوری برای تغییر نام کلمه «اثبات» به «برهان»
 \renewcommand\proofname{\textbf{برهان}}
 % دستوری برای تغییر نام کلمه «کتاب‌نامه» به «مراجع»
-\renewcommand{\bibname}{مراجع}
+\AtBeginDocument{%
+  \renewcommand{\bibname}{مراجع}%
+  \ifx\settocbibname\undefined\else\settocbibname{مراجع}\fi
+}
 % دستوری برای تعریف واژه‌نامه انگلیسی به فارسی
 \newcommand\persiangloss[2]{#1\dotfill\lr{#2}\\}
 % دستوری برای تعریف واژه‌نامه فارسی به انگلیسی 
@@ -351,3 +354,11 @@
   \newif\ifstandalone
   \standalonetrue
 \fi
+
+% Robust macros for RS-DRL+ and architectural patterns
+\newcommand{\rsdrlplus}{\lr{RS-DRL\textsuperscript{+}}}
+\newcommand{\sgos}{\lr{SG-OS}}
+\newcommand{\caepv}{\lr{CA-EPV}}
+\newcommand{\pgalr}{\lr{PG-ALR}}
+\newcommand{\mursdrl}{\lr{MU-RS-DRL}}
+\newcommand{\cmrsdrl}{\lr{CM-RS-DRL}}
