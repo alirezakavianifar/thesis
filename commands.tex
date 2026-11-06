@@ -160,7 +160,43 @@
 %\renewcommand{\baselinestretch}{\MATtextbaseline}
 \doublespacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% دستوراتی برای اضافه کردن کلمه «فصل» در فهرست مطالب
+% دستوراتی برای اضافه کردن کلمه «فصل» و شماره ترتیبی حروفی در فهرست مطالب
+
+\makeatletter
+\newcommand{\persianchapnum}[1]{%
+  \edef\@arg{#1}%
+  \def\@one{1}\def\@pone{۱}%
+  \def\@two{2}\def\@ptwo{۲}%
+  \def\@three{3}\def\@pthree{۳}%
+  \def\@four{4}\def\@pfour{۴}%
+  \def\@five{5}\def\@pfive{۵}%
+  \def\@six{6}\def\@psix{۶}%
+  \def\@seven{7}\def\@pseven{۷}%
+  \def\@eight{8}\def\@peight{۸}%
+  \def\@nine{9}\def\@pnine{۹}%
+  \def\@ten{10}\def\@pten{۱۰}%
+  \ifx\@arg\@one اول%
+  \else\ifx\@arg\@pone اول%
+  \else\ifx\@arg\@two دوم%
+  \else\ifx\@arg\@ptwo دوم%
+  \else\ifx\@arg\@three سوم%
+  \else\ifx\@arg\@pthree سوم%
+  \else\ifx\@arg\@four چهارم%
+  \else\ifx\@arg\@pfour چهارم%
+  \else\ifx\@arg\@five پنجم%
+  \else\ifx\@arg\@pfive پنجم%
+  \else\ifx\@arg\@six ششم%
+  \else\ifx\@arg\@psix ششم%
+  \else\ifx\@arg\@seven هفتم%
+  \else\ifx\@arg\@pseven هفتم%
+  \else\ifx\@arg\@eight هشتم%
+  \else\ifx\@arg\@peight هشتم%
+  \else\ifx\@arg\@nine نهم%
+  \else\ifx\@arg\@pnine نهم%
+  \else\ifx\@arg\@ten دهم%
+  \else\ifx\@arg\@pten دهم%
+  \else #1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+}
 
 \newlength\mylenprt
 \newlength\mylenchp
@@ -171,14 +207,67 @@
 \renewcommand\cftchapaftersnum{:}
 
 \settowidth\mylenprt{\cftpartfont\cftpartpresnum\cftpartaftersnum}
-\settowidth\mylenchp{\cftchapfont\cftchappresnum\cftchapaftersnum}
+% تنظیم پهنای کادر شماره متناسب با عریض‌ترین عنوان فصل («فصل چهارم: »)
+\settowidth\mylenchp{\cftchapfont\chaptername~چهارم:\space}
 \settowidth\mylenapp{\cftchapfont\appendixname~\cftchapaftersnum}
 \addtolength\mylenprt{\cftpartnumwidth}
-\addtolength\mylenchp{\cftchapnumwidth}
+\addtolength\mylenchp{0.5em}
 \addtolength\mylenapp{\cftchapnumwidth}
 
 \setlength\cftpartnumwidth{\mylenprt}
-\setlength\cftchapnumwidth{\mylenchp}	
+\setlength\cftchapnumwidth{\mylenchp}
+
+% اعمال تبدیل شماره فصل به حروف در فهرست مطالب با رعایت چیدمان راست‌به‌چپ (RTL)
+\renewcommand*{\l@chapter}[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip \cftbeforechapskip
+    {\if@RTL\rightskip\else\leftskip\fi \cftchapindent\relax
+     \if@RTL\leftskip\else\rightskip\fi \@tocrmarg
+     \parfillskip -\if@RTL\leftskip\else\rightskip\fi
+     \parindent \cftchapindent\relax\@afterindenttrue
+     \interlinepenalty\@M
+     \leavevmode
+     \@tempdima \cftchapnumwidth\relax
+     \let\@cftbsnum \cftchappresnum
+     \let\@cftasnum \cftchapaftersnum
+     \let\@cftasnumb \cftchapaftersnumb
+     \advance\if@RTL\rightskip\else\leftskip\fi \@tempdima \null\nobreak\hskip -\if@RTL\rightskip\else\leftskip\fi
+     {\cftchapfont \def\numberline##1{\hb@xt@\@tempdima{\@cftbsnum \persianchapnum{##1}\@cftasnum\hfil}\@cftasnumb}#1}\nobreak
+     \cftchapfillnum{#2}}%
+  \fi}
+
+% فعال‌سازی نقطه‌چین برای فصول در فهرست مطالب هماهنگ با بخش‌ها
+\renewcommand{\cftchapleader}{\cftdotfill{\cftsecdotsep}}
+
+% اصلاح نمایش پیوست‌ها در فهرست مطالب (تبدیل «فصل آ» به «پیوست آ»)
+\g@addto@macro\appendix{%
+  \addtocontents{toc}{%
+    \protect\renewcommand{\protect\cftchappresnum}{\protect\appendixname~}%
+  }%
+}
+
+% اصلاح سرتیتر شروع فصول در متن اصلی به صورت حروف فارسی
+\def\@makechapterhead#1{%
+  \vspace*{50\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \huge\bfseries \@chapapp\space 
+        \ifx\@chapapp\appendixname
+          \thechapter
+        \else
+          \persianchapnum{\the\c@chapter}
+        \fi
+        \par\nobreak
+        \vskip 20\p@
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries #1\par\nobreak
+    \vskip 40\p@
+  }}
+\makeatother
 
 \makeatletter
 {\def\thebibliography#1{\chapter*{\refname\@mkboth
