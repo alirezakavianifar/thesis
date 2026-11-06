@@ -163,6 +163,33 @@
 % دستوراتی برای اضافه کردن کلمه «فصل» و شماره ترتیبی حروفی در فهرست مطالب
 
 \makeatletter
+% سفارشی‌سازی عدد ۱ در سیستم ابجد برای نمایش کلمه «الف» به جای «آ»
+\def\@abjad#1{%
+\ifnum#1=1 الف%
+\else
+  \ifnum#1>1999 \xpg@warning{Illegal value (#1) for abjad numeral} {#1}%
+  \else
+    \ifnum#1<\z@\space\xpg@warning{Illegal value (#1) for abjad numeral}%
+    \else
+      \ifnum#1<10\expandafter\abj@num@i\number#1%
+      \else
+        \ifnum#1<100\expandafter\abj@num@ii\number#1%
+        \else
+          \ifnum#1<\@m\expandafter\abj@num@iii\number#1%
+          \else
+            \ifnum#1<\@M\expandafter\abj@num@iv\number#1%
+            \fi
+          \fi
+        \fi
+      \fi
+    \fi
+  \fi
+\fi}
+\def\abj@num@i#1{%
+  \ifcase#1\or ا\or ب\or ج\or د%
+           \or ه\or و\or ز\or ح\or ط\fi
+  \ifnum#1=\z@\abjad@zero\fi}
+
 \newcommand{\persianchapnum}[1]{%
   \edef\@arg{#1}%
   \def\@one{1}\def\@pone{۱}%
