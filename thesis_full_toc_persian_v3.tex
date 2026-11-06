@@ -57,13 +57,11 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\thepage}
-\fancyhead[R]{\small\leftmark}
-\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 % حذف حالت ایتالیک/کج که باعث به هم ریختگی فونت فارسی در سربرگ می‌شود
 \let\oldheadrule\headrule
 \renewcommand{\headrule}{\oldheadrule}
-\fancyhead[R]{\small\nouppercase{\leftmark}}
 
 
 

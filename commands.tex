@@ -274,10 +274,37 @@
 \renewcommand{\cftchapleader}{\cftdotfill{\cftsecdotsep}}
 
 % اصلاح نمایش پیوست‌ها در فهرست مطالب (تبدیل «فصل آ» به «پیوست آ»)
+\newif\ifinappendix \inappendixfalse
 \g@addto@macro\appendix{%
+  \inappendixtrue
   \addtocontents{toc}{%
     \protect\renewcommand{\protect\cftchappresnum}{\protect\appendixname~}%
   }%
+}
+
+% اصلاح سربرگ بالای صفحات (Header) با نام ترتیبی حروفی فصول
+\renewcommand{\chaptermark}[1]{%
+  \ifinappendix
+    \markboth{\appendixname\space\thechapter:\space#1}{}%
+  \else
+    \begingroup
+      \ifcase\c@chapter
+        \def\@tempchap{}%
+        \or\def\@tempchap{اول}%
+        \or\def\@tempchap{دوم}%
+        \or\def\@tempchap{سوم}%
+        \or\def\@tempchap{چهارم}%
+        \or\def\@tempchap{پنجم}%
+        \or\def\@tempchap{ششم}%
+        \or\def\@tempchap{هفتم}%
+        \or\def\@tempchap{هشتم}%
+        \or\def\@tempchap{نهم}%
+        \or\def\@tempchap{دهم}%
+        \else\def\@tempchap{\thechapter}%
+      \fi
+      \expandafter\endgroup
+      \expandafter\markboth\expandafter{\expandafter\chaptername\expandafter\space\@tempchap:\space#1}{}%
+  \fi
 }
 
 % اصلاح سرتیتر شروع فصول در متن اصلی به صورت حروف فارسی
