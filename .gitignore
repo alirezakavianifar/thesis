@@ -58,6 +58,7 @@ desktop.ini
 .idea/
 
 # Temporary / scratch files
+scratch/
 *.tmp
 *.bak
 *.backup
