@@ -51,19 +51,19 @@ If a push fails because a large file exceeds GitHub's limits, it is trapped in t
 
 ### 2.2 Complete Ban on AI Hype Words & Promotional Adjectives
 Scholarly authority stems from mathematical proof and empirical benchmarks, never from promotional rhetoric.
-- ❌ **Strictly Banned Hype Words**:
-  - `نوین` (novel / modern)
+- ❌ **Strictly Banned Hype Words (100% Purged Across Dissertation)**:
+  - `نوین` (novel / modern) $\rightarrow$ Use `پیشنهادی` (proposed), `مدرن` (modern), `پیشرفته` (advanced), or `جدید` (new).
   - `انقلابی` (revolutionary)
   - `شگفت‌انگیز` (astonishing)
   - `دگرگون‌ساز` (transformative)
-  - `چشمگیر` (dramatic / impressive)
-  - `فوق‌العاده` (extraordinary)
+  - `چشمگیر` (dramatic / impressive) $\rightarrow$ Use `به طور قابل‌ملاحظه‌ای`, `شدید`, or report exact quantitative deltas ($23.22\%$).
+  - `فوق‌العاده` (extraordinary) $\rightarrow$ Use `با رواداری محدود`, `بسیار باریک`, or state the quantitative bound.
 - ✔️ **Approved Scholarly Equivalents**:
   - `پیشنهادی` (proposed)
   - `توسعه‌یافته` (developed)
   - `سنجیده‌شده` (evaluated)
   - `اثبات‌شده` (proven)
-  - `موثر` (effective)
+  - `مؤثر / اثرگذار` (effective)
 
 ### 2.3 Elimination of the Casual Prefix «فوق»
 - ❌ **Banned**: Informal intensifiers such as `فوق‌سریع` or `فوق‌العاده`.
@@ -104,13 +104,25 @@ The following table defines the mandatory, standardized technical vocabulary acr
 | **Thread** | **`ریسمان`** | ❌ `نخ` | `ریسمان کنترلی` for execution threads. |
 | **Process / Workflow** | **`فرآیند`** | ❌ `پردازه` (unless OS process) | Used for dynamic workflows, MAPE-K phases, MDP processes (`فرآیند تصمیم‌گیری مارکوف`). |
 | **Swimlanes** | **`خطوط شناوری`** | ❌ `خطوط شناور` | UML Activity Diagram swimlanes in Figure 4.2. |
-| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers | **ONLY** permitted in formal technical terms: `مأموریت‌بحرانی`, `مسیر بحرانی`, `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`) or `چالش‌های بحرانی` (use `چالش‌های بنیادین`). |
+| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers<br>❌ Ambiguous `مسیر بحرانی` | **ONLY** permitted in formal technical terms: `مأموریت‌بحرانی`, `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`), `چالش‌های بحرانی` (use `چالش‌های بنیادین`), `شرایط بحرانی` (use `شرایط تنش شدید محیطی`), or `تنش بحرانی` (use `فراتر رفتن تنش از آستانه بحرانی`). For systems execution paths, avoid `مسیر بحرانی` (which confuses readers with crisis/emergency mode) and use **`مسیر مستقیم کنترل آنلاین / مسیر زمان اجرای کنترل (\lr{Critical Path})`**. |
+| **Speed & Latency** | **`بلادرنگ / کم‌تأخیر / زیر میلی‌ثانیه‌ای / مسیر سریع (Fast Path)`** | ❌ `سریع` (as casual intensifier)<br>❌ `فوق‌سریع` | Never use `سریع` casually for latency (e.g. ❌ `تصمیم‌گیری سریع` $\rightarrow$ `پاسخ‌گویی در مهلت‌های زمانی سخت`, ❌ `استنتاج سریع` $\rightarrow$ `استنتاج نامی زیر میلی‌ثانیه‌ای`, ❌ `مدل‌های سریع` $\rightarrow$ `مدل‌های جانشین تحلیلی و سبک‌وزن`, ❌ `جستجوی سریع` $\rightarrow$ `جستجوی تقلیلی روی زیرفضای حساسیت`, ❌ `استهلاک سریع هزینه` $\rightarrow$ `تحلیل بازه استهلاک آن`). Always state the quantitative metric directly (`زیر میلی‌ثانیه‌ای`, `$0.485\,\text{ms}$`) or use formal engineering terms (`بلادرنگ`, `کم‌تأخیر`, `مسیر سریع`). `سریع` is strictly permitted ONLY in: (1) formal pattern names (`«مسیر سریع» (\lr{Fast Path})`), (2) empirical speedup ratios (`۲۷۰ برابر سریع‌تر`), (3) learning convergence dynamics (`همگرایی سریع‌تر / تسریع همگرایی`), and (4) physical avionics dynamics (`تخلیه سریع باتری`). |
+| **Immediate Reward** | **`پاداش آنی`** | ❌ `پاداش لحظه‌ای` (unless contrasting with future cumulative value) | Standard MDP mathematical translation for $R(s, a, s')$. |
 | **Vital / Crucial** | **`کلیدی / بنیادین / تعیین‌کننده`** | ❌ `حیاتی` | `حیاتی` is completely banned due to journalistic exaggeration. |
 | **Baseline Method** | **`روش پایه‌ای RS-DRL`** | ❌ `متد`, `الگوریتم کلی` | Foundational single-tier algorithmic formulation. |
 | **Generalized Architecture** | **`معماری تعمیم‌یافته RS-DRL+`**| ❌ `روش تعمیم‌یافته` | Two-tier contract-anytime software architecture. |
 | **Holistic Framework** | **`چارچوب`** | ❌ `فریم‌ورک` | The overarching theoretical and engineering construct. |
 | **Architectural Patterns** | **`الگوهای معماری SG-OS و CAE-PV`** | ❌ `روش‌های SG-OS` | Software engineering design patterns. |
 | **Distributed Systems** | **`شبکه‌های حسگر توزیع‌شده`** | ❌ Generic `توزیع‌شده` | Use precisely in networking context; avoid confusing with OS distributed systems. |
+| **Batch & Mini-batch** | **`دسته / دسته‌های کوچک داده (\lr{Mini-batches}) / اندازه دسته (\lr{Batch Size}) / دسته موازی تانسوری`** | ❌ `مینی‌بچ`<br>❌ `بچ` | Standardized across TMU, Sharif, and UT computing documents. Colloquial transliterations (`مینی‌بچ` / `بچ`) are 100% purged. |
+| **Static** | **`ایستا`** | ❌ `استاتیک` | Standard Persian computer systems terminology (`سپرهای ایمنی ایستا`, `اهداف آفلاین ایستا`). |
+| **Mechanism** | **`سازوکار`** | ❌ `مکانیسم` | Official Academy term standardized 100% across the thesis (`سازوکارهای شکل‌دهی پاداش`). |
+| **Platform** | **`بستر / سکو`** | ❌ `پلتفرم` | Always use `بستر پیاده‌سازی` or `بستر آزمایشگاهی/محک`. |
+| **Mathematical Factor / Multiplier** | **`ضریب`** | ❌ `فاکتور` | Mathematical multipliers ($\gamma, \rho, \beta, \sigma$) must strictly be `ضریب` (`ضریب تنزیل زمانی`, `ضریب شکل‌دهی پاداش`, `ضریب مقیاس`). For environmental conditions, use `عوامل محیطی / متغیرهای کنترلی`. |
+| **Replay Buffer** | **`بافر بازپخش`** | ❌ `میانگیر بازپخش` | Established standard term in Iranian AI & DRL departments; `میانگیر` is pedantic and unused in RL. |
+| **Candidate Actions / Sets** | **`کاندیداها / گزینه‌های کاندید / مجموعه کاندید`** | ❌ `گزینه‌های نامزد` | In Persian optimization and AI literature, `کاندید` is the universal technical term; `نامزد` connotes marriage or political elections. |
+| **Offline / Online** | **`آفلاین / آنلاین`** | ❌ `برون‌خط / برخط` | Standard in computer systems & ML dissertations; avoids confusion with network connectivity in CPS. |
+| **Operational Logs** | **`لاگ‌های عملیاتی / لاگ‌ها`** | ❌ Artificial calques | Universal software engineering and process mining terminology. |
+| **Formal Verification / Validation** | **`اعتبارسنجی صوری`** | ❌ Inconsistent mixing with `راستی‌آزمایی صوری` | Standardized as `اعتبارسنجی صوری` for formal verification with UPPAAL-SMC and mathematical feedback signals ($r_{smc}$). |
 
 ---
 
@@ -185,7 +197,8 @@ python scratch/verify_log.py thesis_full_toc_persian_v3.log
 The build is acceptable ONLY if:
 - `Undefined references: 0`
 - `Undefined citations: 0`
-- `Overfull \hbox > 10pt: 0` (with max overfull strictly bounded).
+- `Overfull \hbox > 10pt: 0` (with max overfull strictly bounded under 10pt; current verified baseline: $8.78\,\text{pt}$).
+- `Total PDF pages: 154` (strict layout preservation without accidental page drift).
 
 ### 6.5 Strict Ban on Wrapping Cross-References in `\lr{...}`
 - **NEVER** wrap cross-references in `\lr{...}` (e.g. ❌ `\lr{\ref{fig:...}}`, ❌ `\lr{\ref{tab:...}}`).
