@@ -82,6 +82,7 @@ Strip away empty transitions and conversational throat-clearing:
 ### 2.5 Elimination of Redundant Adjectives & Pseudo-Philosophical Calques
 - ❌ Avoid adding `استاندارد` casually (e.g. `یادگیری تقویتی عمیق استاندارد` $\rightarrow$ `یادگیری تقویتی عمیق`) unless contrasting directly with a modified variant.
 - ❌ Avoid opaque, pseudo-philosophical calques such as `چرایی ناکارآمدی رویکردهای یکنواخت پیشین` (use `سنتی` or `تک‌سطحی`).
+- ❌ Avoid artificial rhetorical qualifiers such as `موازنه عمیق` or `پیچیدگی عمیق` (use precise academic terms like `برقراری موازنه` or `موازنه چندمعیاره/دقیق`).
 - ❌ Avoid awkward, unnatural translations like `تفکیک زمانی مسئولیت‌های کنترلی` or `سازماندهی فرایند یکپارچه خودوفقی برپایه خطوط شناور` (use standard software engineering expressions).
 
 ---
@@ -104,7 +105,7 @@ The following table defines the mandatory, standardized technical vocabulary acr
 | **Thread** | **`ریسمان`** | ❌ `نخ` | `ریسمان کنترلی` for execution threads. |
 | **Process / Workflow** | **`فرآیند`** | ❌ `پردازه` (unless OS process) | Used for dynamic workflows, MAPE-K phases, MDP processes (`فرآیند تصمیم‌گیری مارکوف`). |
 | **Swimlanes** | **`خطوط شناوری`** | ❌ `خطوط شناور` | UML Activity Diagram swimlanes in Figure 4.2. |
-| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers<br>❌ Ambiguous `مسیر بحرانی` | **ONLY** permitted in formal technical terms: `مأموریت‌بحرانی`, `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`), `چالش‌های بحرانی` (use `چالش‌های بنیادین`), `شرایط بحرانی` (use `شرایط تنش شدید محیطی`), or `تنش بحرانی` (use `فراتر رفتن تنش از آستانه بحرانی`). For systems execution paths, avoid `مسیر بحرانی` (which confuses readers with crisis/emergency mode) and use **`مسیر مستقیم کنترل آنلاین / مسیر زمان اجرای کنترل (\lr{Critical Path})`**. |
+| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers<br>❌ Ambiguous `مسیر بحرانی` | **ONLY** permitted in formal technical terms: `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. For system classification, prefer **`سیستم‌های فیزیکی-سایبری حساس و بلادرنگ`** or **`بلادرنگ`** over the clunky calque `مأموریت‌بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`), `چالش‌های بحرانی` (use `چالش‌های بنیادین`), `شرایط بحرانی` (use `شرایط تنش شدید محیطی`), or `تنش بحرانی` (use `فراتر رفتن تنش از آستانه بحرانی`). For systems execution paths, avoid `مسیر بحرانی` (which confuses readers with crisis/emergency mode) and use **`مسیر مستقیم کنترل آنلاین / مسیر زمان اجرای کنترل (\lr{Critical Path})`**. |
 | **Speed & Latency** | **`بلادرنگ / کم‌تأخیر / زیر میلی‌ثانیه‌ای / مسیر سریع (Fast Path)`** | ❌ `سریع` (as casual intensifier)<br>❌ `فوق‌سریع` | Never use `سریع` casually for latency (e.g. ❌ `تصمیم‌گیری سریع` $\rightarrow$ `پاسخ‌گویی در مهلت‌های زمانی سخت`, ❌ `استنتاج سریع` $\rightarrow$ `استنتاج نامی زیر میلی‌ثانیه‌ای`, ❌ `مدل‌های سریع` $\rightarrow$ `مدل‌های جانشین تحلیلی و سبک‌وزن`, ❌ `جستجوی سریع` $\rightarrow$ `جستجوی تقلیلی روی زیرفضای حساسیت`, ❌ `استهلاک سریع هزینه` $\rightarrow$ `تحلیل بازه استهلاک آن`). Always state the quantitative metric directly (`زیر میلی‌ثانیه‌ای`, `$0.485\,\text{ms}$`) or use formal engineering terms (`بلادرنگ`, `کم‌تأخیر`, `مسیر سریع`). `سریع` is strictly permitted ONLY in: (1) formal pattern names (`«مسیر سریع» (\lr{Fast Path})`), (2) empirical speedup ratios (`۲۷۰ برابر سریع‌تر`), (3) learning convergence dynamics (`همگرایی سریع‌تر / تسریع همگرایی`), and (4) physical avionics dynamics (`تخلیه سریع باتری`). |
 | **Immediate Reward** | **`پاداش آنی`** | ❌ `پاداش لحظه‌ای` (unless contrasting with future cumulative value) | Standard MDP mathematical translation for $R(s, a, s')$. |
 | **Vital / Crucial** | **`کلیدی / بنیادین / تعیین‌کننده`** | ❌ `حیاتی` | `حیاتی` is completely banned due to journalistic exaggeration. |
@@ -126,30 +127,215 @@ The following table defines the mandatory, standardized technical vocabulary acr
 
 ---
 
-## 4. Architectural Phrasing, Theoretical Precision & Chapter Scopes
+## 4. Architectural Scopes & The True Nature of Dissertation Chapters
 
-### 4.1 Chapter 4 Domain-Agnosticism Rule
-- Chapter 4 introduces the proposed method, mathematical formulations, and software architecture.
-- **It MUST remain strictly generic and domain-agnostic.**
-- Specific empirical testbed details (e.g. DeltaIoT node counts, DARTSim flight aerodynamics, UAV radar radii, battery voltages) belong exclusively in Chapter 2 (System Modeling) and Chapter 5 (Empirical Evaluation), NEVER in Chapter 4!
+This section establishes the authoritative, permanent specification for the epistemological identity, core scientific responsibilities, strict negative boundaries, and inter-chapter interfaces across all chapters of the doctoral dissertation. All future authoring, automated code generation, and editing across the dissertation MUST strictly respect these boundaries to prevent conceptual leakage, methodological pollution, and structural drift.
 
-### 4.2 Universal Replay Buffer Storage ($r=0$) Rigor
-- Transition storage in the experience replay buffer $\mathcal{D}$ is universal: **both successful transitions ($r=1$) and failed transitions ($r=0$) are stored**.
-- Storing failed transitions is mathematically indispensable for stochastic reward shaping ($\rho$) and local optima escape (Equation 4.6).
-- Never state or imply that unverified or failed transitions are discarded.
+### 4.1 The Epistemological Progression & Inter-Chapter Cohesion Architecture
 
-### 4.3 No Inlined Code Function Names in Flowing Prose
-- Never insert raw code-level function signatures with underscores (e.g. `$SMC\_Verify(s, a)$`) into flowing Persian prose.
-- In prose, refer to the formal mathematical signal: `ادغام سیگنال اعتبارسنجی صوری ($r_{smc}$) مبتنی بر ابزار...`.
-- Reserve procedural calls strictly for pseudocode algorithm environments: `\STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$`.
+The dissertation follows a strict, coherent progression modeled on high-impact European and North American software engineering doctoral dissertations (e.g., Dr. Omid Gheibi's KU Leuven doctoral model). The logical chain progresses deterministically from problem framing to formal domain truth, critical gap synthesis, domain-agnostic architectural solution, empirical benchmark proof, and reflective scholarly synthesis:
 
-### 4.4 Section 1.8 Scholarly Roadmap Alignment
-- Section 1.8 (`مروری بر فصول رساله`) follows Dr. Omid Gheibi's KU Leuven PhD dissertation structure (*Applying Machine Learning in Self-Adaptive Systems*).
-- It integrates publication-linked roadmap narratives and **Table 1.1** (*Master Alignment Matrix*), mapping all chapters to sub-problems, innovations, research questions, and published papers.
+```
+[Chapter 1: Research Contract & Trilemma]
+        │
+        ├──► [Chapter 2: Formal Physics & Testbeds] ──┐
+        │                                              │ (Models & Specs)
+        ├──► [Chapter 3: Critical Gap Analysis]        │
+        │               │                              ▼
+        │               └───────────────────► [Chapter 4: Generic Architecture & Proofs]
+        │                                              │
+        │                                              ▼
+        └───────────────────────────────────► [Chapter 5: Empirical Proof & Statistics]
+                                                       │
+                                                       ▼
+                                              [Chapter 6: Synthesis & Validity Threats]
+                                                       │
+                                              [Appendices: Reproducibility Artifacts]
+```
 
-### 4.5 PhD Dissertation Abstract Standard
-- The abstract must follow the standard single-paragraph PhD dissertation style.
-- It must be dense, cohesive, and free of bullet points, concisely synthesizing: (1) core problem & planning trilemma, (2) proposed two-tier architecture, (3) formal model checking integration, (4) dual empirical testbeds (DeltaIoT & DARTSim), and (5) quantitative impact metrics.
+| Chapter | Title & Scope | True Scientific Nature (ماهیت واقعی) | Mandatory Input Sources | Core Scientific Deliverable / Output | Downstream Dependencies |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **فصل ۱** | کلیات و تبیین مسئله | **Research Contract & Problem Formulation**: Establishes the "Why" and "What", formalizes the Planning Trilemma, and specifies the dissertation's commitments. | Contextual motivation, real-world CPS challenges. | Formulated Sub-problems 1--3, Research Questions \lr{RQ1}--\lr{RQ6}, 6 Core Innovations, Alignment Matrix. | Dictates the scope of all subsequent chapters (Ch 2--6). |
+| **فصل ۲** | مبانی نظری و مدل‌سازی سیستم | **Ground Truth & Mathematical Physics**: Establishes formal mathematical foundations and models the physical testbed environments before proposing any solution. | Mathematical systems theory, physical testbed specifications (DeltaIoT, DARTSim). | Formal MDP models, WSN topology equations, 6-DOF flight kinematics, radar models, NP-hardness proof. | Feeds environment models and constraints into Ch 4 and Ch 5. |
+| **فصل ۳** | پیشینه پژوهش و کارهای مرتبط | **Critical Synthesis & Gap Justification**: Systematically investigates existing state-of-the-art across 5 dimensions to mathematically and architecturally prove research gaps. | Prior published literature, baseline frameworks (ActivFORMS, PLA, DRL, Shields). | 5-dimensional critical taxonomy, Comparative Matrix (Table 3.1), Tripartite Research Gap. | Scientifically justifies the imperative for Ch 4's contributions. |
+| **فصل ۴** | روش پیشنهادی و معماری دوسطحی | **Generic Methodology & Software Architecture**: The intellectual core. Pure domain-agnostic mathematical formulations, architectural patterns, and formal proofs. | Research contract (Ch 1), theoretical foundations (Ch 2), identified gaps (Ch 3). | Baseline \lr{RS-DRL}, \rsdrlplus, Patterns \sgos & \caepv (\pgalr), Formal Proofs (Proposition 1, Theorem 2). | Provides the algorithms, patterns, and mechanisms evaluated in Ch 5. |
+| **فصل ۵** | ارزیابی تجربی و تحلیل نتایج | **Empirical Proof & Benchmark Validation**: Concrete experimental execution of Ch 4 algorithms on Ch 2 testbeds, benchmarking against all baselines with statistical rigor. | Architecture & algorithms (Ch 4), testbeds & simulation traces (Ch 2). | DeltaIoT benchmarks, 2,000 DARTSim flights, ablation studies, non-parametric statistical tests (\lr{RQ1}--\lr{RQ6}). | Provides the empirical evidence evaluated and reflected upon in Ch 6. |
+| **فصل ۶** | بحث، نتیجه‌گیری و کارهای آتی | **Scholarly Synthesis & Critical Reflection**: Mechanistic theorization, software engineering trade-offs, critical threats to validity, and future horizons. | Empirical results (Ch 5), architectural designs (Ch 4), problem contract (Ch 1). | Mechanistic insights ("Why it works"), Pareto trade-offs, 4-dimensional validity analysis, 3 future research horizons. | Concludes the dissertation and frames future doctoral/postdoctoral inquiries. |
+| **پیوست‌ها** | پیوست‌ها و ضمائم | **Reproducibility & Exhaustive Evidence**: Comprehensive operational repositories for 100% independent replication. | Raw logs, extended traces, full codebase scripts. | Complete UML activity diagrams, extended algorithmic listings, parameter tables, replication packages. | Supports long-term academic reproducibility and open science. |
+
+---
+
+### 4.2 Chapter 1: کلیات و تبیین مسئله (Problem Formulation & Research Contract)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Research Contract & Problem Definition** chapter. It establishes the overarching scientific motivation, identifies the fundamental trade-offs in modern computing, and contracts the exact research promises of the PhD dissertation. It must hook both general computer scientists and expert examiners by framing the **Planning Trilemma in Self-Adaptive and Cyber-Physical Systems** (large state-action spaces vs. hard real-time latency vs. physical safety / reality gap).
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Motivation & Industrial/Physical Context*: The growing scale of autonomous systems and the failure of traditional single-tier planners.
+  2. *The Planning Trilemma*: Formal characterization of the fundamental conflict between scalability, real-time deadlines, and formal safety.
+  3. *Sub-problems Formulation*: Precise mathematical/architectural definition of Sub-problem 1 (state-action explosion), Sub-problem 2 (sparse feedback & credit assignment), and Sub-problem 3 (reality gap & hard real-time latency).
+  4. *Formal Research Questions*: Unambiguous formulation of \lr{RQ1} through \lr{RQ6}.
+  5. *Core Innovations*: Explicit delineation of the 6 foundational innovations.
+  6. *Section 1.8 Scholarly Roadmap Alignment*: Must follow Dr. Omid Gheibi's model, integrating publication-linked narratives and **Table 1.1** (*Master Alignment Matrix*) mapping all chapters to sub-problems, innovations, research questions, and published papers.
+  7. *PhD Dissertation Abstract Standard*: The abstract must follow the standard single-paragraph PhD dissertation style: dense, cohesive, free of bullet points, synthesizing the trilemma, proposed architecture, formal verification, dual testbeds, and quantitative impact metrics.
+- **Strict Negative Boundaries & Forbidden Elements**:
+  - ❌ **NO Algorithmic Implementations or Code**: Never insert detailed algorithmic pseudocodes, neural network layer configurations, or procedural execution mechanics (belongs strictly to Ch 4).
+  - ❌ **NO Mathematical Proofs**: Never include formal induction steps, convergence proofs, or complexity lemmas (belongs strictly to Ch 4).
+  - ❌ **NO Concrete Empirical Result Tables or Curves**: Never report benchmark outcome tables, learning curve plots, or statistical test results (belongs strictly to Ch 5).
+  - ❌ **NO Physical Domain Equations**: Never derive radio propagation formulas, WSN interference equations, or aerodynamic 6-DOF flight physics (belongs strictly to Ch 2).
+
+---
+
+### 4.3 Chapter 2: مبانی نظری و مدل‌سازی سیستم (Theoretical Foundations & Formal Domain Modeling)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Ground Truth & Mathematical Physics** chapter. Its exclusive purpose is to formalize the mathematical tools (MDP, DRL, formal verification, MAPE-K) AND rigorously model the physical testbed environments before any novel solution is proposed. It defines the formal ground truth of the systems being managed.
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Foundations of Self-Adaptive Systems*: Formal closed-loop autonomic control architectures, MAPE-K reference models, and dynamic adaptation mechanisms.
+  2. *Taxonomy of Uncertainty*: Mathematical and operational classification of uncertainty in self-adaptive systems.
+  3. *Sequential Decision-Making & DRL*: Formal MDP tuple $(S, A, P, R, \gamma)$, Bellman optimality equations, and Deep Q-Networks (DQN).
+  4. *Case Study 1 Modeling (DeltaIoT)*:
+     - Topological structure as a directed acyclic graph (DAG).
+     - Physical radio channel propagation, interference, signal-to-noise ratio (SNR), and packet delivery probability.
+     - Multi-hop queue dynamics, packet loss mechanisms, and energy consumption models.
+     - Formal proof of the NP-Hardness of the adaptation optimization problem.
+  5. *Case Study 2 Modeling (DARTSim)*:
+     - 6-DOF tactical UAV fleet kinematics, aerodynamics, and flight control parameters.
+     - Multi-level flight corridor tolerances ($v_1, v_2, v_3$).
+     - Sensor radar detection models, battery discharge dynamics, and mission survival definitions.
+     - Formalization of the **Reality Gap** between analytical surrogate models and real-world physical dynamics.
+     - Formalization of hard real-time control deadlines (<50ms).
+- **Strict Negative Boundaries & Forbidden Elements**:
+  - ❌ **NO Novel Contributions or Proposals**: MUST NOT introduce or propose the dissertation's novel algorithms (\lr{RS-DRL}, \rsdrlplus, \sgos, \caepv, \pgalr). These belong strictly in Ch 4!
+  - ❌ **NO Empirical Benchmark Results**: MUST NOT report experimental performance metrics, learning curves, or comparative outcomes (belongs strictly to Ch 5).
+  - ❌ **NO Literature Critiques or Gap Analysis**: MUST NOT engage in comparative literature critiques (belongs strictly to Ch 3).
+
+---
+
+### 4.4 Chapter 3: پیشینه پژوهش و کارهای مرتبط (Critical Synthesis & Literature Gap Analysis)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Critical Gap Justification** chapter. It is an analytical, critical investigation of the state-of-the-art across 5 foundational dimensions, designed to scientifically prove the existence of the research gaps and justify why the proposed paradigm is mathematically and architecturally necessary.
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Five Foundational Review Dimensions*:
+     - Dimension 1: Runtime adaptation space management (ML-based pruning, online search, heuristic methods, runtime RL).
+     - Dimension 2: Advanced reinforcement learning (exploration strategies, reward shaping, hindsight experience replay \lr{HER}).
+     - Dimension 3: Mathematical analysis of why \lr{HER} fundamentally fails in threshold-based constrained environments.
+     - Dimension 4: Formal verification at runtime (\lr{ActivFORMS}, statistical model checking, probabilistic model checking).
+     - Dimension 5: Safety shields, surrogate models, and anytime verification in cyber-physical systems.
+  2. *Failure Modes & Scientific Dilemmas*: Detailed analysis of state explosion, verification latency bottlenecks (>100ms vs. hard deadlines), reality gap collapse of static shields, and failure data imbalance in operational logs.
+  3. *Master Literature Synthesis Matrix (Table 3.1)*: Comprehensive comparative matrix evaluating dozens of seminal baselines across adaptation latency, formal guarantees, scalability, and reality gap resilience.
+  4. *Formal Tripartite Research Gap Formulation*: Rigorous synthesis establishing the exact academic niche and theoretical imperative of \lr{RS-DRL} / \rsdrlplus.
+- **Strict Negative Boundaries & Forbidden Elements**:
+  - ❌ **NO Passive Summaries**: Must never read like a textbook survey or passive annotated bibliography; every paragraph must critically evaluate limitations.
+  - ❌ **NO Proposed Algorithm Details**: MUST NOT disclose the internal algorithmic steps, neural loss equations, or formal proofs of Chapter 4.
+  - ❌ **NO Thesis Experimental Data**: MUST NOT report the thesis's empirical results.
+
+---
+
+### 4.5 Chapter 4: روش پیشنهادی و معماری دوسطحی (Generic Methodology, RS-DRL / RS-DRL+ Architecture & Formal Proofs)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Intellectual Heart & Generic Theoretical Contribution** chapter. It contains the formal algorithmic contributions, software architectural design patterns, mathematical formulations, and formal proofs of the dissertation.
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Tier 1: Baseline \lr{RS-DRL} Framework*:
+     - Architectural integration with MAPE-K control loops (Monitor, Analyze, Plan, Execute).
+     - Asynchronous runtime verification with \lr{UPPAAL-SMC} in a decoupled, non-blocking background thread.
+     - Stochastic Reward Shaping mechanism: mathematical formulation of $R_{shaped}(s, a, s')$, escaping local optima via shaping factor $\rho$.
+     - Formal bound on SMC sample size via Chernoff-Hoeffding bounds.
+     - **Universal Replay Buffer Storage ($r=0$) Rigor**: Both successful transitions ($r=1$) and failed transitions ($r=0$) are stored in $\mathcal{D}$. Never state or imply that failed transitions are discarded.
+  2. *Tier 2: Advanced \rsdrlplus Architecture*:
+     - Architectural resolution of the Planning Trilemma for safety-critical real-time CPS.
+     - Pattern 1: Specification-Guided Offline Synthesis (\sgos) comprising Margin-Utility Reward Shaping (\mursdrl) with multi-constraint recovery margin $\mathcal{M}(s, a)$ and Constraint-Margin Replay Buffering (\cmrsdrl).
+     - Pattern 2: Contract-Anytime Elastic Policy Verification (\caepv) comprising the Policy-Guided Anytime Local Repair (\pgalr) module and TreeSHAP sensitivity subspace restriction.
+  3. *Formal Propositions & Mathematical Proofs*:
+     - **Proposition 1**: Formal time complexity proof $\mathcal{O}(m \cdot K)$ and candidate set cardinality bound $|\mathcal{N}(a_0)| \le 2m + 1$.
+     - **Proposition / Theorem 2**: Guarded selection rule and formal safety non-degradation guarantee (monotonic safety non-reduction).
+  4. *Comprehensive Unified Pseudocodes*: Complete algorithms for offline policy synthesis and anytime online decision-making.
+- **Strict Negative Boundaries & Prohibitions (Crucial Rules)**:
+  - ❌ **STRICT DOMAIN-AGNOSTICISM RULE**:
+    - **Chapter 4 MUST remain 100% generic and domain-agnostic.**
+    - Specific empirical testbed details (e.g., DeltaIoT node counts, network topologies, DARTSim flight aerodynamics, UAV radar radii, battery voltages) belong exclusively in Chapter 2 and Chapter 5, **NEVER in Chapter 4**!
+    - Formulations must rely strictly on abstract mathematical entities: state space $\mathcal{S}$, action space $\mathcal{A}$, latency budget $T_{budget}$, constraints $C_j(s, a) \le 0$, etc.
+    - **Purge Domain-Specific Descriptors (`ناوگان`, `پروازی`, `هوایی`) from General Problem Formulations**: Do not embed words like `پروازی` or `ناوگان` into foundational challenge definitions (use `مهلت‌های زمانی سخت در حلقه‌های کنترل فیزیکی` instead of `مهلت‌های سخت پروازی`). Testbeds like \lr{DARTSim} must function strictly as tangible parenthetical examples (e.g. `(که ناوبری خودگردان در بستر \lr{DARTSim} نمونه‌ای ملموس از آن است)`), never as the problem definition itself. Avoid `ناوگان` (fleet) when referring to single-agent tactical UAV benchmark missions to prevent confusing readers with multi-agent fleet coordination.
+  - ❌ **NO Inlined Code Function Names in Flowing Prose**:
+    - Never insert raw code-level function signatures with underscores (e.g. `$SMC\_Verify(s, a)$`) into flowing Persian prose.
+    - Refer in prose to the formal mathematical signal: `ادغام سیگنال اعتبارسنجی صوری ($r_{smc}$) مبتنی بر ابزار...`.
+    - Reserve procedural calls strictly for pseudocode algorithm environments: `\STATE $r_{smc} \leftarrow SMC\_Verify(s, a)$`.
+  - ❌ **NO Empirical Benchmark Tables or Evaluation Graphs**: Keep all experimental data, curves, and comparative metrics in Chapter 5.
+
+---
+
+### 4.6 Chapter 5: ارزیابی تجربی و تحلیل نتایج (Empirical Proof, Benchmark Evaluation & Statistical Validation)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Empirical Proof & Benchmark Validation** chapter. It maps the generic algorithms from Chapter 4 onto the formal models from Chapter 2, executes massive simulations, benchmarks against competitive baselines, performs ablation studies, and conducts rigorous non-parametric statistical hypothesis tests to definitively answer \lr{RQ1} through \lr{RQ6}.
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Experimental Setup & Calibration*: Hardware/software specifications, hyperparameter tuning, empirical trace descriptions.
+  2. *Baseline Methods*: Detailed description of comparative baselines (\lr{ActivFORMS}, Q-Learning, PLA, DRL-Baseline, Static Shield).
+  3. *QoS & Learning Metrics*: Quantitative tracking of packet loss, latency, energy, flight survival rate, corridor violations, decision variance, and real-time inference latency ($0.485\,\text{ms}$).
+  4. *Part 1: DeltaIoT Empirical Benchmarks (\lr{RS-DRL})*:
+     - Learning curves, convergence, and local optima escape (\lr{RQ1}).
+     - Multi-objective trade-offs and generalization (\lr{RQ1}, \lr{RQ2}).
+     - Comparative benchmarks against 6 baselines (\lr{RQ4}) --- 23.22% packet loss reduction, 39.07% latency reduction.
+     - Ablation study on shaping factor $\rho$ (\lr{RQ2}).
+     - Scalability analysis in large adaptation spaces up to 4,096 options (\lr{RQ3}).
+  5. *Part 2: DARTSim CPS UAV Fleet Benchmarks (\rsdrlplus)*:
+     - 2,000 closed-loop physical 6-DOF flights across 200 adversarial tactical scenarios.
+     - Taming the Reality Gap: survival rate boosted to 70.5% (vs. 65.0% for traditional safety shields) (\lr{RQ6}).
+     - Multi-level corridor tolerance analysis ($v_1, v_2, v_3$) (\lr{RQ1}, \lr{RQ6}).
+     - Mission utility and 31% decision variance reduction under failure logs (\lr{RQ6}, \lr{RQ2}).
+     - Real-time latency compliance: sub-3.5ms worst-case latency, $0.485\,\text{ms}$ nominal latency (<50ms flight control deadline) (\lr{RQ5}).
+     - Offline training overhead amortization ($5.2$ hours training amortized rapidly) (\lr{RQ4}).
+     - Ablation study on sensitivity subspace dimension $m$ (\lr{RQ3}, \lr{RQ5}, \lr{RQ6}).
+  6. *Part 3: Cross-Domain Transferability to DeltaIoT* (\lr{RQ2}, \lr{RQ3}, \lr{RQ6}).
+  7. *Part 4: Comprehensive Non-Parametric Statistical Hypothesis Testing*:
+     - Wilcoxon signed-rank tests ($p < 0.001$).
+     - Cohen's $d$ effect sizes (large effect $> 0.8$).
+     - Holm-Bonferroni family-wise error rate (\lr{FWER}) corrections for \lr{RQ1}--\lr{RQ6}.
+- **Strict Negative Boundaries & Forbidden Elements**:
+  - ❌ **NO Mathematical Re-derivations**: Do not re-derive the theoretical formulas or proofs established in Chapter 4.
+  - ❌ **NO Unsupported Claims**: Every empirical assertion must be backed by a table, figure, or statistical p-value/effect size.
+  - ❌ **NO Missing Baseline Context**: Never report numbers in isolation without direct comparison to established baselines.
+
+---
+
+### 4.7 Chapter 6: بحث، نتیجه‌گیری و کارهای آتی (Scholarly Reflection, Threats to Validity & Future Horizons)
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Scholarly Synthesis, Critical Reflection & Horizon** chapter. It steps back from empirical details to provide high-level scientific reflection, theorizes why the proposed architecture functions fundamentally, examines software engineering trade-offs, transparently analyzes threats to validity, and articulates three concrete future research directions.
+- **Mandatory Inclusions & Scientific Responsibilities**:
+  1. *Mechanistic Theorization*: Deep theoretical explanation of *why* \lr{RS-DRL} and sensitivity-bounded repair work (information-theoretic and optimization perspectives).
+  2. *Multi-objective Engineering Trade-offs*: Pareto trade-offs between safety, performance, energy, and execution latency.
+  3. *Software Engineering Implications*: Architectural guidelines for software engineers developing adaptive CPS.
+  4. *Four-Dimensional Threats to Validity*:
+     - Internal Validity: Hyperparameter sensitivity, simulator fidelity, stochastic variance.
+     - External Validity: Generalizability across CPS domains, robotics, sensor networks, autonomous vehicles.
+     - Construct Validity: Alignment between formal specifications and real-world system goals.
+     - Conclusion Validity: Statistical power, sample size bounds, effect sizes.
+  5. *Three Concrete Future Research Horizons*:
+     - Horizon 1: Multi-Agent Reinforcement Learning (\lr{MARL}) in asymmetric decentralized networks.
+     - Horizon 2: Continual / Lifelong Learning for non-stationary CPS environments.
+     - Horizon 3: Generalization of contract-anytime repair to infinite continuous action spaces.
+  6. *Final Dissertation Synthesis*: Authoritative concluding summary confirming the resolution of the research contract.
+- **Strict Negative Boundaries & Forbidden Elements**:
+  - ❌ **NO New Empirical Data or Benchmark Plots**: Strictly prohibited from introducing new experimental figures, raw numbers, or evaluation tables not presented in Chapter 5.
+  - ❌ **NO Algorithm Re-derivations**: Do not repeat algorithm steps or proof lemmas from Chapter 4.
+  - ❌ **NO Superficial Summaries**: Must not be a shallow cut-and-paste summary; must provide elevated scholarly reflection.
+
+---
+
+### 4.8 Appendices (پیوست‌ها): Exhaustive Workflows, Extended Data & Reproducibility Package
+
+- **True Scientific Nature (ماهیت واقعی)**:
+  The **Reproducibility & Exhaustive Evidence Repository**. It houses materials that are essential for 100% reproducibility and completeness, but whose inclusion in the main chapters would disrupt the narrative cadence.
+- **Mandatory Inclusions**:
+  1. *Appendix A*: Full UML activity diagrams and complete process workflows.
+  2. *Appendix B*: Complete algorithmic pseudocode listings and full procedural definitions.
+  3. *Appendix C*: Extended raw benchmark logs, comprehensive evaluation tables, and full parameter sheets.
+  4. *Appendix D*: Software artifact package, Docker setup, and open science reproduction instructions.
+- **Strict Negative Boundaries**:
+  - ❌ Must not contain primary architectural contributions or critical proofs (must remain in Chapter 4).
+  - ❌ Must not contain primary empirical answers to \lr{RQ1}--\lr{RQ6} (must remain in Chapter 5).
 
 ---
 
