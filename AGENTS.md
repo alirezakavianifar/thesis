@@ -94,7 +94,7 @@ The following table defines the mandatory, standardized technical vocabulary acr
 | Concept | Mandatory Persian Term | Strictly Banned / Avoided | Specific Rule & Technical Rationale |
 | :--- | :--- | :--- | :--- |
 | **System** | **`سیستم`** | ❌ `سامانه` | Standardized 100% across the thesis (`سیستم‌های خودوفق`, `سیستم هدف`, `سیستم‌های فیزیکی-سایبری`). The word `سامانه` is completely purged. |
-| **Real-Time** | **`بلادرنگ`** | ❌ `زمان‌حقیقی`<br>❌ `زمان واقعی`<br>❌ `بی‌درنگ` | Sole official Academy of Persian Language & Literature & IEEE-Iran term. Never use `زمان واقعی` or call Soft-QoS systems (DeltaIoT 8-min period) real-time. Never stack `آنلاین بلادرنگ`. |
+| **Real-Time** | **`بلادرنگ`** | ❌ `زمان‌حقیقی`<br>❌ `زمان واقعی`<br>❌ `بی‌درنگ` | Sole official Academy of Persian Language & Literature & IEEE-Iran term. Never use `زمان واقعی` or call Soft-QoS systems (DeltaIoT 8-min period) real-time. Never stack `برخط بلادرنگ`. |
 | **Self-Adaptive Systems** | **`سیستم‌های خودوفق`** | ❌ `سیستم‌های خودتطبیق‌پذیر`<br>❌ `سامانه‌های خودسازگار` | Established academic compound in Iranian computer software engineering. |
 | **Self-Adaptation (Capability)** | **`خودوفقی`** | ❌ `خودتطبیقی`<br>❌ `خودسازگاری` | Refers to the architectural property or capability of the system. |
 | **Adaptation (Process / Space)** | **`انطباق`** | ❌ `تطبیق` (in this context) | Dynamic action, search, or execution: `فضای وفقی`, `گزینه‌های وفقی`, `اهداف وفقی`, `طرح‌های انطباق`. |
@@ -105,7 +105,7 @@ The following table defines the mandatory, standardized technical vocabulary acr
 | **Thread** | **`ریسمان`** | ❌ `نخ` | `ریسمان کنترلی` for execution threads. |
 | **Process / Workflow** | **`فرآیند`** | ❌ `پردازه` (unless OS process) | Used for dynamic workflows, MAPE-K phases, MDP processes (`فرآیند تصمیم‌گیری مارکوف`). |
 | **Swimlanes** | **`خطوط شناوری`** | ❌ `خطوط شناور` | UML Activity Diagram swimlanes in Figure 4.2. |
-| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers<br>❌ Ambiguous `مسیر بحرانی` | **ONLY** permitted in formal technical terms: `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. For system classification, prefer **`سیستم‌های فیزیکی-سایبری حساس و بلادرنگ`** or **`بلادرنگ`** over the clunky calque `مأموریت‌بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`), `چالش‌های بحرانی` (use `چالش‌های بنیادین`), `شرایط بحرانی` (use `شرایط تنش شدید محیطی`), or `تنش بحرانی` (use `فراتر رفتن تنش از آستانه بحرانی`). For systems execution paths, avoid `مسیر بحرانی` (which confuses readers with crisis/emergency mode) and use **`مسیر مستقیم کنترل آنلاین / مسیر زمان اجرای کنترل (\lr{Critical Path})`**. |
+| **Critical** | **`بحرانی` (Strictly Disciplined)** | ❌ Rhetorical intensifiers<br>❌ Ambiguous `مسیر بحرانی` | **ONLY** permitted in formal technical terms: `گره‌های بحرانی`, `آستانه‌ها/مرزهای بحرانی`. For system classification, prefer **`سیستم‌های فیزیکی-سایبری حساس و بلادرنگ`** or **`بلادرنگ`** over the clunky calque `مأموریت‌بحرانی`. Never `مهلت بحرانی` (use `مهلت زمانی سخت پروازی`), `چالش‌های بحرانی` (use `چالش‌های بنیادین`), `شرایط بحرانی` (use `شرایط تنش شدید محیطی`), or `تنش بحرانی` (use `فراتر رفتن تنش از آستانه بحرانی`). For systems execution paths, avoid `مسیر بحرانی` (which confuses readers with crisis/emergency mode) and use **`مسیر مستقیم کنترل برخط / مسیر زمان اجرای کنترل (\lr{Critical Path})`**. |
 | **Speed & Latency** | **`بلادرنگ / کم‌تأخیر / زیر میلی‌ثانیه‌ای / مسیر سریع (Fast Path)`** | ❌ `سریع` (as casual intensifier)<br>❌ `فوق‌سریع` | Never use `سریع` casually for latency (e.g. ❌ `تصمیم‌گیری سریع` $\rightarrow$ `پاسخ‌گویی در مهلت‌های زمانی سخت`, ❌ `استنتاج سریع` $\rightarrow$ `استنتاج نامی زیر میلی‌ثانیه‌ای`, ❌ `مدل‌های سریع` $\rightarrow$ `مدل‌های جانشین تحلیلی و سبک‌وزن`, ❌ `جستجوی سریع` $\rightarrow$ `جستجوی تقلیلی روی زیرفضای حساسیت`, ❌ `استهلاک سریع هزینه` $\rightarrow$ `تحلیل بازه استهلاک آن`). Always state the quantitative metric directly (`زیر میلی‌ثانیه‌ای`, `$0.485\,\text{ms}$`) or use formal engineering terms (`بلادرنگ`, `کم‌تأخیر`, `مسیر سریع`). `سریع` is strictly permitted ONLY in: (1) formal pattern names (`«مسیر سریع» (\lr{Fast Path})`), (2) empirical speedup ratios (`۲۷۰ برابر سریع‌تر`), (3) learning convergence dynamics (`همگرایی سریع‌تر / تسریع همگرایی`), and (4) physical avionics dynamics (`تخلیه سریع باتری`). |
 | **Immediate Reward** | **`پاداش آنی`** | ❌ `پاداش لحظه‌ای` (unless contrasting with future cumulative value) | Standard MDP mathematical translation for $R(s, a, s')$. |
 | **Vital / Crucial** | **`کلیدی / بنیادین / تعیین‌کننده`** | ❌ `حیاتی` | `حیاتی` is completely banned due to journalistic exaggeration. |
@@ -115,15 +115,32 @@ The following table defines the mandatory, standardized technical vocabulary acr
 | **Architectural Patterns** | **`الگوهای معماری SG-OS و CAE-PV`** | ❌ `روش‌های SG-OS` | Software engineering design patterns. |
 | **Distributed Systems** | **`شبکه‌های حسگر توزیع‌شده`** | ❌ Generic `توزیع‌شده` | Use precisely in networking context; avoid confusing with OS distributed systems. |
 | **Batch & Mini-batch** | **`دسته / دسته‌های کوچک داده (\lr{Mini-batches}) / اندازه دسته (\lr{Batch Size}) / دسته موازی تانسوری`** | ❌ `مینی‌بچ`<br>❌ `بچ` | Standardized across TMU, Sharif, and UT computing documents. Colloquial transliterations (`مینی‌بچ` / `بچ`) are 100% purged. |
-| **Static** | **`ایستا`** | ❌ `استاتیک` | Standard Persian computer systems terminology (`سپرهای ایمنی ایستا`, `اهداف آفلاین ایستا`). |
+| **Static** | **`ایستا`** | ❌ `استاتیک` | Standard Persian computer systems terminology (`سپرهای ایمنی ایستا`, `اهداف غیربرخط ایستا`). |
 | **Mechanism** | **`سازوکار`** | ❌ `مکانیسم` | Official Academy term standardized 100% across the thesis (`سازوکارهای شکل‌دهی پاداش`). |
 | **Platform** | **`بستر / سکو`** | ❌ `پلتفرم` | Always use `بستر پیاده‌سازی` or `بستر آزمایشگاهی/محک`. |
 | **Mathematical Factor / Multiplier** | **`ضریب`** | ❌ `فاکتور` | Mathematical multipliers ($\gamma, \rho, \beta, \sigma$) must strictly be `ضریب` (`ضریب تنزیل زمانی`, `ضریب شکل‌دهی پاداش`, `ضریب مقیاس`). For environmental conditions, use `عوامل محیطی / متغیرهای کنترلی`. |
 | **Replay Buffer** | **`بافر بازپخش`** | ❌ `میانگیر بازپخش` | Established standard term in Iranian AI & DRL departments; `میانگیر` is pedantic and unused in RL. |
 | **Candidate Actions / Sets** | **`کاندیداها / گزینه‌های کاندید / مجموعه کاندید`** | ❌ `گزینه‌های نامزد` | In Persian optimization and AI literature, `کاندید` is the universal technical term; `نامزد` connotes marriage or political elections. |
-| **Offline / Online** | **`آفلاین / آنلاین`** | ❌ `برون‌خط / برخط` | Standard in computer systems & ML dissertations; avoids confusion with network connectivity in CPS. |
-| **Operational Logs** | **`لاگ‌های عملیاتی / لاگ‌ها`** | ❌ Artificial calques | Universal software engineering and process mining terminology. |
+| **Offline / Online** | **`غیربرخط / برخط`** | ❌ `آفلاین / آنلاین`، `برون‌خط` | Standardized across all chapters per Academy/TMU convention; all usages in this dissertation denote pre-deployment training vs. runtime control (zero network-connectivity ambiguity). |
+| **Operational / Offline Logs** | **`سوابق عملیاتی / سوابق غیربرخط / سوابق بازپخش`** | ❌ `لاگ`، `لاگ‌ها`، `گزارش` (ambiguous with prose reports)، `وقایع‌نگاشت` (artificial calque) | Standardized formal Persian academic terminology aligned with TMU Persianization policy and existing usage (`سوابق پرواز`، `سوابق مشاهدات`). Anchor with `\LTRfootnote{Operational Logs}` on first chapter mention; reserve `ردپا` exclusively for environmental traces. |
 | **Formal Verification / Validation** | **`اعتبارسنجی صوری`** | ❌ Inconsistent mixing with `راستی‌آزمایی صوری` | Standardized as `اعتبارسنجی صوری` for formal verification with UPPAAL-SMC and mathematical feedback signals ($r_{smc}$). |
+| **Model Checking (Statistical)** | **`وارسی مدل (آماری)`** | ❌ `مدل‌چکینگ` | Standardized formal methods terminology for statistical model checking (`وارسی مدل آماری`). |
+| **Diagram / Activity Diagram** | **`نمودار (فعالیت / جریان)`** | ❌ `دیاگرام` | Formal Persian academic terminology (`نمودار فعالیت`). |
+| **Hardware Driver** | **`راه‌انداز (سخت‌افزاری)`** | ❌ `درایور` | Standard Persian systems engineering term (`راه‌اندازهای سخت‌افزاری`). |
+| **Fallback (Branch / Rule / Mechanism)** | **`پشتیبان (شاخه / قاعده / سازوکار پشتیبان)`** | ❌ `فال‌بک` | Formal Persian equivalent for fallback control branches (`شاخه پشتیبان`). |
+| **Gate (Margin / Stress Gate)** | **`دروازه (تنش / حاشیه)`** | ❌ `گیت` | Formal Persian equivalent for runtime safety gating (`دروازه تنش محیطی`). |
+| **Atomic (Pointer Swap / Update)** | **`تجزیه‌ناپذیر`** | ❌ `اتمیک` | Formal Persian concurrency term for lock-free atomic operations (`تبادل تجزیه‌ناپذیر وزن‌ها`). |
+| **Scalar** | **`نرده‌ای`** | ❌ `اسکالر` | Official Persian mathematical terminology (`پاداش نرده‌ای`). |
+| **Probe (Sensory / Monitoring)** | **`کاوشگر`** | ❌ `پروب` | Standard Persian telemetry term (`کاوشگرهای حسگری / پایش`). |
+| **Link (Radio / Network)** | **`پیوند`** | ❌ `لینک` | Standard Persian networking term (`پیوندهای رادیویی`). |
+| **Mode (Operational Mode)** | **`حالت`** | ❌ `مد` | Unambiguous formal Persian term for operational system modes (`حالت‌های غیرعملیاتی`). |
+| **Calibration** | **`واسنجی`** | ❌ `کالیبراسیون` | Official Academy of Persian Language & Literature term (`خطای واسنجی`). |
+| **Catalog (Hyperparameter Catalog)** | **`فهرست جامع`** | ❌ `کاتالوگ` | Formal Persian academic equivalent (`فهرست جامع فراپارامترها`). |
+| **Frequency (Control / Update)** | **`بسامد` (کنترلی) / `تواتر` (به‌روزرسانی)** | ❌ `فرکانس` | Official Persian equivalents distinguishing physical rate (`بسامد`) from invocation/update rate (`تواتر`). |
+| **Isolate / Isolated / Isolation** | **`مجزا / جدا کردن / جداسازی`** | ❌ `ایزوله / ایزوله‌سازی` | Formal Persian architectural separation terminology (`لایه مجزا`، `جداسازی`). |
+| **Theoretical / Theoretically** | **`نظری / به صورت نظری`** | ❌ `تئوریک` | Standard Persian academic writing (`کران نظری`، `به صورت نظری`). |
+| **Formulate / Formulation** | **`فرمول‌بندی کردن / فرمول‌بندی`** | ❌ `فرموله / فرمولاسیون` | Consistent Persian academic usage (`فرمول‌بندی می‌شود`). |
+| **Avionics** | **`الکترونیک پروازی`** | ❌ `اویونیک` | Formal Persian aerospace engineering equivalent (avoiding banned `سامانه`). |
 
 ---
 
@@ -352,8 +369,8 @@ The dissertation follows a strict, coherent progression modeled on high-impact E
 
 ### 5.2 Direct, Academic Section & Subsection Titles
 - Section headers must be direct, academic, and non-redundant.
-- Avoid elongated, breathless titles loaded with buzzwords.
-- Example: Use `بیان مساله` instead of elongated multi-clause titles.
+- Avoid elongated, breathless titles loaded with buzzwords, stacked structural nouns (e.g., ❌ `معماری کلان چارچوب پایه‌ای ...`), or stiff relational calques (e.g., ❌ `اصول فرآیندی انطباق`).
+- Example: Use `بیان مساله` instead of elongated multi-clause titles, and `معماری سطح بالای \lr{RS-DRL} و تفکیک زمانی فرآیند انطباق` instead of stacked framework/architecture phrasing.
 
 ---
 
