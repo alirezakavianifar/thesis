@@ -367,10 +367,12 @@ The dissertation follows a strict, coherent progression modeled on high-impact E
   ```
 - Use `\small` or `\footnotesize` font scaling within tables to maintain balanced vertical and horizontal spacing.
 
-### 6.2 BiDi Layout, Persian Numerals & Punctuation Direction
-- **Percentages & Decimals**: Ensure proper Perso-Arabic bidirectional typesetting (`۷۰/۵٪`, not `٪۵/۷۰`; `۰/۴۸۵ میلی‌ثانیه`).
+### 6.2 BiDi Layout, Persian Numerals & Macro Spacing
+- **Math-Mode BiDi Rule for Decimals, Fractions & Thousands**: Under XePersian's TeX--XeT RTL engine, bare Persian numbers containing slashes (`/`), decimals, or thousands commas (`،`) reverse digit/segment order in output (e.g., `۱۳۷/۲۰۰` renders as `۲۰۰/۱۳۷`; `۷۰/۵٪` renders as `۵/۷۰٪`). Always typeset decimals, ratios/fractions, thousands-separated numbers, signed decibels, and millisecond metrics in math mode (`$70.5\%$`, `$137/200$`, `$2{,}000$`, `$-40\,\text{dB}$`, `$+15\,\text{dB}$`, `$200\,\text{ms}$`) with thin space `\,` before `\text{ms}` and `\text{dB}` so `\setdigitfont{XB Niloofar}` renders Persian digits in strict LTR order.
+- **Heading Safety with `\texorpdfstring`**: Wrap math expressions (`$\rho$`, `$2{,}000$`) and custom algorithm macros or mixed-script RQ tags inside `\section`, `\subsection`, and `\subsubsection` with `\texorpdfstring{<TeX>}{<PDF bookmark text>}` to guarantee `0` hyperref token warnings.
+- **Custom Macro Spacing (`xspace`)**: `commands.tex` loads `\usepackage{xspace}` with `\xspaceaddexceptions{، ؛ » \footnote \LTRfootnote ^^^^200c}` and trailing `\xspace` on custom macros (`\rsdrlplus`, `\sgos`, `\caepv`, `\pgalr`, `\mursdrl`, `\cmrsdrl`) so macros insert automatic spacing before Persian prose without adding unwanted spaces before punctuation, ZWNJ (`^^^^200c`), or footnotes.
 - **Research Question Numbering**: Numbers must follow the English label properly (`زیرسؤال ۱-۱`, `RQ1`).
-- **Punctuation & Parentheses**: Wrap all Latin terms and citations in `\lr{...}` and `\cite{...}` to prevent reversed parentheses or flipped mathematical intervals.
+- **Punctuation & Parentheses**: Wrap all Latin terms in `\lr{...}` to prevent reversed parentheses or flipped intervals (while keeping `\ref` and `\cite` outside `\lr{...}`).
 
 ### 6.3 Float Placement & Figure Sizing
 - Adjust figure scaling (`[width=0.85\textwidth]` to `[width=0.92\textwidth]`) so figures anchor naturally right after their first reference, preventing unnecessary dedicated blank pages.
@@ -383,8 +385,9 @@ python scratch/verify_log.py thesis_full_toc_persian_v3.log
 The build is acceptable ONLY if:
 - `Undefined references: 0`
 - `Undefined citations: 0`
-- `Overfull \hbox > 10pt: 0` (with max overfull strictly bounded under 10pt; current verified baseline: $8.78\,\text{pt}$).
-- `Total PDF pages: 154` (strict layout preservation without accidental page drift).
+- `Hyperref warnings: 0`
+- `Total Overfull \hbox: 39`, with `Overfull \hbox > 10pt: 0` (max overfull strictly bounded under 10pt; verified baseline: `9.51541 pt` / $9.52\,\text{pt}$).
+- `Total PDF pages: 165` (verified baseline after BiDi math-mode fixes, heading `\texorpdfstring` wrapping, citation normalization, and scholarly/terminology `\LTRfootnote` / `\footnote` additions across Chapters 1–6; preserve layout without accidental page drift).
 
 ### 6.5 Strict Ban on Wrapping Cross-References in `\lr{...}`
 - **NEVER** wrap cross-references in `\lr{...}` (e.g. ❌ `\lr{\ref{fig:...}}`, ❌ `\lr{\ref{tab:...}}`).
@@ -396,6 +399,13 @@ The build is acceptable ONLY if:
 - **Matrix / Map Dimensions in Tables**: Typeset dimensions in math mode (e.g. `$40 \times 1$`, `$50 \times 50$`), avoiding mixed `\lr{40$\times$1}` in tables containing Persian counts.
 - **Latin Acronyms & Model Designators**: Proper Latin identifiers (`\lr{RQ1}`–`\lr{RQ6}`, `\lr{6-DOF}`, `\lr{5G}`, `\lr{DeltaIoTv1}`, `\lr{v1.1}`, `\lr{TreeSHAP}`) legitimately retain English digits and must remain enclosed in `\lr{...}`.
 - **Citation Numbering**: In-text citations `\cite{...}` in Persian paragraphs naturally render with Persian numerals (`[۲]`), whereas the English bibliography list (`thebibliography`) retains Latin numerals (`[2]`). Never force `\cite` into `\lr{\cite{...}}`.
+
+### 6.7 English Parentheticals, Acronyms & Footnote Convention
+- **Prose Non-Acronym English Terms**: Do **not** leave inline English translations/phrases inside parentheses (`(\lr{...})`). Move non-acronym English equivalents (e.g., `\LTRfootnote{Backpropagation}`, `\LTRfootnote{Mini-batches}`, `\LTRfootnote{Critical Path}`) to `\LTRfootnote{...}` on their **first mention per chapter**, and omit parenthetical repeats within the same chapter.
+- **Active Uppercase Acronyms**: Short uppercase acronyms reused directly in subsequent prose (e.g., `MDP`, `DRL`, `DQN`, `MAPE-K`, `QoS`, `CPS`, `SAS`, `SMC`, `PBRS`, `FWER`) keep `(\lr{ACRONYM})\LTRfootnote{Full Expansion}` **only on their first chapter mention**; strip duplicate `(\lr{ACRONYM})` parentheticals on later mentions in that chapter.
+- **Headings & Captions**: Never place `\LTRfootnote` inside `\section`, `\subsection`, `\subsubsection`, `\paragraph`, or `\caption`, and strip non-acronym English parentheticals from titles/captions (placing `\LTRfootnote{...}` on the first prose mention immediately beneath when needed). Only essential short identifiers (e.g., `\lr{RQ1}`, `\lr{DARTSim}`, `\lr{DeltaIoT}`, `\lr{DQN}`, `\lr{UPPAAL-SMC}`) may appear in headings.
+- **Tables & Appositives**: Keep compact English tags inside `tabular` environments untouched (`\LTRfootnote` fails inside `tabular`/`\resizebox`). Rewrite appositive proper nouns in prose without parentheses (e.g., `در شبکه حسگر \lr{DeltaIoT}`), keep version/experiment tags (`(\lr{v1})`, `(\lr{RQ1} تا \lr{RQ6})`, `(\lr{6-DOF C++})`), and never nest `\LTRfootnote` inside `\footnote`.
+- **Official Tool URLs & Foreign Authors**: Place `\LTRfootnote{First Last [et al.]}` for foreign author names and `\footnote{<short Persian label>: \lr{\url{...}}}` for primary open-source tools/benchmarks (`DeltaIoT`, `DARTSim`, `UPPAAL-SMC`, `Gymnasium`, `Stable-Baselines3`, `SHAP`) on first chapter mention, keeping URL footnote prefixes concise so URLs stay single-line.
 
 ---
 

@@ -26,6 +26,7 @@
 \usepackage{subfigure}
 \usepackage[subfigure]{tocloft}
 \usepackage{multirow}
+\usepackage{xspace}
 
 
 % بسته‌ای برای ظاهر شدن «مراجع» و «نمایه» در فهرست مطالب
@@ -356,9 +357,10 @@
 \fi
 
 % Robust macros for RS-DRL+ and architectural patterns
-\newcommand{\rsdrlplus}{\lr{RS-DRL\textsuperscript{+}}}
-\newcommand{\sgos}{\lr{SG-OS}}
-\newcommand{\caepv}{\lr{CA-EPV}}
-\newcommand{\pgalr}{\lr{PG-ALR}}
-\newcommand{\mursdrl}{\lr{MU-RS-DRL}}
-\newcommand{\cmrsdrl}{\lr{CM-RS-DRL}}
+\xspaceaddexceptions{، ؛ » \footnote \LTRfootnote ^^^^200c}
+\newcommand{\rsdrlplus}{\lr{RS-DRL\textsuperscript{+}}\xspace}
+\newcommand{\sgos}{\lr{SG-OS}\xspace}
+\newcommand{\caepv}{\lr{CA-EPV}\xspace}
+\newcommand{\pgalr}{\lr{PG-ALR}\xspace}
+\newcommand{\mursdrl}{\lr{MU-RS-DRL}\xspace}
+\newcommand{\cmrsdrl}{\lr{CM-RS-DRL}\xspace}
