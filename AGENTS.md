@@ -83,6 +83,14 @@ The mandatory vocabulary is strictly enforced. The full table and rationale are 
   - `راه‌انداز` vs ❌ `درایور`.
   - `پشتیبان` vs ❌ `فال‌بک`.
   - `الکترونیک پروازی` vs ❌ `اویونیک`.
+  - `کنترل همروندی بدون قفل` vs ❌ `مدیریت همزمانی بدون قفل`.
+  - `شرایط رقابتی / وضعیت رقابتی` (\lr{Race Conditions}) vs ❌ `شرایط مسابقه`.
+  - `نوسان تأخیر` (\lr{Latency Jitter}) vs ❌ `تأخیر نوسانی`.
+  - `اشاره‌گر / تبادل تجزیه‌ناپذیر` (\lr{Atomic Pointer Swap}) vs ❌ `اشاره‌گر اتمیک`، `جابه‌جایی تجزیه‌ناپذیر`.
+  - `ریسمان‌امن` (\lr{Thread-Safe}) vs ❌ `نخ‌امن`.
+  - `صف وظایف ناهمگام` (\lr{Asynchronous Task Queue}) vs ❌ `صف کاربری ناهمگام`.
+  - `قفل انحصار متقابل` (\lr{Mutex}) vs ❌ `قفل انحصاری`.
+  - `تزاحم بر سر قفل` (\lr{Lock Contention}) vs ❌ `رقابت بر سر قفل`.
 - **Audit Tool**: Run `python .agents/skills/thesis-persian-terminology/scripts/audit_terms.py` before finalizing any chapter.
 
 ---

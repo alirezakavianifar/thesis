@@ -51,4 +51,12 @@ This dictionary defines the mandatory technical vocabulary across all chapters o
 | **Theoretical** | **`نظری / به صورت نظری`** | ❌ `تئوریک` | Standard Persian academic writing. |
 | **Formulation** | **`فرمول‌بندی`** | ❌ `فرموله / فرمولاسیون` | Consistent Persian academic usage. |
 | **Avionics** | **`الکترونیک پروازی`** | ❌ `اویونیک` | Formal Persian aerospace engineering equivalent. |
+| **Concurrency Control** | **`کنترل همروندی`** | ❌ `مدیریت همزمانی` | Standard Farhangestan and university computer engineering term (`کنترل همروندی بدون قفل`). |
+| **Race Conditions** | **`شرایط رقابتی / وضعیت رقابتی`** | ❌ `شرایط مسابقه` | Formal CE operating systems term; avoids crude athletic calque. |
+| **Latency Jitter** | **`نوسان تأخیر`** | ❌ `تأخیر نوسانی` | Formal real-time systems concept for statistical latency variance. |
+| **Atomic Pointer Swap** | **`تبادل تجزیه‌ناپذیر اشاره‌گر`** | ❌ `اشاره‌گر اتمیک`<br>❌ `جابه‌جایی تجزیه‌ناپذیر` | Standard concurrent systems operation for atomic pointer exchange. |
+| **Thread-Safe** | **`ریسمان‌امن`** | ❌ `نخ‌امن` | Derives from mandatory `ریسمان` discipline in concurrent programming. |
+| **Task Queue** | **`صف وظایف`** | ❌ `صف کاربری` | Avoids confusing user queue with worker task buffers. |
+| **Mutex** | **`قفل انحصار متقابل`** | ❌ `قفل انحصاری` (for mutex) | Distinguishes mutual exclusion from generic exclusive locks. |
+| **Lock Contention** | **`تزاحم بر سر قفل`** | ❌ `رقابت بر سر قفل` | Uses `تزاحم` for contention to reserve `رقابتی` for race conditions. |
 
