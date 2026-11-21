@@ -6,11 +6,13 @@ This dictionary defines the mandatory technical vocabulary across all chapters o
 | :--- | :--- | :--- | :--- |
 | **System** | **`سیستم`** | ❌ `سامانه` | Standardized 100% across the thesis (`سیستم‌های خودوفق`, `سیستم هدف`, `سیستم‌های فیزیکی-سایبری`). The word `سامانه` is completely purged. |
 | **Real-Time** | **`بلادرنگ`** | ❌ `زمان‌حقیقی`<br>❌ `زمان واقعی`<br>❌ `بی‌درنگ` | Sole official Academy of Persian Language & Literature & IEEE-Iran term. Never use `زمان واقعی` or call Soft-QoS systems (DeltaIoT 8-min period) real-time. Never stack `برخط بلادرنگ`. |
-| **Self-Adaptive Systems** | **`سیستم‌های خودوفق`** | ❌ `سیستم‌های خودتطبیق‌پذیر`<br>❌ `سامانه‌های خودسازگار` | Established academic compound in Iranian computer software engineering. |
-| **Self-Adaptation (Capability)** | **`خودوفقی`** | ❌ `خودتطبیقی`<br>❌ `خودسازگاری` | Refers to the architectural property or capability of the system. |
-| **Adaptation (Process / Space)** | **`انطباق`** | ❌ `تطبیق` (in this context) | Dynamic action, search, or execution: `فضای وفقی`, `گزینه‌های وفقی`, `اهداف وفقی`, `طرح‌های انطباق`. |
-| **Conformance / Verification** | **`انطباق با مشخصه‌ها`** | ❌ `تطابق` | Conformance to formal specifications, SLAs, or contracts. |
+| **Self-Adaptive Systems** | **`سیستم‌های خودوفق`** | ❌ `سیستم‌های خودتطبیق‌پذیر`<br>❌ `سامانه‌های خودسازگار`<br>❌ `سیستم‌های خودوفقی` | Established academic compound in Iranian computer software engineering. Modifies systems, controllers, architectures: `سیستم‌های خودوفق`, `کنترل‌کننده خودوفق`, `معماری تصمیم‌گیری خودوفق`. |
+| **Self-Adaptation (Capability / Paradigm)** | **`خودوفقی`** | ❌ `خودتطبیقی`<br>❌ `خودسازگاری`<br>❌ `اقدام خودوفقی` | Refers to the overarching architectural property, discipline, or paradigm: `قابلیت خودوفقی`, `پارادایم خودوفقی`, `حوزه خودوفقی`, `اصول خودوفقی`. |
+| **Adaptation (Process / Cycle / Directives)** | **`انطباق`** | ❌ `تطبیق` (in this context)<br>❌ `فضای انطباق` | Dynamic action, execution cycle, pipeline, necessity, plan, or command: `چرخه انطباق`, `فرآیند انطباق`, `حلقه انطباق`, `طرح انطباق`, `ضرورت انطباق`, `فرمان انطباق`. |
+| **Adaptive (Spaces, Actions, Options, Goals)** | **`وفقی`** | ❌ `اقدام انطباقی`<br>❌ `گزینه‌های انطباقی`<br>❌ `اهداف انطباقی`<br>❌ `استنتاج انطباقی`<br>❌ `گزینه‌های انطباق` | Relative adjective modifying the decision space, candidate options, actions, and goals: `فضای وفقی`, `اقدام وفقی`, `گزینه وفقی`, `اهداف وفقی`, `استنتاج وفقی`. Never use `انطباقی` as a substitute. |
+| **Conformance / Verification** | **`انطباق با مشخصه‌ها / بردار انطباق`** | ❌ `تطابق` | Conformance to formal specifications, SLAs, contracts, or near-miss margins: `انطباق با مشخصه‌ها`, `انطباق با اهداف کیفیت خدمات`, `بردار انطباق`, `میزان نزدیکی به انطباق کامل`. |
 | **Comparative Analysis** | **`تحلیل تطبیقی`** | ❌ `تحلیل انطباقی` | `تطبیق` is strictly reserved for comparative cross-evaluation. |
+| **Constraint Satisfaction** | **`سازگار / ناسازگار`** | ❌ `سامانه‌های خودسازگار` | Strictly reserved for constraint satisfaction: `سازگار با قیود` ($\mathcal{N}_{\text{sat}}$), `گزینه سازگار`, `پیشنهاد نامی ناسازگار`, `شاخص سازگاری صوری` ($\mathbb{I}_{\text{sat}}$). |
 | **Context / Testbed** | **`بستر / زمینه`** | ❌ `بافتار` | `بافتار` is an awkward calque. Use `بستر` for testbeds (DeltaIoT, DARTSim) and `زمینه` for context. |
 | **Asynchronous** | **`ناهمگام`** | ❌ `غیرهمگام` | Standard computer systems term for decoupled background operations. |
 | **Thread** | **`ریسمان`** | ❌ `نخ` | `ریسمان کنترلی` for execution threads. |
