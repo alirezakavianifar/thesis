@@ -28,7 +28,7 @@ Any deviation from the standardized terminology is strictly prohibited across al
 | **Thread** | **`ریسمان`** | ❌ `نخ` |
 | **Process / Workflow** | **`فرآیند`** | ❌ `پردازه` (unless OS process) |
 | **Critical** | **`بحرانی` (Strictly disciplined)** | ❌ Casual rhetorical intensifiers |
-| **Speed & Latency** | **`بلادرنگ / کم‌تأخیر / زیر میلی‌ثانیه‌ای`** | ❌ `سریع` (as casual intensifier), `فوق‌سریع` |
+| **Speed & Latency** | **`بلادرنگ / زیر میلی‌ثانیه‌ای`** (پرهیز از کاربرد حشوآمیز `کم‌تأخیر`) | ❌ `سریع` (as casual intensifier), `فوق‌سریع`, `کم‌تأخیر` در همنشینی با بلادرنگ یا سنجه‌های عددی |
 | **Immediate Reward** | **`پاداش آنی`** | ❌ `پاداش لحظه‌ای` |
 | **Vital / Crucial** | **`کلیدی / بنیادین / تعیین‌کننده`** | ❌ `حیاتی` |
 | **Batch & Mini-batch** | **`دسته / دسته‌های کوچک داده`** | ❌ `بچ`, `مینی‌بچ` |
