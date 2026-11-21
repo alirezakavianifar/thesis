@@ -52,7 +52,26 @@ Any deviation from the standardized terminology is strictly prohibited across al
 | **Formulation** | **`فرمول‌بندی`** | ❌ `فرمولاسیون` |
 | **Avionics** | **`الکترونیک پروازی`** | ❌ `اویونیک` |
 
-For full details and technical rationales, see [terminology_dictionary.md](./references/terminology_dictionary.md).
+For full details and technical rationales, see [terminology_dictionary.md](./references/terminology_dictionary.md) and the polysemous arbitration criteria in [disambiguation_guide.md](./references/disambiguation_guide.md).
+
+---
+
+## Terminology Arbitration & Context Extraction Protocol
+
+When analyzing polysemous, domain-sensitive, or disputed terminology (e.g., evaluating **«سنتز»** vs. **«ترکیب / تلفیق / یکپارچه‌سازی / تجمیع»**):
+
+1. **Extract All Occurrences with Context**:
+   Use `extract_term_context.py` (powered by `ripgrep` for sub-50ms execution):
+   ```powershell
+   python .agents/skills/thesis-persian-terminology/scripts/extract_term_context.py --term "سنتز" --context 2
+   ```
+2. **Academic Verification via MCP Tools**:
+   - Query `s2-mcp-server` (`semantic_scholar_search_papers`) to examine peer-reviewed paper titles, abstracts, and taxonomy definitions in formal methods, self-adaptive systems, and RL.
+   - Query `arxiv-mcp-server` for current preprints in `cs.SE` and `cs.AI`.
+3. **Epistemological Classification**:
+   Consult [disambiguation_guide.md](./references/disambiguation_guide.md) to distinguish formal synthesis (*Controller/Policy Synthesis* $\rightarrow$ «سنتز»), architectural composition (*Composition* $\rightarrow$ «ترکیب/ترکیب‌بندی»), and information fusion (*Data Fusion* $\rightarrow$ «تلفیق داده»).
+4. **Permanent Codification**:
+   Update `terminology_dictionary.md`, `audit_terms.py`, and `AGENTS.md`.
 
 ---
 

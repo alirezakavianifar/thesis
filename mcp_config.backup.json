@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "composio": {
+      "serverUrl": "https://connect.composio.dev/mcp",
+      "headers": {
+        "x-consumer-api-key": "ck_VQUvduo4KCPDx2C7X7zM",
+        "x-api-key": "ck_VQUvduo4KCPDx2C7X7zM"
+      }
+    }
+  }
+}

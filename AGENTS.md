@@ -95,7 +95,12 @@ The mandatory vocabulary is strictly enforced. The full table and rationale are 
   - `صف وظایف ناهمگام` (\lr{Asynchronous Task Queue}) vs ❌ `صف کاربری ناهمگام`.
   - `قفل انحصار متقابل` (\lr{Mutex}) vs ❌ `قفل انحصاری`.
   - `تزاحم بر سر قفل` (\lr{Lock Contention}) vs ❌ `رقابت بر سر قفل`.
-- **Audit Tool**: Run `python .agents/skills/thesis-persian-terminology/scripts/audit_terms.py` before finalizing any chapter.
+  - `سنتز کنترل‌کننده / سنتز خط‌مشی / سنتز صوری` (\lr{Controller/Policy Synthesis}): مجاز و استاندارد در روش‌های صوری، مهندسی نرم‌افزار خودکار و الگوی معماری \sgos vs ❌ تعمیم به «سنتز داده» (از `تلفیق داده / تجمیع شواهد` استفاده شود)، «سنتز مؤلفه‌ها» (از `ترکیب مؤلفه‌ها / ترکیب‌بندی` استفاده شود)، یا «سنتز ادبیات / سنتز به پرسش‌ها» (از `تلفیق پیشینه پژوهش / تلفیق یافته‌ها` استفاده شود).
+  - `تفکیک فاز اجرا از دیرند و تأخیر زمانی`: استفاده از `تأخیر کل تصمیم‌گیری / بدترین حالت تأخیر تصمیم‌گیری / تأخیر کل برنامه‌ریزی` vs ❌ ترکیب حشوآمیز `تأخیر کل زمان اجرا`؛ و پرهیز از تکرار چندباره `زمان اجرا` در یک بند یا جمله واحد (جایگزینی متناسب با `برخط`، `حین اجرا` یا حذف واژه زاید در صورت وضوح بافت موضوعی).
+  - `کاربرد دقیق واژه «استنتاج»` (\lr{Inference}): مجاز و استاندارد صرفاً به عنوان اصطلاح تخصصی یادگیری ماشین و شبکه‌های عصبی عمیق (\lr{Inference} در برابر \lr{Training}: «زمان استنتاج»، «تأخیر استنتاج»، «مسیر استنتاج»، «استنتاج وفقی») vs ❌ کاربردهای حشوآمیز و نامأنوس نظیر `استنتاج تصمیم` (استفاده از `تصمیم‌گیری / اتخاذ تصمیم`)، انباشت مترادف‌های زاید `برنامه‌ریزی، استنتاج و تولید` (استفاده از `برنامه‌ریزی و تولید`)، یا تحمیل ساختار سنگین `با استنتاج مستقیم ... پیشنهاد را ارائه داده` در چکیده (استفاده مستقیم از `ارائه پیشنهاد اولیه (نامی) در مقیاس زیر میلی‌ثانیه‌ای`).
+- **Audit & Extraction Tools**:
+  - Run `python .agents/skills/thesis-persian-terminology/scripts/audit_terms.py` for mandatory rule violations.
+  - Run `python .agents/skills/thesis-persian-terminology/scripts/extract_term_context.py --term "<term>"` (powered by `ripgrep`) to extract surrounding context for nuanced terminology arbitration against literature (see [disambiguation_guide.md](.agents/skills/thesis-persian-terminology/references/disambiguation_guide.md)).
 
 ---
 
