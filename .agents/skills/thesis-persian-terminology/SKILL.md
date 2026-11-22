@@ -54,6 +54,9 @@ Any deviation from the standardized terminology is strictly prohibited across al
 | **Theoretical** | **`نظری / به صورت نظری`** | ❌ `تئوریک` |
 | **Formulation** | **`فرمول‌بندی`** | ❌ `فرمولاسیون` |
 | **Avionics** | **`الکترونیک پروازی`** | ❌ `اویونیک` |
+| **Bootstrapping (RL)** | **`سازوکار خودراه‌اندازی` / `خودراه‌اندازی`** | ❌ `تخمین خودراه‌انداز متوالی`<br>❌ کاربرد صفت «خودراه‌انداز» به جای اسم مفهوم |
+| **Safety Shielding** | **`رویکرد سپر ایمنی` / `روش‌های سپر ایمنی صوری`** | ❌ `سپرهای ایستا` (بدون قید صوری/ایمنی)<br>❌ جمع ناهماهنگ در مقایسه بنچ‌مارک‌ها (`سپرهای ایمنی مرسوم`) |
+| **Two-Tier Architecture** | **`معماری دوسطحی \rsdrlplus`** | ❌ انباشت حشوآمیز «تعمیم‌یافته» و خلط با تعمیم در یادگیری ماشین |
 
 For full details and technical rationales, see [terminology_dictionary.md](./references/terminology_dictionary.md) and the polysemous arbitration criteria in [disambiguation_guide.md](./references/disambiguation_guide.md).
 
