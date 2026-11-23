@@ -196,7 +196,21 @@ Each chapter has an immutable scientific nature. For detailed contracts, see [ch
    - Cross-references must remain bare: `شکل \ref{fig:...}`, `جدول \ref{tab:...}`, `بخش \ref{sec:...}`. Wrapping in `\lr{...}` forces Latin numbers and breaks Persian layout.
 4. **Table Sizing**: Always use explicit column widths (`p{...}`), `\small` or `\footnotesize`, preventing overfull `\hbox`.
 5. **Footnotes**: Move non-acronym English equivalents to `\LTRfootnote{...}` on first chapter mention. Strip redundant parentheticals on later mentions. Never place `\LTRfootnote` inside headings, captions, or tables.
-6. **Zero-Defect Verification Command**:
+6. **Mandatory Build Pipeline (`compile_thesis.ps1`)**:
+   > [!IMPORTANT]
+   > **Mandatory PowerShell Compilation Invariant**: For compiling the LaTeX dissertation (`thesis_full_toc_persian_v3.tex`), AI agents and authors **MUST ALWAYS use the PowerShell script (`compile_thesis.ps1`)**. Never invoke `xelatex` or `bibtex` manually or in an uncoordinated manner.
+   - The master PowerShell script `compile_thesis.ps1` automates the entire multi-pass compilation, verification, and cleanup cycle:
+     ```powershell
+     .\compile_thesis.ps1
+     ```
+   - By default, all chapters are compiled (`thesis_full_toc_persian_v3.tex`).
+   - Flags & Chapter Selection:
+     - `-Chapter <1-6|appendices>`: Compiles only the specified chapter (e.g., `.\compile_thesis.ps1 -Chapter 4`). Cross-chapter references resolve automatically via `master_labels.aux`, and citation numbers (`[۲۸]`, `[۲۹]`, ...) automatically synchronize with the master thesis via `master.bbl`.
+     - `-Fast`: Single XeLaTeX pass (skips BibTeX and multi-pass for rapid draft preview).
+     - `-NoClean`: Retains auxiliary files (`.aux`, `.log`, `.toc`, etc.) for debugging.
+     - `-NoVerify`: Skips the Python log verification check.
+     - `-Open`: Automatically opens the generated PDF upon successful compilation.
+7. **Zero-Defect Verification Command**:
    ```powershell
    python .agents/skills/thesis-latex-typesetting/scripts/verify_build.py thesis_full_toc_persian_v3.log
    ```
@@ -205,9 +219,9 @@ Each chapter has an immutable scientific nature. For detailed contracts, see [ch
    - `Undefined citations: 0`
    - `Hyperref warnings: 0`
    - `Overfull \hbox > 10pt: 0` (max overfull bounded strictly $< 10\,\text{pt}$)
-   - `Total PDF pages: 164-165`
-7. **Mandatory Post-Compilation Cleanup Protocol**:
-   - Immediately after each XeLaTeX PDF compilation and verification of `thesis_full_toc_persian_v3.log`, the agent **MUST ALWAYS clean up all intermediate build files**:
+   - `Total PDF pages: 150-180`
+8. **Mandatory Post-Compilation Cleanup Protocol**:
+   - Immediately after each XeLaTeX PDF compilation and verification of `thesis_full_toc_persian_v3.log`, the agent **MUST ALWAYS clean up all intermediate build files** (automated via `compile_thesis.ps1`):
      ```powershell
      python .agents/skills/thesis-build-cleanup/scripts/clean_build.py
      ```

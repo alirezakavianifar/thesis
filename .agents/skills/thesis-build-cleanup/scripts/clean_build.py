@@ -53,10 +53,12 @@ def clean_build_artifacts(root_dir: Path, dry_run: bool = False, include_pdf: bo
             elif include_pdf and item.suffix.lower() == '.pdf':
                 should_delete = True
 
-            # Safety check: Never delete source files
+            # Safety check: Never delete source files or persistent caches
             if item.suffix.lower() in {'.tex', '.bib', '.cls', '.sty', '.png', '.jpg', '.pdf'}:
                 if not (include_pdf and item.suffix.lower() == '.pdf'):
                     should_delete = False
+            elif item.name.lower() in {'master_labels.aux', 'master.bbl'}:
+                should_delete = False
 
             if should_delete:
                 file_size = item.stat().st_size

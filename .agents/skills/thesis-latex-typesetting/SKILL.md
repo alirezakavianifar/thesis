@@ -45,9 +45,38 @@ Wrap math expressions, custom algorithm macros (`\rsdrlplus`, `\sgos`, etc.), or
 
 ---
 
+## Mandatory Compilation Pipeline (`compile_thesis.ps1`)
+
+> [!IMPORTANT]
+> **Strict Compilation Rule**: Whenever compiling the LaTeX dissertation (`thesis_full_toc_persian_v3.tex`), **ALWAYS use the PowerShell script (`compile_thesis.ps1`)**. Do not run raw `xelatex` or `bibtex` commands directly in the terminal.
+
+To execute the complete end-to-end build (XeLaTeX -> BibTeX -> XeLaTeX x2 -> Verification -> Cleanup) in one command:
+```powershell
+.\compile_thesis.ps1
+```
+By default, all chapters are compiled as part of the complete dissertation (`thesis_full_toc_persian_v3.tex`).
+
+### Compiling a Specific Chapter
+When you need to compile only an individual chapter:
+```powershell
+.\compile_thesis.ps1 -Chapter 4
+.\compile_thesis.ps1 -Chapter 5 -Fast -Open
+.\compile_thesis.ps1 -Chapter appendices
+```
+The script maps `-Chapter <N>` to `chapters/chapter<N>.tex`, outputs `chapter<N>.pdf`, automatically links cross-chapter references via `master_labels.aux` and `xr-hyper` (zero `؟؟` question marks), and synchronizes citation numbering via `master.bbl` and `sync_chapter_bib.py` so in-text citations (`[۲۸]`, `[۲۹]`, ...) and the chapter bibliography match the master dissertation numbering without restarting from `[۱]`.
+
+Optional switches:
+- `.\compile_thesis.ps1 -Chapter <N>`: Compiles only the specified chapter (`1` to `6`, or `appendices`).
+- `.\compile_thesis.ps1 -Fast`: Quick single pass without BibTeX.
+- `.\compile_thesis.ps1 -NoClean`: Retain build artifacts for debugging.
+- `.\compile_thesis.ps1 -NoVerify`: Skip Python log verification.
+- `.\compile_thesis.ps1 -Open`: Open PDF after compilation.
+
+---
+
 ## Build Verification Runbook
 
-After any compilation, execute:
+After any manual compilation, execute:
 ```powershell
 python .agents/skills/thesis-latex-typesetting/scripts/verify_build.py thesis_full_toc_persian_v3.log
 ```

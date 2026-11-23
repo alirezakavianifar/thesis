@@ -265,7 +265,11 @@ r_t & \text{with probability } 1 - \rho
 \end{cases}
 \label{eq:bernoulli_shaping}
 \end{equation}
-با جایگزینی $\tilde{r}_t$ به جای $r_t$ در محاسبه هدف بلمن، مقدار هدف به‌روزرسانی به صورت $y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')$ بازتعریف می‌شود. شکل \ref{fig:reward-shaping-diagram} سازوکار تبدیل سیگنال پاداش خام به پاداش تصادفی را به تصویر می‌کشد.
+با جایگزینی $\tilde{r}_t$ به جای $r_t$ در محاسبه هدف بلمن، مقدار هدف به‌روزرسانی به صورت
+\[
+y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
+\]
+بازتعریف می‌شود. شکل \ref{fig:reward-shaping-diagram} سازوکار تبدیل سیگنال پاداش خام به پاداش تصادفی را به تصویر می‌کشد.
 
 \begin{figure}[htbp]
   \centering

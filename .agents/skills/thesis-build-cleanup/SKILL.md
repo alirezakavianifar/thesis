@@ -33,7 +33,7 @@ This skill enforces strict workspace hygiene and automated cleanup of all interm
 
 ## 3. Standard Compilation & Cleanup Workflow
 
-Whenever a LaTeX compilation is performed, the agent must follow this exact three-stage lifecycle:
+Whenever a LaTeX compilation is performed, the agent **MUST ALWAYS use `compile_thesis.ps1`**, which automates this exact three-stage lifecycle:
 
 ```mermaid
 flowchart LR
