@@ -43,6 +43,13 @@ Wrap math expressions, custom algorithm macros (`\rsdrlplus`, `\sgos`, etc.), or
 - Move non-acronym English equivalents to `\LTRfootnote{...}` on **first mention per chapter**.
 - Never place `\LTRfootnote` inside `\section`, `\caption`, `\paragraph`, or `tabular`.
 
+### 6. Figure Resolution & Size Optimization Standards
+To prevent multi-megabyte PDF bloat while maintaining pristine publication quality:
+- **Vector PDF for Architecture & Workflow Diagrams**: Diagram generator scripts (`generate_*.py`) must output native `.pdf` vector graphics (`plt.savefig(..., bbox_inches='tight')`). Vector graphics scale infinitely (zero pixelation at 1000% zoom) and reduce diagram size by 80–88% compared to raster bitmaps.
+- **Lossless PNG8 Quantization for Line/Scatter Plots**: Raster experimental plots (DeltaIoT, DARTSim) with discrete color lines must be stored in 256-color adaptive palette PNG8 with alpha channels stripped (`optimize_figures.py`), ensuring $PSNR \ge 40.0\,\text{dB}$ (visually lossless).
+- **Print Resolution Bounding**: Avoid 700–900 DPI oversampling by bounding maximum raster width to 1800 px (~300 DPI across A4 `\textwidth`).
+- **Figure Optimization Tool**: Execute `python .agents/skills/thesis-latex-typesetting/scripts/optimize_figures.py` to audit and optimize figures with automated backups in `figures/.originals/`.
+
 ---
 
 ## Mandatory Compilation Pipeline (`compile_thesis.ps1`)

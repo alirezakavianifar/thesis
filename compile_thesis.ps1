@@ -13,7 +13,7 @@
     The root LaTeX file to compile. Default: 'thesis_full_toc_persian_v3.tex'.
 
 .PARAMETER Chapter
-    Optional chapter number (1, 2, 3, 4, 5, 6) or 'appendices' to compile only that chapter.
+    Optional chapter number (1, 2, 3, 4, 5, 6), 'appendices', or comma-separated list of chapters (e.g. '4,5') to compile single or combined chapters.
     When omitted, compiles all chapters.
 
 .PARAMETER Fast
@@ -40,6 +40,10 @@
     Compiles only Chapter 4 with full multi-pass and chapter verification.
 
 .EXAMPLE
+    .\compile_thesis.ps1 -Chapter 4,5
+    Compiles a unified PDF of Chapters 4 and 5 (chapter4_5.pdf).
+
+.EXAMPLE
     .\compile_thesis.ps1 -Chapter 5 -Fast -Open
     Fast single-pass compilation of Chapter 5 and opens the resulting chapter5.pdf.
 #>
@@ -47,7 +51,7 @@
 [CmdletBinding()]
 param(
     [string]$Target = "thesis_full_toc_persian_v3.tex",
-    [string]$Chapter = "",
+    [string[]]$Chapter = @(),
     [switch]$Fast,
     [switch]$NoBib,
     [switch]$NoClean,
@@ -106,14 +110,125 @@ $ChapterMap = @{
 }
 
 $IsSingleChapter = $false
-if (-not [string]::IsNullOrWhiteSpace($Chapter)) {
-    $chapKey = $Chapter.Trim().ToLower()
+$IsMultiChapter = $false
+$cleanNums = @()
+
+$ChapterTokens = @()
+if ($Chapter -and $Chapter.Count -gt 0) {
+    foreach ($item in $Chapter) {
+        if (-not [string]::IsNullOrWhiteSpace($item)) {
+            $parts = $item -split '[,+\s]+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+            $ChapterTokens += $parts
+        }
+    }
+}
+
+if ($ChapterTokens.Count -eq 1) {
+    $chapKey = $ChapterTokens[0].Trim().ToLower()
     if ($ChapterMap.ContainsKey($chapKey)) {
         $Target = $ChapterMap[$chapKey]
         $IsSingleChapter = $true
     } else {
-        Write-Failure "Invalid chapter specified: '$Chapter'. Valid values: 1, 2, 3, 4, 5, 6, appendices"
+        Write-Failure "Invalid chapter specified: '$($ChapterTokens[0])'. Valid values: 1, 2, 3, 4, 5, 6, appendices, or combinations like 4,5"
         exit 1
+    }
+} elseif ($ChapterTokens.Count -gt 1) {
+    $validKeys = @()
+    foreach ($token in $ChapterTokens) {
+        $k = $token.Trim().ToLower()
+        if (-not $ChapterMap.ContainsKey($k)) {
+            Write-Failure "Invalid chapter in combination: '$token'. Valid values: 1, 2, 3, 4, 5, 6, appendices"
+            exit 1
+        }
+        $validKeys += $k
+        $num = $k -replace '^ch', ''
+        $cleanNums += $num
+    }
+
+    $BaseName = "chapter" + ($cleanNums -join "_")
+    $Target = "$BaseName.tex"
+    $IsSingleChapter = $true
+    $IsMultiChapter = $true
+
+    # Auto-generate combination wrapper .tex if not already created
+    if (-not (Test-Path $Target)) {
+        Write-Step "Generate Wrapper" "Creating unified multi-chapter template: $Target"
+        $inputLines = foreach ($vk in $validKeys) {
+            $src = $ChapterMap[$vk] -replace '\\', '/' -replace '\.tex$', ''
+            "\input{$src}"
+        }
+        $texTemplate = @"
+\documentclass[oneside,openany,phd]{TMU-Thesis}
+\usepackage{docmute}
+
+% مشخصات رساله
+\university{تربیت مدرس}
+\faculty{مهندسی برق و کامپیوتر}
+\department{گروه هوش مصنوعی و رباتیکز}
+\subject{مهندسی کامپیوتر}
+\field{مهندسی نرم‌افزار}
+\credits{---}
+\title{یادگیری تقویتی عمیق با شکل‌دهی تصادفی پاداش برای مدیریت عدم قطعیت در سیستم‌های خودوفق}
+\firstsupervisor{دکتر ...}
+\firstadvisor{دکتر ...}
+\name{علیرضا}
+\surname{کاویانی‌فر}
+\studentID{...}
+\thesisdate{بهمن ۱۴۰۴}
+
+\latinuniversity{Tarbiat Modares University}
+\latinfaculty{Faculty of Electrical and Computer Engineering}
+\latinsubject{Computer Engineering}
+\latinfield{Software Engineering}
+\latintitle{Randomized Reward-Shaped Deep Reinforcement Learning for Managing Uncertainty in Self-Adaptive Systems}
+\firstlatinsupervisor{Dr. ...}
+\firstlatinadvisor{Dr. ...}
+\latinname{Alireza}
+\latinsurname{Kavianifar}
+\latinthesisdate{February 2026}
+\latinkeywords{Self-Adaptive Systems, Deep Reinforcement Learning, Randomized Reward Shaping, Uncertainty Management, Formal Verification, UPPAAL-SMC}
+
+\input{commands}
+\standalonefalse
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\raggedbottom
+
+\usepackage{tocloft}
+\providecommand{\cftchapdotfill}{\cftdotfill{\cftdotsep}}
+\providecommand{\cftsecdotfill}{\cftdotfill{\cftdotsep}}
+\providecommand{\cftsubsecdotfill}{\cftdotfill{\cftdotsep}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\thepage}
+\fancyhead[R]{\small\leftmark}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\let\oldheadrule\headrule
+\renewcommand{\headrule}{\oldheadrule}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+
+\begin{document}
+\AutoPersianDigits
+\setstretch{1.5}
+
+$($inputLines -join "`n`n")
+
+\pagestyle{empty}
+{
+\renewcommand{\bibname}{مراجع}
+\settocbibname{مراجع}
+\onehalfspacing
+\bibliographystyle{ieeetr-fa}
+\bibliography{References,MyReferences}
+}
+
+\end{document}
+"@
+        Set-Content -Path $Target -Value $texTemplate -Encoding UTF8
     }
 } elseif ($Target -ne "thesis_full_toc_persian_v3.tex") {
     if ($Target -like "*chapters*" -or $Target -like "*chapter*") {
@@ -169,7 +284,7 @@ foreach ($tool in $requiredTools) {
 
 Write-Banner "DOCTORAL DISSERTATION COMPILATION PIPELINE" "Cyan"
 Write-Host "Target:       " -ForegroundColor Yellow -NoNewline
-Write-Host $(if ($IsSingleChapter) { "$Target (Single Chapter Mode)" } else { "$Target (All Chapters)" })
+Write-Host $(if ($IsMultiChapter) { "$Target (Combined Chapters: $($cleanNums -join ', '))" } elseif ($IsSingleChapter) { "$Target (Single Chapter Mode)" } else { "$Target (All Chapters)" })
 Write-Host "Output PDF:   " -ForegroundColor Yellow -NoNewline; Write-Host $PdfFile
 Write-Host "Mode:         " -ForegroundColor Yellow -NoNewline; Write-Host $(if ($Fast) { "Fast (Single Pass)" } else { "Full (Multi-Pass + BibTeX)" })
 Write-Host "Verification: " -ForegroundColor Yellow -NoNewline

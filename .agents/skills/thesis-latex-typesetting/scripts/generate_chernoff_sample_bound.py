@@ -31,9 +31,9 @@ def create_chernoff_sample_bound_figure(output_path):
 
     # Mark nominal operational point (alpha=0.05, delta=0.02)
     delta_nom = 0.02
-    n_nom = np.log(2.0 / 0.05) / (2.0 * delta_nom**2)  # ~4611
+    n_nom = np.log(2.0 / 0.05) / (2.0 * delta_nom**2)  # ~4611.1 -> 4612
     ax1.scatter(delta_nom, n_nom, color=c_rose, s=95, zorder=5, edgecolors=c_slate_dark)
-    ax1.annotate(r'Nominal Benchmark Point:' + '\n' + r'$\delta = 0.02, \alpha = 0.05 \rightarrow N_{\mathrm{sim}} = 4{,}611$',
+    ax1.annotate(r'Nominal Benchmark Point:' + '\n' + r'$\delta = 0.02, \alpha = 0.05 \rightarrow N_{\mathrm{sim}} \geq 4{,}612$',
                  xy=(delta_nom, n_nom), xytext=(delta_nom + 0.012, n_nom + 1200),
                  arrowprops=dict(facecolor=c_rose, shrink=0.08, width=1.5, headwidth=6),
                  fontsize=8.5, fontweight='bold', color=c_rose,
@@ -68,14 +68,23 @@ def create_chernoff_sample_bound_figure(output_path):
     ax2.plot(sim_counts, latency_sec, 's-', color='#2563EB', linewidth=2.2, markersize=6,
              label=r'UPPAAL-SMC Latency ($\approx 1.2\,\mathrm{ms}$ / simulation)')
 
-    # Point for nominal N_sim = 4611
-    lat_nom = 4611 * 0.0012  # 5.53 seconds
-    ax2.scatter(4611, lat_nom, color=c_rose, s=90, zorder=6, edgecolors=c_slate_dark)
-    ax2.annotate(r'$N_{\mathrm{sim}} = 4{,}611 \rightarrow t \approx 5.53\,\mathrm{s}$' + '\n' + r'($110\times$ Over Deadline!)',
-                 xy=(4611, lat_nom), xytext=(2100, 7.2),
+    # Point for nominal N_sim = 4612
+    lat_nom = 4612 * 0.0012  # 5.53 seconds (analytical at 1.2 ms/sim)
+    ax2.scatter(4612, lat_nom, color=c_rose, s=90, zorder=6, edgecolors=c_slate_dark)
+    ax2.annotate(r'CPS Model Baseline:' + '\n' + r'$N_{\mathrm{sim}} = 4{,}612 \rightarrow t \approx 5.53\,\mathrm{s}$' + '\n' + r'($110\times$ Over Deadline)',
+                 xy=(4612, lat_nom), xytext=(2200, 7.5),
                  arrowprops=dict(facecolor=c_rose, shrink=0.08, width=1.5, headwidth=6),
-                 fontsize=8.5, fontweight='bold', color=c_rose,
+                 fontsize=8.2, fontweight='bold', color=c_rose,
                  bbox=dict(boxstyle='round,pad=0.3', facecolor='#FFF1F2', edgecolor=c_rose, alpha=0.95))
+
+    # Point for empirical DeltaIoT on Ryzen 9 5950X (3.82 s)
+    lat_deltaiot = 3.82
+    ax2.scatter(4612, lat_deltaiot, color='#059669', s=90, zorder=6, edgecolors=c_slate_dark)
+    ax2.annotate(r'DeltaIoT Empirical Batch:' + '\n' + r'$N_{\mathrm{sim}} = 4{,}612 \rightarrow t = 3.82\,\mathrm{s}$' + '\n' + r'($76\times$ Over Deadline)',
+                 xy=(4612, lat_deltaiot), xytext=(4800, 4.3),
+                 arrowprops=dict(facecolor='#059669', shrink=0.08, width=1.5, headwidth=6),
+                 fontsize=8.2, fontweight='bold', color='#059669',
+                 bbox=dict(boxstyle='round,pad=0.3', facecolor='#F0FDF4', edgecolor='#059669', alpha=0.95))
 
     # Hard Real-Time CPS Control Deadline (50ms = 0.05s)
     deadline_sec = 0.05

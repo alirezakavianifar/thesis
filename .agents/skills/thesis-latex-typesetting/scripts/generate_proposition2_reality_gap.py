@@ -89,7 +89,7 @@ def create_proposition2_reality_gap_figure(output_path):
     b0_surr = -0.42
     b0_phys = b0_surr + 0.06  # = -0.36 < -eps_max (-0.15)
     ax1.scatter(b0_surr, b0_phys, color=c_rose, s=80, marker='s', edgecolors=c_slate_dark, linewidth=1.2, zorder=6)
-    ax1.text(b0_surr - 0.12, b0_phys - 0.06, r'Clause 2: Severe $a_0$' + '\n' + r'($\Delta < -2\epsilon_{\max}$)',
+    ax1.text(b0_surr - 0.12, b0_phys - 0.06, r'Clause 2: Severe $a_0$' + '\n' + r'($\Delta_{\min}(a_0) < -2\epsilon_{\max}$)',
              color=c_rose, fontsize=8.0, fontweight='bold', zorder=7)
 
     # Recovered Candidate b* in N_sat (Clause 2: Delta_surr >= 0)

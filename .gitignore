@@ -40,6 +40,7 @@ sample_articles/
 
 # Image folder with large PNGs
 image/RS-DRL.png
+figures/.originals/
 
 # Build directories
 build/

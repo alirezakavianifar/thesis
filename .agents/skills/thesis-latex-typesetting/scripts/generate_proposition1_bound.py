@@ -52,7 +52,7 @@ def create_proposition1_bound_figure(output_path):
     # Shaded Infeasible Parameter Region below physical boundary
     ax1.axhspan(-2.4, -0.65, color='#FEE2E2', alpha=0.55, zorder=1)
     ax1.axhline(-0.65, color='#DC2626', linestyle='-.', linewidth=1.8, zorder=3)
-    ax1.text(-2.3, -0.95, r'\textbf{Physically Infeasible Region:}' + '\n' + r'$[a_0]_2 - 1 < a_{\min}$ (Parameter Bound Collision)',
+    ax1.text(-2.3, -0.95, r'$\mathbf{Physically\ Infeasible\ Region:}$' + '\n' + r'$[a_0]_2 - 1 < a_{\min}$ (Parameter Bound Collision)',
              color='#991B1B', fontsize=8.2, fontweight='bold', zorder=6)
 
     # Coordinate axes

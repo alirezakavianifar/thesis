@@ -84,11 +84,12 @@
 
 از سوی دیگر، اگرچه شبکه‌های عصبی فشرده در یادگیری تقویتی عمیق (\lr{DRL})\LTRfootnote{Deep Reinforcement Learning} زمان استنتاج برخط را به مرتبه زیر میلی‌ثانیه می‌رسانند، اما به‌کارگیری آن در سیستم‌های خودوفق با دو مانع اساسی روبه‌روست: نخست، «تنکی پاداش»\LTRfootnote{Reward Sparsity} \cite{du2023alleviating} و رانش مفهومی \cite{gheibi2024dealing} که عامل را در فضاهای پیکربندی بزرگ در بهینه‌های محلی متوقف می‌سازند؛ و دوم، فقدان تضمین‌های صوری زمان اجرا \cite{alshiekh2018safe, camara2020quantitative}. این چالش‌ها انگیزه اصلی توسعه چارچوب پایه‌ای \lr{RS-DRL}\LTRfootnote{Randomized Reward-Shaped Deep Reinforcement Learning} بر پایه شکل‌دهی تصادفی پاداش و اعتبارسنجی صوری غیرمسدودکننده در سیستم‌های نرم‌افزاری توزیع‌شده مقیاس‌بزرگ \cite{gerostathopoulos2019deltaiot} را شکل می‌دهند.
 
-با این حال، گسترش دامنه کاربرد به سیستم‌های فیزیکی-سایبری بلادرنگ \cite{muccini2016self}، فرآیند تصمیم‌گیری خودوفق را با یک «سه‌گانه برنامه‌ریزی بلادرنگ» مواجه می‌سازد که فراتر از فرضیات چارچوب پایه‌ای است. این گذار بر پایه اصل «توسعه قلمرو عملیاتی»\LTRfootnote{Operational Envelope Expansion} و «شمول معماری»\LTRfootnote{Architectural Subsumption} استوار است؛ به طوری که معماری دوسطحی \rsdrlplus چارچوب پایه‌ای \lr{RS-DRL} را به عنوان حالت حدی خاص خود در بر می‌گیرد؛ در شرایط مفهومی با قیود همگن، مطلوبیت یکنواخت و بودجه‌های زمانی باز، ساختار تصمیم‌گیری دوسطحی به رفتار بازخورد پایه تحویل‌پذیر است:
+با این حال، گسترش دامنه کاربرد به سیستم‌های فیزیکی-سایبری بلادرنگ \cite{muccini2016self}، فرآیند تصمیم‌گیری خودوفق را با یک «سه‌گانه برنامه‌ریزی بلادرنگ» مواجه می‌سازد که فراتر از فرضیات چارچوب پایه‌ای است. این گذار بر پایه اصل «توسعه قلمرو عملیاتی»\LTRfootnote{Operational Envelope Expansion} و «شمول معماری»\LTRfootnote{Architectural Subsumption} استوار است؛ به طوری که معماری دوسطحی \rsdrlplus چارچوب پایه‌ای \lr{RS-DRL} را به عنوان حالت حدی خاص خود در بر می‌گیرد؛ در شرایط مفهومی با حاشیه بازیابی کامل ($\mathcal{M}(s, a) \to 1$)، مشوق مطلوبیت یکنواخت ($\mathcal{U}_{\text{inc}}(a) \to 1$)، و عدم تنش بحرانی در ویژگی‌های محیطی مشاهده‌پذیر ($\mathcal{E}(of) \le \epsilon_{\text{threshold}}$)، ساختار تصمیم‌گیری دوسطحی مستقیماً به رفتار مسیر مستقیم چارچوب پایه‌ای تحویل‌پذیر است:
 \begin{equation}
 \label{eq:subsumption_limit}
-\lim_{\substack{\mathcal{M} \to 1 \\ \mathcal{U}_{\text{inc}} \to 1 \\ T_{\text{budget}} \to \infty}} \text{RS-DRL}^+ \equiv \text{RS-DRL}
+\lim_{\substack{\mathcal{M} \to 1 \\ \mathcal{U}_{\text{inc}} \to 1 \\ \mathcal{E}(of) \le \epsilon_{\text{threshold}}}} \text{RS-DRL}^+ \equiv \text{RS-DRL}
 \end{equation}
+که در آن $\mathcal{M}$ بیانگر حاشیه بازیابی شکست، $\mathcal{U}_{\text{inc}}$ مشوق مطلوبیت اقدام، و $\mathcal{E}(of)$ شاخص تنش محیطی است (تعاریف صوری در بخش‌های \ref{sec:sgos_pattern} و \ref{sec:caepv_pattern} تشریح شده‌اند)؛ در سطح فراپارامترها نیز در صورت برقراری $\rho_{\text{base}} = \rho$ و $\lambda_{\text{margin}} = \lambda_{\text{util}} = 0$، قواعد شکل‌دهی پاداش دوسطحی دقیقاً به رابطه پایه‌ای برنولی همگرا می‌گردند.
 این سه‌گانه از سه چالش هم‌بسته تشکیل می‌گردد: نخست، وجود مهلت‌های زمانی سخت در حلقه‌های کنترل فیزیکی که فرصت اجرای الگوریتم‌های سنگین جستجو و وارسی مدل برخط را سلب نموده و پاسخ‌گویی قطعی در بازه‌های زمانی بسیار محدود را الزامی می‌سازد؛ دوم، غلبه شدید داده‌های شکست در سوابق عملیاتی\LTRfootnote{Operational Logs} که فرآیند آموزش غیربرخط را با خطر واگرایی و گرایش به رفتارهای انفعالی روبه‌رو می‌سازد \cite{andrychowicz2017her}؛ و سوم، وجود شکاف واقعیت\LTRfootnote{Reality Gap} میان مدل‌های تحلیلی و دینامیک فیزیکی که منجر به ناکارآمدی و شکست سپرهای ایمنی زمان اجرا \cite{alshiekh2018safe} در شرایط تنش محیطی می‌گردد. مهار هماهنگ این سه‌گانه، مستلزم گذار به معماری دوسطحی \rsdrlplus است.
 
 هدف اصلی این فصل، ارائه جزئیات فنی، معماری و ریاضیاتی روش‌های پیشنهادی رساله است. ساختار محتوایی این فصل بر پایه یک سیر تکاملی و سلسله‌مراتبی در قالب چهار بخش عمده سازمان‌دهی شده است:
@@ -112,7 +113,7 @@
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.88\linewidth]{figures/system-context.png}
+  \includegraphics[width=0.88\linewidth]{figures/system-context.pdf}
   \caption{معماری سطح بالای رویکرد \lr{RS-DRL} در قالب حلقه \lr{MAPE-K}. این نمودار تعامل میان سیستم مدیریت‌شونده، محیط، و مؤلفه‌های کنترلی را به همراه مخزن دانش مشترک نشان می‌دهد.}
   \label{fig:system-context}
 \end{figure}
@@ -134,7 +135,7 @@
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/process-workflow.png}
+  \includegraphics[width=0.78\textwidth]{figures/process-workflow.pdf}
   \caption{نمودار فعالیت تفصیلی \lr{UML} فرآیند خودوفقی \lr{RS-DRL}؛ تفکیک وظایف پنج‌گانه مسیر زمان اجرای برخط (پایش، تحلیل، برنامه‌ریزی، اعتبارسنجی صوری و اجرا) و فرآیند یادگیری ناهمگام در مخزن دانش در قالب ۶ خط شناوری. خط‌چین افقی، مرز تفکیک غیرمسدودکننده میان مسیر کنترل بلادرنگ و محاسبات یادگیری پس‌زمینه را نشان می‌دهد.}
   \label{fig:process-workflow}
 \end{figure}
@@ -152,7 +153,7 @@
 ۱. پایش \lr{(Monitor)} & مستمر \lr{(Continuous)} & دریافت مستمر سیگنال‌ها و نوسانات کانال از حسگرهای محیطی و تشکیل بردار حالت سیستم ($s_t$). \\ \hline
 ۲. تحلیل \lr{(Analyze)} & رویدادمحور \lr{(Event-driven)} & ارزیابی مقادیر بردار حالت در برابر آستانه‌های \lr{SLA} و تشخیص رخداد نقض کیفیت جهت فعال‌سازی فوری برنامه‌ریز. \\ \hline
 ۳. برنامه‌ریزی \lr{(Planner)} & بلادرنگ و قطعی $(\mathcal{O}(1))$ & اجرای استنتاج مستقیم شبکه عصبی عمیق \lr{(DQN Inference)} و انتخاب پیکربندی بهینه ($a_t^*$) در کمتر از نیم میلی‌ثانیه ($<{0.5}\,\text{ms}$). \\ \hline
-۴. اعتبارسنجی صوری \lr{(Formal Verifier)} & غیرمسدودکننده (مسیر بازخورد) & ارزیابی صوری وضعیت با وارسی مدل آماری \lr{(UPPAAL-SMC)} \cite{david2015uppaal} و ترکیب پاداش محیطی با پاداش صوری ($r = r_{\text{env}} \times r_{\text{smc}}$) خارج از مسیر مستقیم کنترل. \\ \hline
+۴. اعتبارسنجی صوری \lr{(Formal Verifier)} & غیرمسدودکننده (مسیر بازخورد) & ارزیابی صوری وضعیت با وارسی مدل آماری \lr{(UPPAAL-SMC)} \cite{david2015uppaal} و ترکیب پاداش محیطی با پاداش صوری (\mbox{$r = r_{\text{env}} \times r_{\text{smc}}$}) خارج از مسیر مستقیم کنترل. \\ \hline
 ۵. اجرا \lr{(Executor)} & رویدادمحور و مستقیم & اعمال بلادرنگ پیکربندی کنترلی برگزیده بر روی محرک‌ها و بخش‌های اجرایی سیستم هدف. \\ \hline
 ۶. مدیریت دانش و آموزش \lr{(Knowledge - Async)} & پس‌زمینه و ناهمگام \lr{(Async)} & ذخیره تجارب در بافر بازپخش، نمونه‌برداری دسته‌ای (\lr{Mini-batch Sampling})، شکل‌دهی تصادفی پاداش \lr{($\rho$-shaping)}، نزول گرادیان و به‌روزرسانی نرم شبکه هدف بدون مسدودسازی جریان کنترل برخط \cite{mnih2015human}. \\ \hline
 \end{tabular}%
@@ -170,7 +171,7 @@
 \hline
 \textbf{چالش طراحی سیستمی} & \textbf{تصمیم معماری در \lr{RS-DRL}} & \textbf{رویکرد متداول / سنتی} & \textbf{دستاورد و توجیه مهندسی} \\ \hline
 تأخیر محاسباتی آموزش عمیق در برابر مهلت‌های بلادرنگ & تفکیک زمانی محاسبات گرادیان به ریسمان ناهمگام پس‌زمینه و جداسازی استنتاج برخط & اجرای همگام آموزش و تصمیم‌گیری در یک ریسمان یا حلقه کنترلی واحد & استنتاج قطعی با پیچیدگی زمانی ثابت ($\mathcal{O}(1)$) در زمان زیر نیم میلی‌ثانیه ($<{0.5}\,\text{ms}$) \\ \hline
-هدایت صوری کیفیت خدمات در چرخه یادگیری بدون مسدودسازی مسیر کنترل & تعبیه اعتبارسنجی صوری \lr{UPPAAL-SMC} در مسیر بازخورد ($r = r_{\text{env}} \times r_{\text{smc}}$) & استقرار سپرهای صوری یا تحلیل‌های خطی مسدودکننده در مسیر مستقیم تصمیم‌گیری & هدایت ریاضیاتی و پایش صوری رفتار عامل بدون ایجاد وقفه یا تأخیر در اجرای فرمان \\ \hline
+هدایت صوری کیفیت خدمات در چرخه یادگیری بدون مسدودسازی مسیر کنترل & تعبیه اعتبارسنجی صوری \lr{UPPAAL-SMC} در مسیر بازخورد (\mbox{$r = r_{\text{env}} \times r_{\text{smc}}$}) & استقرار سپرهای صوری یا تحلیل‌های خطی مسدودکننده در مسیر مستقیم تصمیم‌گیری & هدایت ریاضیاتی و پایش صوری رفتار عامل بدون ایجاد وقفه یا تأخیر در اجرای فرمان \\ \hline
 فرار از تله بهینه‌های محلی در فضاهای بزرگ و پاداش تنک & شکل‌دهی تصادفی پاداش با ضریب $\rho$ بر پایه ترکیب بازخورد تجربی و صوری & کاوش تصادفی کورکورانه ($\epsilon$-حریصانه) یا توابع پتانسیل ایستای دست‌ساز & عبور پایدار از بهینه‌های محلی و هدایت هوشمند کاوش بدون نیاز به مهندسی دستی دانش دامنه \\ \hline
 مدیریت تجارب ناموفق و پایداری بافر بازپخش & ذخیره‌سازی همگانی کلیه گذارهای موفق ($r=1$) و ناموفق ($r=0$) در بافر مشترک & پالایش یا نادیده گرفتن تجربیات منفی و ذخیره صرف گذارهای موفق & تأمین نمونه‌های لازم جهت فرار از بهینه محلی و ممانعت از فقیر شدن داده‌ای بافر \\ \hline
 \end{tabular}%
@@ -233,7 +234,7 @@ a^* = \arg\max_{a \in \mathcal{A}} Q(s_t, a; \theta)
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/planner-internal.png}
+  \includegraphics[width=0.85\textwidth]{figures/planner-internal.pdf}
   \caption{ساختار داخلی مؤلفه برنامه‌ریز \lr{RS-DRL} در سه مسیر موازی: استنتاج (فقط‌خواندنی)، بازخورد (ترکیب پاداش محیطی و صوری)، و آموزش (به‌روزرسانی در پس‌زمینه با استفاده از شکل‌دهی تصادفی پاداش).}
   \label{fig:planner-internal}
 \end{figure}
@@ -244,10 +245,10 @@ a^* = \arg\max_{a \in \mathcal{A}} Q(s_t, a; \theta)
 چالش مهندسی اصلی در پیاده‌سازی این معماری چندریسمانی، برقراری هماهنگی امن و پیشگیری از بروز شرایط رقابتی\LTRfootnote{Race Conditions} در تعامل میان مسیر استنتاج بلادرنگ و محاسبات آموزش در پس‌زمینه است؛ به‌گونه‌ای که به‌روزرسانی وزن‌های شبکه عصبی به توقف مسیر اجرا نینجامد و از نوسان در تأخیر استنتاج برخط (تغییرپذیری تأخیر\LTRfootnote{Latency Jitter}) جلوگیری نماید. برای تحقق این هدف، سیستم از دو سازوکار همروندی بهره می‌گیرد:
 
 \paragraph{۱. تبادل تجزیه‌ناپذیر وزن‌ها با بافر دوگانه بدون قفل:}
-در این الگو\LTRfootnote{Lock-Free Double Buffering}، دو نسخه مجزا از وزن‌های شبکه عصبی در حافظه نگهداری می‌شوند: نسخه فعال استنتاج ($\theta_{\text{active}}$) و نسخه در حال آموزش ($\theta_{\text{train}}$). ریسمان استنتاج منحصراً از طریق یک اشاره‌گر تجزیه‌ناپذیر فقط‌خواندنی به $\theta_{\text{active}}$ دسترسی دارد و هیچ‌گونه قفل انحصار متقابل\LTRfootnote{Mutex} را فراخوانی نمی‌کند. در مقابل، ریسمان آموزش محاسبات گرادیان را منحصراً بر روی $\theta_{\text{train}}$ اعمال می‌نماید. پس از تکمیل هر دوره به‌روزرسانی گرادیان، انتقال وزن‌های جدید به مسیر استنتاج صرفاً از طریق یک تبادل تجزیه‌ناپذیر اشاره‌گر\LTRfootnote{Atomic Pointer Swap} در مرتبه زمانی ثابت $\mathcal{O}(1)$ انجام می‌پذیرد. این سازوکار هرگونه وقفه و مسدودسازی ناشی از قفل‌های انحصار متقابل را به طور کامل حذف کرده و استنتاج بدون وقفه در زمان زیر نیم میلی‌ثانیه را تضمین می‌نماید.
+در این الگو\LTRfootnote{Lock-Free Double Buffering}، دو نسخه مجزا از وزن‌های شبکه عصبی در حافظه نگهداری می‌شوند: نسخه فعال استنتاج ($\theta_{\text{active}}$) و نسخه در حال آموزش ($\theta_{\text{train}}$). ریسمان استنتاج منحصراً از طریق یک اشاره‌گر تجزیه‌ناپذیر فقط‌خواندنی به $\theta_{\text{active}}$ دسترسی دارد و هیچ‌گونه قفل انحصار متقابل\LTRfootnote{Mutex} را فراخوانی نمی‌کند. در مقابل، ریسمان آموزش محاسبات گرادیان را منحصراً بر روی $\theta_{\text{train}}$ اعمال می‌نماید. پس از تکمیل هر دوره به‌روزرسانی گرادیان، ابتدا وزن‌های به‌روزرسانی‌شده در بافر سایه کپی شده و سپس انتقال وزن‌های جدید به مسیر استنتاج صرفاً از طریق یک تبادل تجزیه‌ناپذیر اشاره‌گر\LTRfootnote{Atomic Pointer Swap} در مرتبه زمانی ثابت $\mathcal{O}(1)$ انجام می‌پذیرد؛ این سازوکار تضمین می‌کند که استنتاج‌های در جریان در مسیر مستقیم (با دیرند کمتر از نیم میلی‌ثانیه) بدون پدیده خواندن بریده (\lr{Torn Reads}) به پایان برسند.
 
 \paragraph{۲. صف حلقه‌ای بدون قفل تجربیات برای ارتباط تولیدکننده-مصرف‌کننده:}
-ثبت گذارهای زمان اجرا در بافر بازپخش از طریق یک صف حلقه‌ای تک‌تولیدکننده-تک‌مصرف‌کننده\LTRfootnote{Single-Producer Single-Consumer (SPSC) Lock-Free Ring Buffer} سازمان‌دهی می‌شود. مسیر بازخورد داده‌های تجارب را در انتهای صف قرار داده و ریسمان آموزش در پس‌زمینه آن‌ها را جهت نمونه‌برداری برداشت می‌کند. این الگوی ساختاری مانع از ایجاد شرایط رقابتی بر سر بافر بازپخش گردیده و مسیر کنترل برخط را کاملاً از فرآیند یادگیری مجزا نگاه می‌دارد.
+ثبت گذارهای زمان اجرا در بافر بازپخش از طریق یک صف حلقه‌ای تک‌تولیدکننده-تک‌مصرف‌کننده\LTRfootnote{Single-Producer Single-Consumer (SPSC) Lock-Free Ring Buffer} به بافر حلقوی تجربیات $\mathcal{D}$ (با ظرفیت $10^5$ گذار) تزریق می‌گردد. مسیر بازخورد داده‌های تجارب را بدون قفل در انتهای صف قرار داده و ریسمان آموزش در پس‌زمینه با دسترسی مستقیم و امن، نمونه‌برداری تصادفی دسته‌ای ($B \sim \mathcal{D}$) را به صورت همروند انجام می‌دهد. این الگوی ساختاری مانع از ایجاد شرایط رقابتی بر سر بافر بازپخش گردیده و مسیر کنترل برخط را کاملاً از فرآیند یادگیری مجزا نگاه می‌دارد.
 
 \section{سازوکار شکل‌دهی تصادفی پاداش در فضای تنک (\lr{RS-DRL})}
 \label{sec:learning}
@@ -273,7 +274,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.82\textwidth]{figures/reward-shaping.png}
+  \includegraphics[width=0.82\textwidth]{figures/reward-shaping.pdf}
   \caption{سازوکار شکل‌دهی تصادفی پاداش با تزریق متغیر برنولی ($\rho$) بر روی تجربیات ناموفق در بافر بازپخش.}
   \label{fig:reward-shaping-diagram}
 \end{figure}
@@ -292,7 +293,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 \begin{latin}
 \small
 \begin{algorithmic}[1]
-\STATE \textbf{Input:} Replay buffer $\mathcal{D}$, learning rate $\alpha$, discount factor $\gamma$, reward shaping factor $\rho$, target network soft update rate $\tau$
+\STATE \textbf{Input:} Replay buffer $\mathcal{D}$, learning rate $\alpha$, discount factor $\gamma$, reward shaping factor $\rho$, target network soft update rate $\tau_{\text{soft}}$
 \STATE \textbf{Initialize:} Main Q-network weights $\theta$, target network weights $\theta' \leftarrow \theta$
 \FOR{each adaptation episode $episode = 1, \dots, M$}
   \STATE Observe initial state $s$
@@ -312,7 +313,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
       \STATE $y_i \leftarrow \tilde{r}_i + \gamma \max_{a'} Q(s'_i, a'; \theta')$ \COMMENT{Compute Bellman target with shaped reward \cite{mnih2015human}}
     \ENDFOR
     \STATE $\theta \leftarrow \theta - \alpha \nabla_\theta \frac{1}{|B|} \sum_{i \in B} (y_i - Q(s_i, a_i; \theta))^2$ \COMMENT{Minibatch gradient descent on main network}
-    \STATE $\theta' \leftarrow \tau\theta + (1-\tau)\theta'$ \COMMENT{Polyak soft target update for training stability \cite{lillicrap2015continuous}}
+    \STATE $\theta' \leftarrow \tau_{\text{soft}}\theta + (1-\tau_{\text{soft}})\theta'$ \COMMENT{Target update (Polyak soft rate $\tau_{\text{soft}}$ or periodic hard $C$)}
     \STATE $s \leftarrow s'$
   \ENDWHILE
 \ENDFOR
@@ -320,7 +321,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 \end{latin}
 \begin{flushleft}
 \footnotesize
-\textbf{نکته روش‌شناختی:} الگوریتم \ref{alg:rs_drl_final} شالوده تصمیم‌گیری در سطح اول معماری رساله است که در بخش‌های بعدی به معماری دوسطحی \rsdrlplus ارتقا می‌یابد.
+\textbf{نکته روش‌شناختی:} الگوریتم \ref{alg:rs_drl_final} چرخه منطقی داده‌ها و پردازش گذارها را در سطح اول معماری رساله به تصویر می‌کشد. در پیاده‌سازی فیزیکی سیستم، این عملیات در سه مسیر مستقل و چندریسمانی (مسیر ۱: استنتاج بلادرنگ $\mathcal{O}(1)$ با $\theta_{\text{active}}$، مسیر ۲: ارزیابی ناهمگام آپال در پس‌زمینه و درج در $\mathcal{D}$، و مسیر ۳: آموزش گرادیانی روی $\theta_{\text{train}}$ با تبادل بدون قفل اشاره‌گرها و انتقال دوره‌ای به شبکه هدف) تفکیک شده‌اند تا هیچ تأخیری به مسیر مستقیم کنترل تحمیل نگردد.
 \end{flushleft}
 \end{algorithm}
 
@@ -331,7 +332,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/knowledge-flow.png}
+  \includegraphics[width=0.85\textwidth]{figures/knowledge-flow.pdf}
   \caption[جریان داده تفصیلی و الگوی دسترسی به مخزن دانش]{معماری تفصیلی مخزن دانش مشترک و الگوی دسترسی همروند مؤلفه‌ها. این نمودار ساختارهای داده شش‌گانه حافظه مشترک، کانال‌های دسترسی خواندن/نوشتن مؤلفه‌های حلقه کنترلی، و تبادل تجزیه‌ناپذیر بدون قفل اشاره‌گر مدل‌ها را تبیین می‌نماید (متناظر با مشخصات جدول \ref{tab:interaction}).}
   \label{fig:knowledge-flow}
 \end{figure}
@@ -349,9 +350,9 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 \textbf{مؤلفه سیستم} & \textbf{دسترسی خواندن} & \textbf{دسترسی نوشتن} & \textbf{نحوه فراخوانی} & \textbf{تأثیر محاسباتی} \\ \hline
 \textbf{پایش \lr{(Monitor)}} & داده‌های خام کاوشگرهای پایش & بردار حالت جدید $s_t$ & مستمر (هر دوره) & ناچیز (کمتر از $0.1\,\text{ms}$) \\ \hline
 \textbf{تحلیل \lr{(Analyze)}} & آستانه‌های کیفی \lr{QoS} & سیگنال نقض قید & رویدادمحور & ناچیز (کمتر از $0.05\,\text{ms}$) \\ \hline
-\textbf{برنامه‌ریز \lr{(Plan)}} & وزن‌های شبکه عصبی $\theta$ & اقدام پیشنهادی $a^*$ & رویدادمحور & بسیار پایین ($0.3\,\text{ms}$) \\ \hline
-\textbf{اعتبارسنج صوری} & مدل صوری سیستم، مشخصه \lr{PCTL} & پاداش صوری $r_{smc}$ & رویدادمحور & غیرمسدودکننده (پس‌زمینه) \\ \hline
-\textbf{یادگیرنده \lr{(Train)}} & بافر بازپخش $\mathcal{D}$ & بافر $\mathcal{D}$ و وزن‌های جدید $\theta$ & مستمر در پس‌زمینه & صفر (مجزا) \\ \hline
+\textbf{برنامه‌ریز \lr{(Plan)}} & وزن‌های فعال شبکه عصبی $\theta_{\text{active}}$ & اقدام پیشنهادی $a^*$ & رویدادمحور & بسیار پایین ($0.3\,\text{ms}$) \\ \hline
+\textbf{اعتبارسنج صوری} & مدل صوری سیستم، مشخصه \lr{PCTL} & سیگنال پاداش صوری $r_{smc}$ و درج گذار در $\mathcal{D}$ & رویدادمحور & غیرمسدودکننده (پس‌زمینه) \\ \hline
+\textbf{یادگیرنده \lr{(Train)}} & نمونه‌برداری تصادفی از بافر $\mathcal{D}$ & وزن‌های آموزشی $\theta_{\text{train}}$ و تبادل تجزیه‌ناپذیر & مستمر در پس‌زمینه & صفر (مجزا) \\ \hline
 \end{tabular}%
 }
 \end{table}
@@ -371,7 +372,7 @@ y_t = \tilde{r}_t + \gamma \max_{a'} Q(s_{t+1}, a'; \theta')
 \psi = P_{\geq 1-\alpha} \left[ \Box_{\leq T} \ (C_j(s) \le \tau_j) \right]
 \label{eq:pctl_query}
 \end{equation}
-\textbf{تفسیر ریاضی پرسش یادشده:} آیا تحت وضعیت و اقدام انتخابی جاری، احتمال اینکه قیود کیفی $C_j(s)$ در افق زمانی $T$ همواره در محدوده آستانه مجاز $\tau_j$ باقی بمانند، حداقل $1-\alpha$ خواهد بود؟ (به عنوان نمونه، در نمونه‌سازی بستر شبکه حسگر بی‌سیم، این مشخصه به صورت عدم تجاوز نرخ اتلاف بسته‌ها از آستانه مجاز با رابطه $\psi = P_{\ge 0.99}[\diamondsuit_{\le T} (\text{PacketLoss} < 0.1)]$ صورت‌بندی می‌شود که در فصل دوم و پیوست الف به تفصیل تشریح شده است).
+\textbf{تفسیر ریاضی پرسش یادشده:} آیا تحت وضعیت و اقدام انتخابی جاری، احتمال اینکه قیود کیفی $C_j(s)$ در افق زمانی $T$ همواره در محدوده آستانه مجاز $\tau_j$ باقی بمانند، حداقل $1-\alpha$ خواهد بود؟ (به عنوان نمونه، در نمونه‌سازی بستر شبکه حسگر بی‌سیم، این مشخصه پایداری و عدم تجاوز نرخ اتلاف بسته‌ها از آستانه مجاز با رابطه $\psi = P_{\ge 0.99}[\Box_{\le T} (\text{PacketLoss} < 0.1)]$ صورت‌بندی می‌شود که در فصل دوم و پیوست الف به تفصیل تشریح شده است).
 
 \paragraph{فرمول‌بندی فیلتر ایمنی و سیگنال پاداش صوری ($r_{smc}$):}
 موتور اعتبارسنجی صوری با اجرای شبیه‌سازی‌های متعدد آماری بر روی مدل پویای سیستم، سیگنال دودویی صوری $r_{smc}(s, a) \in \{0, 1\}$ را صادر می‌نماید؛ به طوری که در صورت ارضای مشخصه منطق زمانی $\psi$ در حالت $s$ تحت اقدام وفقی $a$ مقدار $r_{smc} = 1$ و در صورت نقض آن مقدار $r_{smc} = 0$ حاصل می‌گردد. این خروجی دودویی نقش فیلتر کیفی صوری را ایفا می‌نماید. در معماری پیشنهادی، این اعتبارسنجی صوری با پاداش محیطی ترکیب شده ($r = r_{env} \times r_{smc}$) تا تجربیاتی که منجر به نقض تضمین‌های ریاضیاتی ایمنی می‌گردند، با پاداش صفر جریمه شوند.
@@ -394,7 +395,7 @@ N_{sim} \geq \frac{\ln(2/\alpha)}{2\delta^2}
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.88\textwidth]{figures/fig_chernoff_sample_bound.png}
+  \includegraphics[width=0.88\textwidth]{figures/fig_chernoff_sample_bound.pdf}
   \caption{تحلیل تحلیلی کران نمونه‌برداری چرنوف-هوفدینگ و بن‌بست زمانی وارسی صوری برخط: (الف) پویایی رشد غیرخطی تعداد شبیه‌سازی‌های تصادفی مورد نیاز ($N_{sim}$) بر حسب حاشیه خطای مجاز ($\delta$) برای سطوح مختلف معناداری آماری ($\alpha$)؛ (ب) مقایسه تأخیر محاسباتی اجرای وارسی مدل آماری \lr{UPPAAL-SMC} (در مقیاس ثانیه‌ای) با سقف مهلت زمانی قطعی در سیستم‌های فیزیکی-سایبری بلادرنگ ($50\,\text{ms}$) که ضرورت مهندسی تفکیک ناهمگام اعتبارسنجی صوری به مسیر پس‌زمینه را به اثبات می‌رساند.}
   \label{fig:chernoff_sample_bound}
 \end{figure}
@@ -440,7 +441,7 @@ N_{sim} \geq \frac{\ln(2/\alpha)}{2\delta^2}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.95\textwidth]{figures/fig_system_architecture.png}
+\includegraphics[width=0.95\textwidth]{figures/fig_system_architecture.pdf}
 \caption{نمای کلان معماری دوسطحی \rsdrlplus: خط لوله آموزش غیربرخط با شکل‌دهی پاداش حساس به حاشیه در سطح پایین (الگوی \sgos)، و حلقه کنترلی \lr{MAPE-K} مجهز به برنامه‌ریز سلسله‌مراتبی سه‌مرحله‌ای \pgalr در سطح برخط (الگوی \caepv) برای کنترل خودگردان سیستم‌های فیزیکی-سایبری و توزیع‌شده (قراردادهای مستقل از دامنه در جدول \ref{tab:pattern_contracts_vs_instantiations} تدوین شده‌اند).}
 \label{fig:rsdrl_plus_system_architecture}
 \end{figure*}
@@ -506,12 +507,15 @@ N_{sim} \geq \frac{\ln(2/\alpha)}{2\delta^2}
 \label{eq:recoverability_margin}
 \mathcal{M}(s, a) = \left( \frac{n_{\text{sat}}}{K} \right)^\alpha \exp\left( - \frac{\bar{\Delta}_{\text{def}}(s, a)}{\sigma_\Delta} \right)
 \end{equation}
-که در آن $K$ تعداد کل الزامات و قیود هم‌زمان، $n_{\text{sat}}$ تعداد الزامات ارضاشده، $\alpha \ge 1$ توان جریمه نقض هم‌زمان چند قید، و $\sigma_\Delta > 0$ ضریب مقیاس خطای کسری است. مقدار $\bar{\Delta}_{\text{def}}(s, a)$ به عنوان میانگین کسری انحراف از آستانه روی الزامات نقض‌شده به صورت صوری از رابطه زیر محاسبه می‌شود:
+که در آن $K$ تعداد کل الزامات و قیود هم‌زمان، $n_{\text{sat}}$ تعداد الزامات ارضاشده، $\alpha \ge 1$ توان جریمه نقض هم‌زمان چند قید، و $\sigma_\Delta > 0$ ضریب مقیاس خطای کسری است. برآورد مدل‌های جانشین با برش مقادیر به بازه استاندارد $M_k(s, a) \in [0, 1]$ مقید می‌گردد تا کران‌های کسری همواره معتبر باقی بمانند. مقدار $\bar{\Delta}_{\text{def}}(s, a)$ به عنوان میانگین کسری انحراف از آستانه روی الزامات نقض‌شده به صورت صوری از رابطه زیر محاسبه می‌شود:
 \begin{equation}
 \label{eq:delta_def_formula}
-\bar{\Delta}_{\text{def}}(s, a) = \frac{1}{|\mathcal{K}_{\text{viol}}|} \sum_{k \in \mathcal{K}_{\text{viol}}} \frac{\tau_k - M_k(s, a)}{\tau_k} \qquad (\text{if } |\mathcal{K}_{\text{viol}}| > 0 \text{, otherwise } 0)
+\bar{\Delta}_{\text{def}}(s, a) = \begin{cases}
+\dfrac{1}{|\mathcal{K}_{\text{viol}}|} \displaystyle\sum_{k \in \mathcal{K}_{\text{viol}}} \dfrac{\tau_k - M_k(s, a)}{\tau_k}, & \text{if } |\mathcal{K}_{\text{viol}}| > 0, \\[8pt]
+0, & \text{otherwise}.
+\end{cases}
 \end{equation}
-که در آن $\mathcal{K}_{\text{viol}} = \{k \in \{0, \dots, K-1\} \mid M_k(s, a) < \tau_k\}$ نشان‌دهنده مجموعه اندیس‌های قیود نقض‌شده و $n_{\text{sat}} = K - |\mathcal{K}_{\text{viol}}|$ است.
+که در آن $\mathcal{K}_{\text{viol}} = \{k \in \{0, \dots, K-1\} \mid M_k(s, a) < \tau_k\}$ نشان‌دهنده مجموعه اندیس‌های قیود نقض‌شده و $n_{\text{sat}} = K - |\mathcal{K}_{\text{viol}}|$ است؛ همچنین برای گذارهای کاملاً سازگار در روش منفرد \mursdrl، پاداش ایمن استاندارد $r_{\text{safe}}(s, a) = 1.0$ منظور می‌گردد.
 
 از منظر مفهومی، این فرمول‌بندی دو بعد مجزا از خطا را ادغام می‌نماید: \textbf{پهنای شکست} ($n_{\text{sat}}/K$) که نشان‌دهنده نسبت قیدهای ارضاشده است، و \textbf{عمق شکست} ($\bar{\Delta}_{\text{def}}$) که شدت تخطی از حاشیه آستانه‌ها را منعکس می‌کند. اگر چندین قید به طور هم‌زمان نقض گردند، عبارت توان‌دار با نرخ چندجمله‌ای افت کرده و با افزایش عمق انحراف از آستانه‌ها، ضریب نمایی نیز به صفر میل می‌کند. بنابراین، شکست‌های کامل ($n_{\text{sat}}=0$) دارای حاشیه بازیابی دقیقاً صفر بوده ($\mathcal{M}=0$) و شکست‌های چندگانه حاد با نرخ توان‌دار شدیداً تضعیف می‌گردند؛ بدین ترتیب، صرفاً انحرافات تک‌قیدی یا حاشیه‌ای، امکان دریافت پاداش بازطراحی را خواهند داشت.
 
@@ -541,7 +545,7 @@ P_{\text{reshape}}(s, a) = \rho_{\text{base}} \cdot \mathcal{M}(s, a) \cdot \lef
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.84\linewidth]{figures/fig_failure_selection_mechanism.png}
+\includegraphics[width=0.84\linewidth]{figures/fig_failure_selection_mechanism.pdf}
 \caption{مقایسه سازوکار شکل‌دهی پاداش در \mursdrl در برابر \lr{RS-DRL} پایه‌ای: (الف) تغییر پیوسته احتمال بر اساس تعداد الزامات ارضاشده و حاشیه بازیابی؛ (ب) مقیاس‌بندی پاداش خوش‌بینانه متناسب با مطلوبیت مأموریت.}
 \label{fig:failure_selection_mechanism}
 \end{figure}
@@ -549,12 +553,12 @@ P_{\text{reshape}}(s, a) = \rho_{\text{base}} \cdot \mathcal{M}(s, a) \cdot \lef
 \subsection{بافرسازی حاشیه اطمینان برای پایداری در مرزها (\cmrsdrl)}
 \label{subsec:cm_rs_drl_method}
 
-در سیستم‌های متداول آستانه‌محور ($M_k \ge \tau_k$)، تصمیمی که در لبه مرز آستانه پذیرش قرار دارد پاداشی هم‌ارز با تصمیمات دارای حاشیه امن بالا دریافت می‌کند. این پدیده منجر به شکنندگی سیاست کنترلی در برابر نوسانات تصادفی محیطی می‌گردرد. جهت مدیریت این ناپایداری مرزی، سازوکار \cmrsdrl بافر حاشیه اطمینان نرمال‌شده را به شرح زیر محاسبه می‌نماید:
+در سیستم‌های متداول آستانه‌محور ($M_k \ge \tau_k$)، تصمیمی که در لبه مرز آستانه پذیرش قرار دارد پاداشی هم‌ارز با تصمیمات دارای حاشیه امن بالا دریافت می‌کند. این پدیده منجر به شکنندگی سیاست کنترلی در برابر نوسانات تصادفی محیطی می‌گردد. جهت مدیریت این ناپایداری مرزی، سازوکار \cmrsdrl بافر حاشیه اطمینان نرمال‌شده را به شرح زیر محاسبه می‌نماید:
 \begin{equation}
 \label{eq:norm_conf_buffer}
 \bar{\mathcal{B}}(s, a) = \frac{1}{K} \sum_{k=0}^{K-1} \frac{\max\big( 0, M_k(s, a) - \tau_k \big)}{1 - \tau_k} \in [0, 1]
 \end{equation}
-که در آن $M_k(s, a)$ برآورد اطمینان قید $k$-ام، $\tau_k$ آستانه پذیرش متناظر، و مخرج $(1 - \tau_k)$ ضریب نرمال‌سازی حاشیه مجاز روی هر قید است.
+که در آن $M_k(s, a) \in [0, 1]$ برآورد اطمینان قید $k$-ام، $\tau_k \in (0, 1)$ آستانه پذیرش اکیداً کوچکتر از یک (جهت پیشگیری از تکینگی تقسیم بر صفر)، و مخرج $(1 - \tau_k)$ ضریب نرمال‌سازی حاشیه مجاز روی هر قید است. در شرایط شکست جزئی ($0 < n_{\text{sat}} < K$)، بافر $\bar{\mathcal{B}}$ حاشیه اطمینان قیود ارضاشده را محاسبه نموده و به گذارهایی که بخش عمده قیود را با حاشیه بالا پاس کرده‌اند در رابطه شکل‌دهی \ref{eq:r_cm_reshaped} پاداش بیشتری اختصاص می‌دهد.
 
 با استناد به این بافر اطمینان، سیگنال پاداش ایمن و پاداش شکل‌یافته با ضرایب وزن‌دهی $\lambda_{\text{margin}}$ و $\lambda_{\text{util}}$ بازنویسی و تقویت می‌شوند:
 \begin{align}
@@ -582,10 +586,10 @@ r_{\text{safe}}(s, a) &= 1.0 + \lambda_{\text{margin}} \bar{\mathcal{B}}(s, a) +
 \label{eq:margin_gate}
 \Delta_{\min}(s, a_0) = \min_{k} \big( M_k(s, a_0) - \tau_k \big), \qquad \mathcal{E}(of) = \sum_{j=1}^{|\mathcal{OF}|} w_j \cdot \widetilde{of}_j
 \end{equation}
-در صورتی که $\Delta_{\min}(s, a_0) \ge 0$ و شدت تنش محیطی زیر آستانه بحرانی باشد ($\mathcal{E}(of) \le \epsilon_{\text{threshold}}$)، گزینه پایه بلافاصله در «مسیر سریع»\LTRfootnote{Fast Path} بدون هیچ تأخیری به محرک‌های سیستم هدف اعمال می‌گردد.
+که در آن $\widetilde{of}_j \in [0, 1]$ مقادیر نرمال‌شده ویژگی‌های محیطی مشاهده‌پذیر و $w_j \ge 0$ وزن‌های اهمیت با شرط نرمال‌سازی $\sum_{j=1}^{|\mathcal{OF}|} w_j = 1$ هستند. در صورتی که $\Delta_{\min}(s, a_0) \ge 0$ و شدت تنش محیطی زیر آستانه بحرانی باشد ($\mathcal{E}(of) \le \epsilon_{\text{threshold}}$)، گزینه پایه بلافاصله در «مسیر سریع»\LTRfootnote{Fast Path} بدون هیچ تأخیری به محرک‌های سیستم هدف اعمال می‌گردد.
 
 \paragraph{مرحله سوم: پالایش دفاعی ۱-گام هدفمند مبتنی بر \lr{XAI}:}
-در صورت نقض هر یک از شرایط یادشده، پالایش محلی پیرامون $a_0$ با بهره‌گیری از روش‌های هوش مصنوعی توضیح‌پذیر (\lr{XAI})\LTRfootnote{Explainable Artificial Intelligence} بر روی زیرفضای حساسیت حاصل از مقادیر شاپلی درختی \lr{TreeSHAP}\footnote{مبتنی بر چارچوب مقادیر شاپلی \cite{lundberg2017unified} (\lr{\url{https://github.com/shap/shap}})، روش \lr{TreeSHAP} برخلاف روش‌های مدل‌ناآگاه نظیر \lr{KernelSHAP} که دارای پیچیدگی نمایی در تعداد ویژگی‌ها هستند، با بهره‌گیری از ساختار درختی مدل‌های جانشین، اهمیت ویژگی‌ها را در مرتبه زمانی چندجمله‌ای $\mathcal{O}(T \cdot L \cdot D^2)$ به طور دقیق محاسبه می‌کند.} متمرکز می‌شود:
+در صورت نقض هر یک از شرایط یادشده، پالایش محلی پیرامون $a_0$ با بهره‌گیری از روش‌های هوش مصنوعی توضیح‌پذیر (\lr{XAI})\LTRfootnote{Explainable Artificial Intelligence} بر روی زیرفضای حساسیت حاصل از مقادیر شاپلی درختی \lr{TreeSHAP}\footnote{مبتنی بر چارچوب مقادیر شاپلی \cite{lundberg2017unified} (\lr{\url{https://github.com/shap/shap}})، روش \lr{TreeSHAP} برخلاف روش‌های مدل‌ناآگاه نظیر \lr{KernelSHAP} که دارای پیچیدگی نمایی در تعداد ویژگی‌ها هستند، با بهره‌گیری از ساختار درختی مدل‌های جانشین (شامل $T$ درخت، با حداکثر $L$ برگ و عمق بیشینه $D$)، اهمیت ویژگی‌ها را در مرتبه زمانی چندجمله‌ای $\mathcal{O}(T \cdot L \cdot D^2)$ به طور دقیق محاسبه می‌کند. در معماری پیشنهادی، این فرآیند به صورت کاملاً غیربرخط بر روی سوابق عملیاتی اجرا می‌گردد تا ابعاد حساسیت از پیش استخراج شوند.} متمرکز می‌شود:
 \begin{equation}
 \label{eq:shap_projection}
 \mathcal{I}_{\text{XAI}}(j) = \frac{1}{K} \sum_{k=0}^{K-1} \mathbb{E}_{(s, a) \sim \mathcal{D}} \big[ |\phi_j(M_k, (s, a))| \big]
@@ -603,7 +607,7 @@ r_{\text{safe}}(s, a) &= 1.0 + \lambda_{\text{margin}} \bar{\mathcal{B}}(s, a) +
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.80\linewidth]{figures/fig_decision_hierarchy_flowchart.png}
+\includegraphics[width=0.80\linewidth]{figures/fig_decision_hierarchy_flowchart.pdf}
 \caption[نمودار جریان سلسله‌مراتب تصمیم‌گیری سازوکار \pgalr]{نمودار جریان سلسله‌مراتب تصمیم‌گیری سازوکار \pgalr: پیشنهاد مستقیم سیاست در مرحله ۱ با استنتاج در زمان ثابت $\mathcal{O}(1)$، دروازه تنش مرحله ۲، پالایش محلی ۱-گام مرحله ۳ و سازوکار پشتیبان حداکثرسازی حاشیه.}
 \label{fig:decision_hierarchy_flowchart}
 \end{figure}
@@ -617,7 +621,7 @@ r_{\text{safe}}(s, a) &= 1.0 + \lambda_{\text{margin}} \bar{\mathcal{B}}(s, a) +
 \label{eq:complexity_bound}
 |\mathcal{N}(a_0)| \le 2m + 1
 \end{equation}
-در صورتی که هر یک از ابعاد در مرزهای بازه مقادیر خود قرار داشته باشند، نامساوی به صورت اکید ($< 2m + 1$) خواهد بود.
+در صورتی که هر یک از ابعاد حساسیت تصویرشده $j \in \text{Top-}m(\mathcal{I}_{\text{XAI}})$ در مرزهای بازه مقادیر فیزیکی خود قرار داشته باشند (یا متغیر کنترلی دارای ماهیت دودویی $\{0, 1\}$ باشد)، انحراف در آن جهت مسدود شده و نامساوی به صورت اکید ($|\mathcal{N}(a_0)| < 2m + 1$) برقرار خواهد بود.
 \end{proposition}
 
 \begin{proof}
@@ -631,7 +635,7 @@ r_{\text{safe}}(s, a) &= 1.0 + \lambda_{\text{margin}} \bar{\mathcal{B}}(s, a) +
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.88\textwidth]{figures/fig_proposition1_bound.png}
+  \includegraphics[width=0.88\textwidth]{figures/fig_proposition1_bound.pdf}
   \caption{تحلیل هندسی و مقیاس‌پذیری کران کاردینالیتی همسایگی در گزاره \ref{prop:complexity_bound}: (الف) ساختار هندسی ابرلوزی (\lr{$L_1$ Cross-Polytope}) در فضای کاندیداها حول پیشنهاد پایه $a_0$ بر روی ابعاد حساسیت شاپلی، هرس جستجوی مکعبی نامقید $L_\infty$ و اثر انقباضی مرزهای فیزیکی در کاهش کاندیداها به کمتر از $2m+1$؛ (ب) مقایسه رشد مرتبه پیچیدگی کاندیداها در برابر ابعاد عمل ($d_A$) میان جستجوی کامل ($3^{d_A}$)، جستجوی تک‌محوره ($2d_A+1$) و کران ثابت پیشنهادی ($2m+1 \le 7$) در مقایسه با سقف مجاز بودجه زمانی بلادرنگ ($3.5\,\text{ms}$).}
   \label{fig:proposition1_bound}
 \end{figure}
@@ -670,7 +674,7 @@ a^* = \begin{cases}
 
 \begin{proposition}[حفظ ایمنی و مطلوبیت در فضای جانشین و کران‌دار بودن افت فیزیکی در حضور شکاف واقعیت]
 \label{prop:safety_preservation}
-فرض کنید $a_0 = \arg\max_{a \in \mathcal{A}} Q_{\text{MU}}(s, a)$ پیشنهاد پایه سیاست، $\mathcal{N}(a_0)$ همسایگی ۱-گام حساسیت، و $a^*$ اقدام وفقی برگزیده توسط قاعده تصمیم‌گیری محافظت‌شده (معادله \ref{eq:alr_selection})\footnote{این گزاره اثبات می‌کند که قاعده تصمیم‌گیری محافظت‌شده همواره گزینه‌ای را برمی‌گزیند که از نظر شاخص سازگاری صوری، وضعیتی برابر یا برتر از پیشنهاد پایه سیاست $a_0$ داشته باشد؛ به گونه‌ای که هرگز گزینه‌ای ایمن به گزینه‌ای ناامن بدل نشود.} باشد. در این صورت، در فضای ارزیابی مدل‌های جانشین، نامساوی عدم تضعیف ایمنی نسبت به پیشنهاد پایه برقرار است:
+با تعریف تابع نشانگر سازگاری صوری به صورت $\mathbb{I}_{\text{sat}}(s, a) \triangleq \mathbb{I}(\Delta_{\min}(s, a) \ge 0) \in \{0, 1\}$، فرض کنید $a_0 = \arg\max_{a \in \mathcal{A}} Q_{\text{MU}}(s, a)$ پیشنهاد پایه سیاست، $\mathcal{N}(a_0)$ همسایگی ۱-گام حساسیت، و $a^*$ اقدام وفقی برگزیده توسط قاعده تصمیم‌گیری محافظت‌شده (معادله \ref{eq:alr_selection})\footnote{این گزاره اثبات می‌کند که قاعده تصمیم‌گیری محافظت‌شده همواره گزینه‌ای را برمی‌گزیند که از نظر شاخص سازگاری صوری، وضعیتی برابر یا برتر از پیشنهاد پایه سیاست $a_0$ داشته باشد؛ به گونه‌ای که هرگز گزینه‌ای ایمن به گزینه‌ای ناامن بدل نشود.} باشد. در این صورت، در فضای ارزیابی مدل‌های جانشین، نامساوی عدم تضعیف ایمنی نسبت به پیشنهاد پایه برقرار است:
 \begin{equation}
 \label{eq:app_invariant3_formal}
 \mathbb{I}_{\text{sat}}(s, a^*) \ge \mathbb{I}_{\text{sat}}(s, a_0)
@@ -700,7 +704,7 @@ a^* = \begin{cases}
     اگر $a_0$ دروازه تنش محیطی را پشت سر بگذارد ($\mathcal{E}(of) \le \epsilon_{\text{threshold}}$)، مسیر سریع بدون تغییر $a^* = a_0$ را اجرا می‌کند که معادله \ref{eq:app_invariant3_formal} را با تساوی ارضا می‌نماید. اگر پالایش مرحله ۳ به دلیل تنش محیطی فعال شود، از آنجا که $a_0 \in \mathcal{N}_{\text{sat}}(s, a_0)$، مجموعه کاندیداهای سازگار ناتهی است ($\mathcal{N}_{\text{sat}} \neq \emptyset$). طبق شاخه اول معادله \ref{eq:alr_selection}، بهینه‌سازی منحصراً در $\mathcal{N}_{\text{sat}}$ انجام می‌شود؛ بنابراین $\mathbb{I}_{\text{sat}}(s, a^*) = 1 \ge \mathbb{I}_{\text{sat}}(s, a_0)$ و $\Delta_{\min}(s, a^*) \ge 0$ تضمین است. همچنین به دلیل بیشینه‌سازی تابع هدف $\mathcal{J}$ بر روی این مجموعه، $\mathcal{J}(s, a^*) = \max_{a \in \mathcal{N}_{\text{sat}}} \mathcal{J}(s, a) \ge \mathcal{J}(s, a_0)$ برقرار خواهد بود.
     
     \item \textbf{حالت دوم: پیشنهاد پایه ناسازگار است ($\mathbb{I}_{\text{sat}}(s, a_0) = 0$):}
-    اگر حداقل یک کاندیدا در $\mathcal{N}(a_0)$ تمام قیدهای جانشین را برآورده سازد، $\mathcal{N}_{\text{sat}} \neq \emptyset$ شده و گزینه سازگار برگزیده می‌شود که منجر به بهبود اکید ایمنی می‌گردد ($\mathbb{I}_{\text{sat}}(s, a^*) = 1 > 0$). اگر هیچ کاندیدایی سازگار نباشد ($\mathcal{N}_{\text{sat}} = \emptyset$)، قاعده پشتیبان حداکثرسازی مجموع حاشیه‌ها $\sum (M_k - \tau_k)$ (یا معادل آن میانگین حاشیه $\bar{\Delta}$) را روی $\{a_0\} \cup \mathcal{N}(a_0)$ اجرا می‌کند. چون $a_0$ در مجموعه گزینه‌های مورد ارزیابی موجود است، لزوماً $\bar{\Delta}(s, a^*) \ge \bar{\Delta}(s, a_0)$ حاصل می‌گردد.
+    اگر حداقل یک کاندیدا در $\mathcal{N}(a_0)$ تمام قیدهای جانشین را برآورده سازد، $\mathcal{N}_{\text{sat}} \neq \emptyset$ شده و گزینه سازگار برگزیده می‌شود که منجر به بهبود اکید ایمنی می‌گردد ($\mathbb{I}_{\text{sat}}(s, a^*) = 1 > 0$). اگر هیچ کاندیدایی سازگار نباشد ($\mathcal{N}_{\text{sat}} = \emptyset$)، قاعده پشتیبان حداکثرسازی مجموع حاشیه‌ها $\sum (M_k - \tau_k)$ (یا معادل آن میانگین حاشیه $\bar{\Delta}$) را روی $\mathcal{N}(a_0)$ اجرا می‌کند. چون طبق لم ۱ نقطه مبدأ $a_0 \in \mathcal{N}(a_0)$ است، لزوماً $\bar{\Delta}(s, a^*) \ge \bar{\Delta}(s, a_0)$ حاصل می‌گردد.
     
     \item \textbf{کران‌های خطای مدل جانشین تا دینامیک فیزیکی واقعی:}
     فرض کنید $M^*_k(s, a)$ نشان‌دهنده ارضای حقیقی قید در دینامیک پیوسته سیستم فیزیکی باشد و خطای واسنجی\LTRfootnote{Calibration Error} دارای کران یکنواخت زیر باشد:
@@ -712,6 +716,13 @@ a^* = \begin{cases}
     \[
     \Delta^*_{\min}(s, a^*) \ge -\epsilon_{\max}
     \]
+    به علاوه، برای سناریوهایی با انحراف حاد اولیه که در آن‌ها $\Delta_{\min}(s, a_0) < -2\epsilon_{\max}$ است، با در نظر گرفتن $k_0 = \arg\min_k (M_k(s, a_0) - \tau_k)$ داریم:
+    \begin{align*}
+    \Delta^*_{\min}(s, a_0) &= \min_k (M^*_k(s, a_0) - \tau_k) \le M^*_{k_0}(s, a_0) - \tau_{k_0} \\
+    &\le \Delta_{\min}(s, a_0) + \epsilon_{\max} < -2\epsilon_{\max} + \epsilon_{\max} = -\epsilon_{\max}
+    \end{align*}
+    با ترکیب نامساوی‌های فوق، رابطه اکید $\Delta^*_{\min}(s, a^*) \ge -\epsilon_{\max} > \Delta^*_{\min}(s, a_0)$ حاصل شده و بهبود قطعی ایمنی فیزیکی اثبات می‌گردد.
+    
     همچنین در صورت سازگاری $a_0$، بهینه‌سازی $\mathcal{J}(s, a^*) \ge \mathcal{J}(s, a_0)$ را تضمین می‌کند. با تعریف تابع هدف مطلوبیت-حاشیه در فیزیک حقیقی به صورت $\mathcal{J}^*(s, a) = u(a) + \lambda_{\text{tie}}\bar{\Delta}^*(s, a)$، خطای برآورد برابر است با:
     \[
     |\mathcal{J}(s, a) - \mathcal{J}^*(s, a)| = \lambda_{\text{tie}} |\bar{\Delta}(s, a) - \bar{\Delta}^*(s, a)| \le \lambda_{\text{tie}}\epsilon_{\max}
@@ -735,7 +746,7 @@ a^* = \begin{cases}
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.88\textwidth]{figures/fig_proposition2_reality_gap.png}
+  \includegraphics[width=0.88\textwidth]{figures/fig_proposition2_reality_gap.pdf}
   \caption{تبیین هندسی کران‌های ایمنی فیزیکی و افت مطلوبیت در حضور شکاف واقعیت مدل‌های جانشین (گزاره \ref{prop:safety_preservation}): (الف) نمودار فاز-فضا میان حاشیه تخمین‌زده‌شده جانشین ($\Delta_{\min}$) و حاشیه فیزیکی واقعی ($\Delta^*_{\min}$)؛ نوار عدم قطعیت به پهنای $\pm \epsilon_{\max}$ نشان‌دهنده مهار قطعی افت ایمنی فیزیکی در سقف $-\epsilon_{\max}$ در شاخه سازگار و بهبود تضمین‌شده در انحرافات حاد ($< -2\epsilon_{\max}$)؛ (ب) حفظ مطلوبیت مأموریت ($\mathcal{J}^*$) و اثبات صوری کران‌دار بودن افت نهایی به حداکثر $2\lambda_{\text{tie}}\epsilon_{\max}$.}
   \label{fig:proposition2_reality_gap}
 \end{figure}
@@ -762,10 +773,10 @@ a^* = \begin{cases}
     \STATE Compute action utility incentive $\mathcal{U}_{\text{inc}}(a)$ via Eq.~(\ref{eq:utility_incentive})
     \STATE Compute confidence buffer $\bar{\mathcal{B}}(s, a)$ via Eq.~(\ref{eq:norm_conf_buffer})
     \STATE Compute guided probability $P_{\text{reshape}}(s, a)$ via Eq.~(\ref{eq:guided_prob})
-    \IF{$\min_k M_k(s, a) \ge \tau_k$}
-      \STATE $\tilde{r} \leftarrow r_{\text{safe}}(s, a)$ via Eq.~(\ref{eq:r_safe_cm}) \COMMENT{Compliant transition: safe reward with margin bonus}
+    \IF{$\Delta_{\min}(s, a) \ge 0$}
+      \STATE $\tilde{r} \leftarrow r_{\text{safe}}(s, a)$ via Eq.~(\ref{eq:r_safe_cm}) \COMMENT{Compliant transition: safe reward (1.0 in MU-RS-DRL or margin-boosted in CM-RS-DRL)}
     \ELSIF{$rand(0, 1) < P_{\text{reshape}}(s, a)$}
-      \STATE $\tilde{r} \leftarrow \tilde{r}_{\text{opt}}(s, a)$ via Eq.~(\ref{eq:dynamic_ropt}) / Eq.~(\ref{eq:r_cm_reshaped}) \COMMENT{Near-miss failure: guided optimistic shaping}
+      \STATE $\tilde{r} \leftarrow \tilde{r}_{\text{opt}}(s, a)$ via Eq.~(\ref{eq:dynamic_ropt}) [or Eq.~(\ref{eq:r_cm_reshaped}) for CM-RS-DRL] \COMMENT{Near-miss failure: guided optimistic shaping}
     \ELSE
       \STATE $\tilde{r} \leftarrow r_{\text{base}}$ ($= 0$) \COMMENT{Unmitigated failure: zero reward}
     \ENDIF
@@ -780,9 +791,9 @@ a^* = \begin{cases}
   \STATE \textbf{return} $a^* \leftarrow a_0$ \COMMENT{Fast Path: nominal proposal verified compliant}
 \ENDIF
 \STATE \textbf{Stage 3: Policy-Guided Anytime Local Refinement (PG-ALR)}
-\STATE Construct 1-hop sensitivity neighborhood $\mathcal{N}(a_0)$ via TreeSHAP ($|\mathcal{N}| \le 2m+1$)
+\STATE Construct 1-hop sensitivity neighborhood $\mathcal{N}(a_0)$ along pre-extracted Top-$m$ dimensions ($|\mathcal{N}| \le 2m+1$)
 \STATE Evaluate candidate tensor across surrogates $\mathbf{P}(a) = [M_0(s, a), \dots, M_{K-1}(s, a)]$
-\STATE Identify compliant set $\mathcal{N}_{\text{sat}} \leftarrow \{a \in \mathcal{N}(a_0) \mid \min_k M_k(s, a) \ge \tau_k\}$
+\STATE Identify compliant set $\mathcal{N}_{\text{sat}} \leftarrow \{a \in \mathcal{N}(a_0) \mid \Delta_{\min}(s, a) \ge 0\}$
 \IF{$\mathcal{N}_{\text{sat}} \neq \emptyset$}
   \STATE $a^* \leftarrow \arg\max_{a \in \mathcal{N}_{\text{sat}}} \mathcal{J}(s, a)$ \COMMENT{Compliant branch: maximize utility with margin tie-breaker}
 \ELSE
