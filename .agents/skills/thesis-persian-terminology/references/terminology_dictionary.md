@@ -58,6 +58,10 @@ This dictionary defines the mandatory technical vocabulary across all chapters o
 | **Link** | **`پیوند`** | ❌ `لینک` | Standard Persian networking term (`پیوندهای رادیویی`). |
 | **Mode** | **`حالت`** | ❌ `مد` | Unambiguous formal Persian term (`حالت‌های غیرعملیاتی`). |
 | **Calibration** | **`واسنجی`** | ❌ `کالیبراسیون` | Official Academy of Persian Language & Literature term. |
+| **Closed-Loop 6-DOF Flight** | **`پروازهای حلقه‌بسته با دینامیک ۶ درجه آزادی`** | ❌ `پرواز ۶ درجه آزادی حلقه‌بسته` | Decouple `حلقه‌بسته` from `۶ درجه آزادی` via a prepositional phrase to eliminate the acoustic collision and oxymoronic parse `آزادیِ حلقه‌بسته`. |
+| **Surrogate-to-Physics Reality Gap** | **`شکاف واقعیت میان مدل‌های جانشین و فیزیک پرواز / فیزیک اجرا`** | ❌ `شکاف واقعیت مدل-تا-فیزیک` | Standard, fluent academic Persian translation of the surrogate-to-physics reality gap, purging the hyphenated English-calqued compound. |
+| **Progressive Architecture** | **`معماری دوسطحی تکاملی / چارچوب پیشرفته در دو سطح تکاملی`** | ❌ `معماری دوسطحی پیش‌رونده` | Avoid literal calque of "progressive" (which connotes pathological progression in Persian); use `تکاملی` or `پیشرفته`. |
+| **UAV Fleet in Dense Contexts** | **`شبیه‌ساز \lr{DARTSim}` (در جملات فشرده چکیده) / `ناوگان پهپادی` (در فصول تشریحی)** | ❌ انباشت «ناوگان پهپادی» در توالی صفات پروازی چکیده | Omit from compact abstract sentences to prevent 6-level Ezafe chaining (تتابع اضافات: `پروازِ ۶ درجه آزادیِ حلقه‌بسته‌یِ ناوگانِ پهپادیِ...`). |
 | **Catalog** | **`فهرست جامع`** | ❌ `کاتالوگ` | Formal Persian academic equivalent. |
 | **Frequency** | **`بسامد` (کنترلی) / `تواتر` (به‌روزرسانی)** | ❌ `فرکانس` | Distinguishing physical rate (`بسامد`) from update rate (`تواتر`). |
 | **Isolate / Isolation** | **`مجزا / جدا کردن / جداسازی`** | ❌ `ایزوله / ایزوله‌سازی` | Formal Persian architectural separation terminology. |
