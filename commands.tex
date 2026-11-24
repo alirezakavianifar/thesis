@@ -110,13 +110,50 @@
 \providecommand{\AutoPersianDigits}{}
 \makeatother
 
-\usepackage{xepersian}
+\usepackage[extrafootnotefeatures]{xepersian}
 \settextfont[Path=font/,Extension=.ttf,Scale=1,
     BoldFont=XB NiloofarBd,
     ItalicFont=XB NiloofarIt,
     BoldItalicFont=XB NiloofarBdIt
 ]{XB Niloofar}
 \setlatintextfont[Scale=0.9]{Times New Roman}
+
+% بازنشانی شماره پانویس‌ها در هر صفحه (Per-page Footnote Reset)
+\usepackage{zref-perpage}
+\zmakeperpage{footnote}
+
+% ===================================================================
+% تنظیمات پانویس‌های پاراگرافی/فشرده (Inline Paragraph Footnotes)
+% ===================================================================
+\makeatletter
+% حذف فاصله و درج کاما به عنوان جعبه در انتهای هر پانویس به همراه فاصله الاستیک
+\renewcommand{\m@munvxh}[1]{%
+  \setbox0=\vbox{\unvbox#1%
+    \global\setbox1=\lastbox}%
+  \unhbox1
+  \unskip
+  \unskip
+  \unpenalty
+  \hbox{,}\hskip\m@mipn@skip}
+
+% بازتعریف bidi@make@para@LTRfootgroup جهت باز کردن کامل جعبه‌ها، جلوگیری از سرریز و حذف کامای انتهایی
+\bidi@ensure@newcommand{\bidi@make@para@LTRfootgroup}[1]{%
+\@namedef{@para@LTRfootgroup#1}{%
+  \unvbox\@nameuse{footins#1}%
+  \@RTLfalse
+  \m@mmakehboxofhboxes
+  \setbox0=\hbox{\unhbox0 \m@mremovehboxes}%
+  \ifdim\bidi@columnwidth=\z@ \bidi@columnwidth\columnwidth \fi
+  \hsize\columnwidth
+  \@parboxrestore
+  \def\baselinestretch{\m@m@footnote@spacing}%
+  \@nameuse{foottextfont#1}%
+  \noindent\unhbox0\unskip\setbox\z@=\lastbox\par
+}}
+\makeatother
+
+% فعال‌سازی پانویس‌های پاراگرافی برای عبارات انگلیسی (LTR) و حفظ پانویس‌های توضیحی فارسی به صورت عمودی
+\normalRTLparaLTRfootnotes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % چنانچه می‌خواهید اعداد در فرمول‌ها، انگلیسی باشد، خط زیر را غیرفعال کنید
