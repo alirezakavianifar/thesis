@@ -59,7 +59,7 @@ def create_system_architecture(output_path):
     draw_card(7.7, 14.10, 13.8, 1.60, c_indigo_fill, c_indigo_border, lw=1.6)
     ax.text(7.7, 14.52, "Managed Autonomous / Cyber-Physical System",
             ha='center', va='center', fontsize=11.2, fontweight='bold', color=c_indigo_title)
-    ax.text(7.7, 14.06, "Controllable Features $\\mathbf{CF} = \\{cf_1, \\dots, cf_m\\} \\in \\mathcal{A} \\quad \\cdot \\quad$ Dependability & QoS Targets: $\\{R_0, \\dots, R_{K-1}\\}$",
+    ax.text(7.7, 14.06, "Controllable Features $\\mathbf{CF} = \\{cf_1, \\dots, cf_{d_A}\\} \\in \\mathcal{A} \\quad \\cdot \\quad$ Dependability & QoS Targets: $\\{R_0, \\dots, R_{K-1}\\}$",
             ha='center', va='center', fontsize=8.2, color=c_slate_dark)
     ax.text(7.7, 13.62, "Instantiations: Aerial Robotics (6-DOF Flight Dynamics) & Distributed WSN (Multi-hop Topological Routing)",
             ha='center', va='center', fontsize=7.5, color=c_slate_muted)
@@ -145,7 +145,7 @@ def create_system_architecture(output_path):
     ax.text(2.1, 7.20, "2. ANALYZE", ha='center', va='center', fontsize=9.2, fontweight='bold', color=c_blue_title)
     ax.text(2.1, 6.55, "Surrogate Compliance\nQuery $M_k(s) \\; \\forall k$\nConfidence $\\tau_k$",
             ha='center', va='center', fontsize=7.5, color=c_slate_dark, linespacing=1.2)
-    ax.text(2.1, 5.75, r"Trigger if $\min_k M_k(s) < \tau_k$", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#991B1B')
+    ax.text(2.1, 5.75, r"Trigger if $\min_k (M_k(s) - \tau_k) < 0$", ha='center', va='center', fontsize=6.7, fontweight='bold', color='#991B1B')
 
     # -------------------------------------------------------------
     # SHARED KNOWLEDGE BASE (x = 5.7, y = 8.10) - Width 2.6 -> [4.4, 7.0]
@@ -229,7 +229,7 @@ def create_system_architecture(output_path):
     draw_card(12.9, 5.95, 8.4, 1.55, c_emerald_fill, c_emerald_border, lw=1.4)
     ax.text(12.9, 6.45, "Stage 3: Targeted 1-Hop Refiner / Shield (PG-ALR)",
             ha='center', va='center', fontsize=8.6, fontweight='bold', color=c_emerald_title)
-    ax.text(12.9, 5.98, r"Micro-Neighborhood $\mathcal{N}(a_0)$ along Top-$m$ SHAP Features ($|\mathcal{N}| \leq 2m + 1$)",
+    ax.text(12.9, 5.98, r"Micro-Neighborhood $\mathcal{N}(a_0)$ along Top-$m$ SHAP Features ($|\mathcal{N}(a_0)| \leq 2m + 1$)",
             ha='center', va='center', fontsize=7.2, color=c_slate_dark)
     ax.text(12.9, 5.50, "Surrogate Compliance Check $\\cdot$ Margin-Maximizing Fallback Barrier ($< 3.5\\,\\mathrm{ms}$)",
             ha='center', va='center', fontsize=7.0, fontweight='bold', color='#065F46')

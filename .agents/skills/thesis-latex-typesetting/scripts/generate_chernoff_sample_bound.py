@@ -62,7 +62,7 @@ def create_chernoff_sample_bound_figure(output_path):
     # -------------------------------------------------------------
     # Subplot 2: Execution Latency vs Hard CPS Control Deadlines
     # -------------------------------------------------------------
-    sim_counts = np.array([500, 1000, 2000, 3000, 4611, 6000, 8000])
+    sim_counts = np.array([500, 1000, 2000, 3000, 4612, 6000, 8000])
     latency_sec = sim_counts * 0.0012
 
     ax2.plot(sim_counts, latency_sec, 's-', color='#2563EB', linewidth=2.2, markersize=6,
@@ -72,7 +72,7 @@ def create_chernoff_sample_bound_figure(output_path):
     lat_nom = 4612 * 0.0012  # 5.53 seconds (analytical at 1.2 ms/sim)
     ax2.scatter(4612, lat_nom, color=c_rose, s=90, zorder=6, edgecolors=c_slate_dark)
     ax2.annotate(r'CPS Model Baseline:' + '\n' + r'$N_{\mathrm{sim}} = 4{,}612 \rightarrow t \approx 5.53\,\mathrm{s}$' + '\n' + r'($110\times$ Over Deadline)',
-                 xy=(4612, lat_nom), xytext=(2200, 7.5),
+                 xy=(4612, lat_nom), xytext=(2400, 7.6),
                  arrowprops=dict(facecolor=c_rose, shrink=0.08, width=1.5, headwidth=6),
                  fontsize=8.2, fontweight='bold', color=c_rose,
                  bbox=dict(boxstyle='round,pad=0.3', facecolor='#FFF1F2', edgecolor=c_rose, alpha=0.95))
@@ -81,7 +81,7 @@ def create_chernoff_sample_bound_figure(output_path):
     lat_deltaiot = 3.82
     ax2.scatter(4612, lat_deltaiot, color='#059669', s=90, zorder=6, edgecolors=c_slate_dark)
     ax2.annotate(r'DeltaIoT Empirical Batch:' + '\n' + r'$N_{\mathrm{sim}} = 4{,}612 \rightarrow t = 3.82\,\mathrm{s}$' + '\n' + r'($76\times$ Over Deadline)',
-                 xy=(4612, lat_deltaiot), xytext=(4800, 4.3),
+                 xy=(4612, lat_deltaiot), xytext=(5200, 3.8),
                  arrowprops=dict(facecolor='#059669', shrink=0.08, width=1.5, headwidth=6),
                  fontsize=8.2, fontweight='bold', color='#059669',
                  bbox=dict(boxstyle='round,pad=0.3', facecolor='#F0FDF4', edgecolor='#059669', alpha=0.95))
@@ -103,13 +103,13 @@ def create_chernoff_sample_bound_figure(output_path):
                 "causes catastrophic control loop starvation.\n"
                 r"$\Rightarrow$ Asynchronous Background Verification" + "\n"
                 "in the feedback loop is strictly mandatory.")
-    ax2.text(3800, 2.3, box_text,
-             fontsize=8.5, color=c_slate_dark,
-             bbox=dict(boxstyle='round,pad=0.4', facecolor='#F8FAFC', edgecolor='#CBD5E1', alpha=0.95))
+    ax2.text(4400, 1.0, box_text,
+             fontsize=8.3, color=c_slate_dark,
+             bbox=dict(boxstyle='round,pad=0.35', facecolor='#F8FAFC', edgecolor='#CBD5E1', alpha=0.95))
 
     # Inset Axes for Magnifying the Sub-100ms Region
     # Inset showing: RS-DRL+ Nominal (0.485ms), PG-ALR Refinement (<3.5ms), and 50ms Deadline
-    axins = ax2.inset_axes([0.18, 0.40, 0.32, 0.36])
+    axins = ax2.inset_axes([0.11, 0.25, 0.30, 0.32])
     
     methods = [r'Nominal ($a_0$)', r'PG-ALR ($a^*$)', r'CPS Deadline']
     lat_ms = [0.485, 3.435, 50.0]

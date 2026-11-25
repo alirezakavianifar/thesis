@@ -63,24 +63,24 @@ def create_proposition2_reality_gap_figure(output_path):
     ax1.axhspan(-eps_max, 0, color=c_amber_fill, alpha=0.25, zorder=0)
     ax1.axhspan(-0.55, -eps_max, color=c_rose_fill, alpha=0.2, zorder=0)
 
-    # Annotate Zones on right edge
-    ax1.text(0.36, 0.25, 'Physical Safe Zone\n' + r'($\Delta^*_{\min} \geq 0$)', color='#065F46', fontsize=7.8, fontweight='bold')
-    ax1.text(0.36, -0.09, 'Bounded Error Zone\n' + r'($-\epsilon_{\max} \leq \Delta^* < 0$)', color='#92400E', fontsize=7.5, fontweight='bold')
-    ax1.text(0.36, -0.38, 'Catastrophic Zone\n' + r'($\Delta^* < -\epsilon_{\max}$)', color='#991B1B', fontsize=7.5, fontweight='bold')
+    # Annotate Zones cleanly along right margin
+    ax1.text(0.535, 0.45, 'Physical Safe Zone\n' + r'($\Delta^*_{\min} \geq 0$)', ha='right', color='#065F46', fontsize=7.8, fontweight='bold')
+    ax1.text(0.535, -0.075, 'Bounded Error Zone\n' + r'($-\epsilon_{\max} \leq \Delta^* < 0$)', ha='right', va='center', color='#92400E', fontsize=7.4, fontweight='bold')
+    ax1.text(0.535, -0.45, 'Catastrophic Zone\n' + r'($\Delta^* < -\epsilon_{\max}$)', ha='right', color='#991B1B', fontsize=7.5, fontweight='bold')
 
     # Case 1: Compliant Nominal Proposal a0 in N_sat (Clause 1)
     a0_surr = 0.08
     a0_phys = a0_surr - 0.12  # dips into bounded error zone (-0.04 >= -0.15)
     ax1.scatter(a0_surr, a0_phys, color=c_blue, s=90, marker='o', edgecolors=c_slate_dark, linewidth=1.2, zorder=6)
-    ax1.text(a0_surr + 0.02, a0_phys - 0.05, r'Clause 1: Nominal $a_0 \in \mathcal{N}_{\mathrm{sat}}$' + '\n' + r'($\Delta_{\min} \geq 0 \rightarrow \Delta^* \geq -\epsilon_{\max}$)',
-             color=c_blue, fontsize=8.0, fontweight='bold', zorder=7)
+    ax1.text(a0_surr + 0.02, a0_phys - 0.06, r'Clause 1: Nominal $a_0 \in \mathcal{N}_{\mathrm{sat}}$' + '\n' + r'($\Delta_{\min} \geq 0 \rightarrow \Delta^* \geq -\epsilon_{\max}$)',
+             color=c_blue, fontsize=7.8, fontweight='bold', zorder=7)
 
     # Refined Candidate a* with deeper safety margin
     astar_surr = 0.28
     astar_phys = astar_surr - 0.06
     ax1.scatter(astar_surr, astar_phys, color=c_emerald, s=120, marker='*', edgecolors=c_slate_dark, linewidth=1.2, zorder=6)
-    ax1.text(astar_surr + 0.02, astar_phys + 0.02, r'Refined $a^* = \arg\max \mathcal{J}$' + '\n' + r'($\Delta^* \geq 0$ Physical Safety)',
-             color=c_emerald, fontsize=8.2, fontweight='bold', zorder=7)
+    ax1.text(astar_surr - 0.03, astar_phys + 0.05, r'Refined $a^* = \arg\max \mathcal{J}$' + '\n' + r'($\Delta^* \geq 0$ since $\Delta_{\min} \geq \epsilon_{\max}$)',
+             ha='center', color=c_emerald, fontsize=8.0, fontweight='bold', zorder=7)
 
     ax1.annotate('', xy=(astar_surr, astar_phys), xytext=(a0_surr, a0_phys),
                  arrowprops=dict(arrowstyle="->", color=c_emerald, lw=2.0, shrinkA=5, shrinkB=5))
@@ -89,15 +89,20 @@ def create_proposition2_reality_gap_figure(output_path):
     b0_surr = -0.42
     b0_phys = b0_surr + 0.06  # = -0.36 < -eps_max (-0.15)
     ax1.scatter(b0_surr, b0_phys, color=c_rose, s=80, marker='s', edgecolors=c_slate_dark, linewidth=1.2, zorder=6)
-    ax1.text(b0_surr - 0.12, b0_phys - 0.06, r'Clause 2: Severe $a_0$' + '\n' + r'($\Delta_{\min}(a_0) < -2\epsilon_{\max}$)',
-             color=c_rose, fontsize=8.0, fontweight='bold', zorder=7)
+    ax1.text(b0_surr + 0.03, b0_phys - 0.05, r'Clause 2: Severe $a_0$' + '\n' + r'($\Delta_{\min}(a_0) < -2\epsilon_{\max}$)',
+             ha='left', va='top', color=c_rose, fontsize=7.8, fontweight='bold', zorder=7,
+             bbox=dict(boxstyle='round,pad=0.18', facecolor='#FFF1F2', edgecolor='none', alpha=0.85))
 
     # Recovered Candidate b* in N_sat (Clause 2: Delta_surr >= 0)
     bstar_surr = 0.12
     bstar_phys = bstar_surr - 0.08  # = +0.04 >= -eps_max
     ax1.scatter(bstar_surr, bstar_phys, color='#D97706', s=95, marker='^', edgecolors=c_slate_dark, linewidth=1.2, zorder=6)
-    ax1.text(bstar_surr + 0.02, bstar_phys - 0.05, r'Clause 2: $a^* \in \mathcal{N}_{\mathrm{sat}}$' + '\n' + r'($\Delta^*_{\min}(a^*) > \Delta^*_{\min}(a_0)$)',
-             color='#D97706', fontsize=8.0, fontweight='bold', zorder=7)
+    ax1.annotate(r'Clause 2: $a^* \in \mathcal{N}_{\mathrm{sat}}$' + '\n' + r'($\Delta^*_{\min}(a^*) > \Delta^*_{\min}(a_0)$)',
+                 xy=(bstar_surr, bstar_phys), xytext=(-0.03, 0.13),
+                 ha='right', va='bottom',
+                 arrowprops=dict(arrowstyle='->', color='#D97706', lw=1.2, shrinkA=2, shrinkB=5),
+                 color='#B45309', fontsize=7.8, fontweight='bold', zorder=7,
+                 bbox=dict(boxstyle='round,pad=0.18', facecolor='#FFFBEB', edgecolor='#D97706', lw=0.7, alpha=0.92))
 
     ax1.annotate('', xy=(bstar_surr, bstar_phys), xytext=(b0_surr, b0_phys),
                  arrowprops=dict(arrowstyle="->", color=c_amber, lw=2.0, linestyle='--', shrinkA=5, shrinkB=5))
@@ -123,9 +128,9 @@ def create_proposition2_reality_gap_figure(output_path):
     x_pos = np.arange(len(u_labels))
     width = 0.35
 
-    ax2.bar(x_pos - width/2, j_surr, width, label=r'Surrogate Objective $\mathcal{J}(s, a) = u(a) + \lambda_{\mathrm{tie}}\bar{\Delta}(s, a)$',
+    ax2.bar(x_pos - width/2, j_surr, width, label=r'Surrogate Objective $\mathcal{J}(s, a) = u(a) + \lambda_{\mathrm{tie}}\,\bar{\Delta}(s, a)$',
             color=c_blue, alpha=0.85, edgecolor=c_slate_dark)
-    ax2.bar(x_pos + width/2, j_phys, width, label=r'True Physical Objective $\mathcal{J}^*(s, a) = u(a) + \lambda_{\mathrm{tie}}\bar{\Delta}^*(s, a)$',
+    ax2.bar(x_pos + width/2, j_phys, width, label=r'True Physical Objective $\mathcal{J}^*(s, a) = u(a) + \lambda_{\mathrm{tie}}\,\bar{\Delta}^{\!*}(s, a)$',
             color=c_emerald, alpha=0.85, edgecolor=c_slate_dark)
 
     j_star_a0 = j_phys[2]

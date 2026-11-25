@@ -78,7 +78,7 @@
 \chapter{جریان‌های کاری کامل فرآیند}
 \label{chap:appendix_workflows}
 
-این پیوست به تشریح جزئیات جریان‌های داده، تعاملات میان‌مؤلفه‌ای و نمودارهای فعالیت فرآیند انطباق در سطوح مختلف معماری \lr{RS-DRL} و معماری تعمیم‌یافته \rsdrlplus اختصاص دارد. هدف از ارائه این نمودارها و فرآیندهای گام‌به‌گام، مستندسازی دقیق جریان اجرای نرم‌افزاری جهت بازتولیدپذیری مهندسی در محیط‌های عملیاتی است.
+این پیوست به تشریح جزئیات جریان‌های داده، تعاملات میان‌مؤلفه‌ای و نمودارهای فعالیت فرآیند انطباق در سطوح مختلف معماری \lr{RS-DRL} و معماری دوسطحی \rsdrlplus اختصاص دارد. هدف از ارائه این نمودارها و فرآیندهای گام‌به‌گام، مستندسازی دقیق جریان اجرای نرم‌افزاری جهت بازتولیدپذیری مهندسی در محیط‌های عملیاتی است.
 
 \section{معماری یکپارچه و تفکیک زمانی در چرخه \texorpdfstring{\lr{MAPE-K}}{MAPE-K}}
 \label{sec:app_mape_k_integration}
@@ -87,8 +87,8 @@
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[height=0.60\textheight,keepaspectratio]{figures/rs-drl-mape-k-diagram.png}
-  \caption{جریان داده و کنترل در حلقه \lr{MAPE-K} با تفکیک زمانی میان استنتاج برخط و اعتبارسنجی صوری ناهمگام در مخزن دانش مشترک}
+  \includegraphics[width=0.92\textwidth]{figures/process-workflow.pdf}
+  \caption{جریان داده و کنترل شش‌خط‌شناوری در حلقه \lr{MAPE-K} با تفکیک زمانی میان استنتاج برخط و اعتبارسنجی صوری و یادگیری ناهمگام در مخزن دانش مشترک}
   \label{fig:app_mape_k_diagram}
 \end{figure}
 
@@ -96,7 +96,7 @@
 
 \paragraph{مرحله پایش و انتقال مشاهدات:} کاوشگرهای حسگری مستقر در سیستم هدف، متغیرهای عملیاتی را گردآوری نموده و بردار حالت خام را به مؤلفه پایش ارسال می‌کنند. مؤلفه پایش با اعمال فیلترهای آماری و حذف نویزهای بسامدبالا، بردار حالت نرمال‌شده $s_t$ را تولید و در مخزن دانش ذخیره می‌نماید.
 
-\paragraph{مرحله تحلیل و ارزیابی شرایط تنش:} مؤلفه تحلیل وضعیت جاری را با مشخصه‌های صوری و آستانه‌های بحرانی مقایسه می‌کند. در صورت فراتر رفتن شاخص تنش از دروازه مجاز ($\mathcal{E}(of) > 0$)، سیگنال هشدار فعال شده و درخواست تعیین پیکربندی انطباقی به مؤلفه برنامه‌ریزی مخابره می‌گردد.
+\paragraph{مرحله تحلیل و ارزیابی شرایط تنش:} مؤلفه تحلیل وضعیت جاری را با مشخصه‌های صوری و آستانه‌های بحرانی مقایسه می‌کند. در صورت نقض قید جانشین یا فراتر رفتن شاخص تنش از دروازه مجاز (\lr{$\mathcal{E}(o_f) > \epsilon_{\text{threshold}}$})، سیگنال هشدار فعال شده و درخواست تعیین پیکربندی انطباقی به مؤلفه برنامه‌ریزی مخابره می‌گردد.
 
 \paragraph{مرحله برنامه‌ریزی دوسطحی:} مؤلفه برنامه‌ریزی بر اساس راهبرد دوسطحی عمل می‌کند. در شرایط عادی، پیشنهاد پایه سیاست $a_0$ در زمانی زیر نیم میلی‌ثانیه تولید و بلافاصله به مؤلفه اجرا فرستاده می‌شود. در شرایط تنش محیطی، پالایش محلی هرزمانی بر روی زیرفضای حساسیت محدود فعال می‌گردد.
 
@@ -132,14 +132,14 @@
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.82\textwidth]{figures/planner-internal.pdf}
-  \caption{معماری درونی برنامه‌ریز: تفکیک مسیر سریع محاسباتی (\lr{Fast Path})، دروازه تنش و مسیر پالایش محلی هرزمانی}
+  \includegraphics[width=0.82\textwidth]{figures/fig_decision_hierarchy_flowchart.pdf}
+  \caption[معماری سلسله‌مراتبی درونی برنامه‌ریز دوسطحی (\pgalr)]{معماری سلسله‌مراتبی درونی برنامه‌ریز دوسطحی (\pgalr): تفکیک مسیر سریع محاسباتی (\lr{Fast Path})، دروازه تنش و مسیر پالایش محلی هرزمانی}
   \label{fig:app_planner_internal}
 \end{figure}
 
 جریان تصمیم‌گیری در برنامه‌ریز دوسطحی از سازوکار کنترلی زیر تبعیت می‌نماید:
 
-\paragraph{مسیر سریع (\lr{Fast Path}):} بردار حالت $s$ مستقیماً به شبکه عصبی عمیق کیو تغذیه شده و اقدام بهینه اسمی $a_0 = \arg\max_{a} Q(s, a)$ با میانگین تأخیر $0.485\,\text{ms}$ محاسبه می‌گردد.
+\paragraph{مسیر سریع (\lr{Fast Path}):} بردار حالت $s$ مستقیماً به شبکه عصبی عمیق کیو تغذیه شده و اقدام بهینه اسمی $a_0 = \arg\max_{a} Q(s, a)$ با میانه تأخیر $0.485\,\text{ms}$ محاسبه می‌گردد.
 
 \paragraph{دروازه ارزیابی تنش (\lr{Stress Gate}):} اقدام اولیه $a_0$ توسط مدل‌های جانشین سبک‌وزن ارزیابی می‌شود. چنانچه تمامی قیود ارضا شوند، اقدام $a_0$ بدون ورود به فاز پالایش صادر می‌گردد.
 
@@ -160,7 +160,7 @@
 \label{subsec:app_scenario_4node}
 جهت تبیین عملکرد سیستم در شرایطی که اهداف کیفی در تناقض مستقیم با یکدیگر قرار دارند، یک سناریوی جامع‌تر بررسی می‌شود. شبکه‌ای شامل ۴ گره حسگر ($M_1$ تا $M_4$) در توپولوژی خطی داده‌ها را به دروازه ارسال می‌کنند که هر گره دارای ۳ سطح توان گسسته (پایین، متوسط و بالا) است و در نتیجه فضای وفقی شامل $3^4 = 81$ پیکربندی متفاوت می‌باشد. اهداف کیفی سه قید متضاد را شامل می‌شوند: نرخ اتلاف بسته‌ها باید کمتر از $10\%$ باشد ($P_{\text{net}} < 0.10$)، میانگین تأخیر ارسال باید کمتر از $200\,\text{ms}$ باشد ($L_{\text{net}} < 200\,\text{ms}$)، و مصرف کل انرژی شبکه ($E$) باید کمینه گردد.
 
-در پی بروز اختلال شدید در کانال‌های ارتباطی که کیفیت پیوند گره‌های $M_1$ و $M_2$ را تضعیف می‌کند، حسگرها بردار وضعیت ۱۲ بعدی زیر را پایش و گزارش می‌دهند:
+در پی بروز اختلال شدید در کانال‌های ارتباطی که کیفیت پیوند گره‌های $M_1$ و $M_2$ را تضعیف می‌کند، حسگرها بردار وضعیت ۱۲ بعدی خام زیر را (با انرژی نرمال‌شده چرخه، نرخ اتلاف کسری، و تأخیر بر حسب میلی‌ثانیه پیش از نرمال‌سازی به $[0, 1]$) پایش و گزارش می‌دهند:
 \begin{equation}
 \label{eq:app_state_vector_12d}
 \begin{aligned}
@@ -169,7 +169,7 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 &L = [120,\, 110,\, 80,\, 75] \big\rangle
 \end{aligned}
 \end{equation}
-در این وضعیت، نرخ اتلاف دو گره اول ($18\%$ و $15\%$) بسیار بالاتر از حد مجاز بوده و اتلاف کل شبکه به $P_{\text{net}} = 16.5\%$ افزایش یافته و قید را نقض می‌کند. با ارائه بردار $s_t$ به استنتاج‌گر \lr{DQN}، عامل به ارزیابی مقایسه‌ای گزینه‌های کاندیدا می‌پردازد: اقدام کم‌مصرف ($a_{\text{low}} = \langle 0, 0, 0, 0 \rangle$) که تمام گره‌ها را در توان کم نگه می‌دارد، ارزش نازل $Q = 0.21$ را کسب می‌کند زیرا اتلاف بسته‌ها مهار نمی‌شود؛ در مقابل، اقدام تهاجمی ($a_{\text{brute}} = \langle 2, 2, 2, 2 \rangle$) با افزایش توان همه گره‌ها اتلاف را به $3\%$ می‌رساند، اما به علت تداخل شدید کانال، تأخیر را به $240\,\text{ms}$ رسانده و قید دوم را نقض می‌کند ($Q = 0.42$)؛ در نهایت، اقدام متوازن هوشمند ($a_{\text{balanced}} = \langle 2, 2, 0, 0 \rangle$) با افزایش هدفمند توان گره‌های کلیدی $M_1$ و $M_2$ و حفظ توان پایین سایر گره‌ها، بالاترین ارزش ($Q = 0.92$) را کسب می‌کند، زیرا هم قید اتلاف ($5\%$) و هم قید تأخیر ($155\,\text{ms}$) را با حداقل مصرف انرژی ارضا می‌سازد. با تأیید صوری \lr{UPPAAL-SMC} ($r_{\text{smc}}=1$)، فرمان نهایی به گره‌ها اعمال شده و موازنه بهینه پارتو بازیابی می‌گردد.
+در این وضعیت، با فرض تجمیع وزنی بر پایه سهم بار ترافیکی ارسال‌شده و رله‌شده گره‌ها به سوی دروازه (به‌گونه‌ای که دو گره بالادستی $M_1$ و $M_2$ ترافیک گره‌های پایینی را نیز رله می‌کنند و میانگین وزنی کل از رابطه $\bar{X}_{\text{net}} = \sum_i \omega_i X_i$ حاصل می‌شود)، نرخ اتلاف دو گره اول ($18\%$ و $15\%$) بر عملکرد کل شبکه غلبه یافته و با وزن ترافیکی بالاتر گره‌های رله‌کننده ($M_1, M_2$)، اتلاف مؤثر کل به $P_{\text{net}} = 16.5\%$ افزایش یافته و قید اول را نقض می‌کند (در حالی که میانگین وزنی تأخیر تجمعی در این مسیرها حدود $100$ تا $110\,\text{ms}$ باقی می‌ماند). با ارائه بردار $s_t$ به استنتاج‌گر \lr{DQN}، عامل به ارزیابی مقایسه‌ای گزینه‌های کاندیدا می‌پردازد: اقدام کم‌مصرف ($a_{\text{low}} = \langle 0, 0, 0, 0 \rangle$) که تمام گره‌ها را در توان کم نگه می‌دارد، ارزش نازل $Q = 0.21$ را کسب می‌کند زیرا اتلاف بسته‌ها مهار نمی‌شود؛ در مقابل، اقدام تهاجمی ($a_{\text{brute}} = \langle 2, 2, 2, 2 \rangle$) با افزایش توان همه گره‌ها اتلاف را به $3\%$ می‌رساند، اما به علت تداخل شدید کانال، تأخیر را به $240\,\text{ms}$ رسانده و قید دوم را نقض می‌کند ($Q = 0.42$)؛ در نهایت، اقدام متوازن هوشمند ($a_{\text{balanced}} = \langle 2, 2, 0, 0 \rangle$) با افزایش هدفمند توان گره‌های کلیدی $M_1$ و $M_2$ و حفظ توان پایین سایر گره‌ها، بالاترین ارزش ($Q = 0.92$) را کسب می‌کند، زیرا هم قید اتلاف ($5\%$) و هم قید تأخیر ($155\,\text{ms}$) را با حداقل مصرف انرژی ارضا می‌سازد. با تأیید صوری \lr{UPPAAL-SMC} ($r_{\text{smc}}=1$)، فرمان نهایی به گره‌ها اعمال شده و موازنه بهینه پارتو بازیابی می‌گردد.
 
 \newpage
 
@@ -189,40 +189,38 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \begin{algorithm}[htbp]
 \caption{الگوریتم آموزش چارچوب پایه‌ای \lr{RS-DRL} با شکل‌دهی تصادفی پاداش}
 \label{alg:app_rs_drl_full}
+\begin{latin}
+\small
 \begin{algorithmic}[1]
-\REQUIRE فضای حالت $\mathcal{S}$، فضای عمل $\mathcal{A}$، نرخ یادگیری $\alpha$، ضریب تنزیل $\gamma$، پارامتر شکل‌دهی $\rho$
-\STATE مقداردهی اولیه شبکه اصلی $Q(s, a; \theta)$ و شبکه هدف $\hat{Q}(s, a; \theta^-)$ با اوزان تصادفی $\theta^- \leftarrow \theta$
-\STATE مقداردهی اولیه بافر بازپخش تجارب $\mathcal{D}$ با ظرفیت $N$
-\FOR{هر دور یادگیری (\lr{Episode}) از $1$ تا $M$}
-    \STATE دریافت حالت اولیه $s_1$ از سیستم هدف
-    \FOR{هر گام زمانی $t = 1$ تا $T$}
-        \STATE انتخاب اقدام $a_t$ با راهبرد کاوش $\epsilon$-حریصانه:
-        \STATE \quad با احتمال $\epsilon$ اقدام تصادفی $a_t \in \mathcal{A}$، در غیر این صورت $a_t = \arg\max_{a} Q(s_t, a; \theta)$
-        \STATE اعمال اقدام $a_t$ به سیستم تحت مدیریت و دریافت حالت بعدی $s_{t+1}$ و پاداش خام $r_t \in \{0, 1\}$
-        \STATE ذخیره انتقال خام $(s_t, a_t, r_t, s_{t+1})$ در بافر بازپخش $\mathcal{D}$ \COMMENT{حفظ کامل هر دو انتقال موفق و ناموفق}
-        \IF{اندازه بافر $|\mathcal{D}| \ge B$}
-            \STATE نمونه‌برداری دسته‌ای تصادفی از $B$ انتقال $\{(s_j, a_j, r_j, s'_{j})\}_{j=1}^B$ از $\mathcal{D}$
-            \FOR{هر انتقال $j = 1$ تا $B$}
-                \IF{$r_j == 0$}
-                    \STATE تولید عدد تصادفی یکنواخت $u \sim \mathcal{U}(0, 1)$
-                    \IF{$u < \rho$}
-                        \STATE $r_j^{\text{shaped}} \leftarrow 1$ \COMMENT{تزریق خوش‌بینانه پاداش جهت فرار از بهینه محلی}
-                    \ELSE
-                        \STATE $r_j^{\text{shaped}} \leftarrow 0$
-                    \ENDIF
+\REQUIRE State space $\mathcal{S}$, action space $\mathcal{A}$, learning rate $\eta$, discount $\gamma$, shaping factor $\rho$, target sync interval $C$
+\STATE Initialize main network $Q(s, a; \theta)$ and target network $Q'(s, a; \theta')$ with $\theta' \leftarrow \theta$
+\STATE Initialize SPSC-backed replay buffer $\mathcal{D}$ with capacity $N$
+\FOR{each episode $= 1, \dots, M$}
+    \STATE Observe initial state $s_1$ from managed system
+    \FOR{each step $t = 1, \dots, T$}
+        \STATE Select $a_t$ via $\epsilon$-greedy policy (random $a_t \in \mathcal{A}$ w.p. $\epsilon$, else $\arg\max_a Q(s_t, a; \theta)$)
+        \STATE Execute $a_t$, observe empirical reward $r_{\text{env}}$ and next state $s_{t+1}$
+        \STATE Dispatch $(s_t, a_t)$ to UPPAAL-SMC engine and receive $r_{\text{smc}} \in \{0, 1\}$ asynchronously
+        \STATE Compute composite reward $r_t \leftarrow r_{\text{env}} \times r_{\text{smc}}$
+        \STATE Store $(s_t, a_t, r_t, s_{t+1})$ in $\mathcal{D}$ \COMMENT{Retain both successful and failed transitions}
+        \IF{$|\mathcal{D}| \ge B$}
+            \STATE Sample random minibatch $\{(s_j, a_j, r_j, s'_{j})\}_{j=1}^B \sim \mathcal{D}$
+            \FOR{$j = 1, \dots, B$}
+                \IF{$r_j == 0$ \textbf{and} $\text{rand}(0, 1) < \rho$}
+                    \STATE $\tilde{r}_j \leftarrow 1.0$ \COMMENT{Optimistic shaping injection for local optima escape}
                 \ELSE
-                    \STATE $r_j^{\text{shaped}} \leftarrow 1$
+                    \STATE $\tilde{r}_j \leftarrow r_j$ \COMMENT{Preserve original continuous or binary reward}
                 \ENDIF
-                \STATE محاسبه مقدار هدف: $y_j = r_j^{\text{shaped}} + \gamma \max_{a'} \hat{Q}(s'_j, a'; \theta^-)$
+                \STATE Compute Bellman target $y_j \leftarrow \tilde{r}_j + \gamma \max_{a'} Q'(s'_j, a'; \theta')$
             \ENDFOR
-            \STATE به‌روزرسانی پارامترهای شبکه تقریب‌گر با گرادیان کاهشی:
-            \STATE \quad $\theta \leftarrow \theta - \alpha \nabla_\theta \frac{1}{B} \sum_{j=1}^B (y_j - Q(s_j, a_j; \theta))^2$
+            \STATE Update $\theta \leftarrow \theta - \eta \nabla_\theta \frac{1}{B} \sum_{j=1}^B (y_j - Q(s_j, a_j; \theta))^2$
         \ENDIF
-        \STATE همگام‌سازی دوره‌ای اوزان شبکه هدف: هر $C$ گام یک‌بار $\theta^- \leftarrow \theta$
+        \STATE Every $C$ steps synchronize target weights: $\theta' \leftarrow \tau_{\text{soft}}\theta + (1-\tau_{\text{soft}})\theta'$ ($\tau_{\text{soft}}=1.0$)
         \STATE $s_t \leftarrow s_{t+1}$
     \ENDFOR
 \ENDFOR
 \end{algorithmic}
+\end{latin}
 \end{algorithm}
 
 \section{الگوریتم سنتز غیربرخط سیاست با هدایت مشخصه‌ها (\texorpdfstring{\sgos}{SG-OS})}
@@ -233,53 +231,65 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \begin{algorithm}[htbp]
 \caption{الگوریتم سنتز غیربرخط سیاست با هدایت مشخصه‌ها (\sgos)}
 \label{alg:app_sgos_full}
+\begin{latin}
+\small
 \begin{algorithmic}[1]
-\REQUIRE سوابق عملیاتی نامتوازن $\mathcal{D}_{\text{offline}}$، مجموعه قیود صوری $\{C_k\}_{k=1}^K$، ضریب مقیاس $\sigma_\Delta$
-\STATE تفکیک انتقال‌ها به زیرمجموعه‌های موفقیت $\mathcal{D}_{\text{succ}}$ و شکست $\mathcal{D}_{\text{fail}}$
-\FOR{هر انتقال $(s, a, r=0, s') \in \mathcal{D}_{\text{fail}}$}
-    \STATE محاسبه تخطی از قیود: $\Delta_k(s, a) = \max(0, C_k(s, a) - \tau_k)$ به ازای $k = 1, \dots, K$
-    \STATE محاسبه حاشیه بازیابی نرمال‌شده: $\mathcal{M}(s, a) = \exp\left(-\frac{\sum_{k=1}^K w_k \Delta_k(s, a)}{\sigma_\Delta}\right)$
-    \STATE محاسبه مشوق مطلوبیت اقدام: $\mathcal{U}_{\text{inc}}(a) = \frac{\text{Utility}(a) - U_{\min}}{U_{\max} - U_{\min}}$
-    \STATE محاسبه پاداش خوش‌بینانه مقیاس‌بندی‌شده:
-    \STATE \quad $\tilde{r}_{\text{opt}}(s, a) = \mathcal{M}(s, a) \cdot \left[ \beta + (1 - \beta) \mathcal{U}_{\text{inc}}(a) \right]$
-    \STATE به‌روزرسانی انتقال در بافر: ذخیره $(s, a, \tilde{r}_{\text{opt}}, s')$ در بافر بازپخش غنی‌شده $\mathcal{D}_{\text{synth}}$
+\REQUIRE Offline log $\mathcal{D}_{\text{offline}}$, surrogates $\{M_k\}_{k=0}^{K-1}$, thresholds $\{\tau_k\}_{k=0}^{K-1}$, $\alpha \ge 1$, $\sigma_\Delta$, $\beta$, $\gamma_u$, $\rho_{\text{base}}$, variant $\text{mode} \in \{\text{MU-RS-DRL}, \text{CM-RS-DRL}\}$
+\FOR{each training gradient step}
+    \STATE Sample minibatch $B \sim \mathcal{D}_{\text{offline}}$
+    \FOR{each transition $(s, a, r_{\text{base}}, s', d) \in B$}
+        \STATE Compute $\mathcal{K}_{\text{viol}} = \{k \in \{0, \dots, K-1\} \mid M_k(s, a) < \tau_k\}$ and $n_{\text{sat}} = K - |\mathcal{K}_{\text{viol}}|$
+        \STATE Compute $\Delta_{\min}(s, a) = \min_k (M_k(s, a) - \tau_k)$ and fractional deficit $\bar{\Delta}_{\text{def}}(s, a)$ via Eq.~(\ref{eq:delta_def_formula})
+        \STATE Compute recoverability margin: $\mathcal{M}(s, a) = \left(\frac{n_{\text{sat}}}{K}\right)^\alpha \exp\left(-\frac{\bar{\Delta}_{\text{def}}(s, a)}{\sigma_\Delta}\right)$
+        \STATE Compute utility incentive: $\mathcal{U}_{\text{inc}}(a) = \left(\frac{u(a)}{u^{\max}}\right)^\beta$
+        \STATE Compute guided probability: $P_{\text{reshape}}(s, a) = \rho_{\text{base}} \cdot \mathcal{M}(s, a) \cdot \left[(1 - \gamma_u) + \gamma_u \mathcal{U}_{\text{inc}}(a)\right]$
+        \IF{$\text{mode} == \text{CM-RS-DRL}$}
+            \STATE Compute confidence buffer: $\bar{\mathcal{B}}(s, a) = \frac{1}{K} \sum_{k=0}^{K-1} \frac{\max(0, M_k(s, a) - \tau_k)}{1 - \tau_k}$
+        \ENDIF
+        \IF{$\Delta_{\min}(s, a) \ge 0$}
+            \STATE $\tilde{r} \leftarrow 1.0$ if $\text{mode} == \text{MU-RS-DRL}$ else $1.0 + \lambda_{\text{margin}}\bar{\mathcal{B}}(s, a) + \lambda_{\text{util}}\mathcal{U}_{\text{inc}}(a)$
+        \ELSIF{$\text{rand}(0, 1) < P_{\text{reshape}}(s, a)$}
+            \STATE $\tilde{r} \leftarrow r_{\text{base}}^{\text{MU}} + \mu \mathcal{U}_{\text{inc}}(a)$ if $\text{mode} == \text{MU-RS-DRL}$ else $r_{\text{base}}^{\text{CM}} + \lambda_{\text{margin}}\bar{\mathcal{B}}(s, a) + \lambda_{\text{util}}\mathcal{U}_{\text{inc}}(a)$
+        \ELSE
+            \STATE $\tilde{r} \leftarrow r_{\text{base}}$ ($= 0$)
+        \ENDIF
+        \STATE Compute TD target $y = \tilde{r} + (1 - d)\gamma \max_{a' \in \mathcal{A}} Q'(s', a'; \theta')$
+    \ENDFOR
+    \STATE Update $\theta$ via TD-loss $\mathcal{L}(\theta)$ in Eq.~(\ref{eq:dqn_loss_rsdrlplus})
 \ENDFOR
-\STATE آموزش شبکه عصبی بر روی بافر ترکیبی $\mathcal{D}_{\text{synth}} \cup \mathcal{D}_{\text{succ}}$ تا همگرایی کامل گرادیان
-\RETURN شبکه عصبی آموزش‌دیده $Q^*(s, a; \theta^*)$
+\RETURN Converged policy network $Q^*(s, a; \theta^*)$
 \end{algorithmic}
+\end{latin}
 \end{algorithm}
 
 \section{الگوریتم اعتبارسنجی کشسان با بودجه زمانی مقید (\texorpdfstring{\caepv}{CA-EPV})}
 \label{sec:app_algo_caepv}
 
-الگوریتم \ref{alg:app_caepv_full} جزئیات اجرایی سازوکار پالایش محلی هرزمانی (\pgalr) را تشریح می‌کند.
+الگوریتم \ref{alg:app_caepv_full} جزئیات پیاده‌سازی سازوکار پالایش محلی هرزمانی (\pgalr) را تشریح می‌کند.
 
 \begin{algorithm}[htbp]
 \caption{الگوریتم اعتبارسنجی کشسان مرحله برنامه‌ریزی با بودجه زمانی مقید (\caepv / \pgalr)}
 \label{alg:app_caepv_full}
+\begin{latin}
+\small
 \begin{algorithmic}[1]
-\REQUIRE بردار وضعیت جاری $s_t$، شبکه سیاست $Q^*$، بودجه زمانی $T_{\text{budget}}$، بعد حساسیت $m$
-\STATE شروع زمان‌سنج: $t_{\text{start}} \leftarrow \text{CurrentTime}()$
-\STATE استنتاج مستقیم زیر میلی‌ثانیه‌ای: $a_0 = \arg\max_{a} Q^*(s_t, a)$ \COMMENT{پیشنهاد پایه سیاست}
-\STATE ارزیابی بلادرنگ قیود با مدل جانشین: $\text{Safe}_0 \leftarrow \bigwedge_{k=1}^K [C_k(s_t, a_0) \le \tau_k]$
-\IF{$\text{Safe}_0 == \text{True}$}
-    \RETURN $a_0$ \COMMENT{صدور بدون درنگ از مسیر سریع}
+\REQUIRE Current state $s_t = (cf_t, of_t)$, policy $Q^*$, surrogates $\{M_k\}_{k=0}^{K-1}$, thresholds $\{\tau_k\}$, stress threshold $\epsilon_{\text{threshold}}$, pre-extracted offline Top-$m$ sensitivity subspace $\text{Top-}m(\mathcal{I}_{\text{XAI}})$, time budget $T_{\text{budget}}$
+\STATE $t_{\text{start}} \leftarrow \text{CurrentTime}()$
+\STATE \textbf{Stage 1 (Fast Inference):} $a_0 \leftarrow \arg\max_{a \in \mathcal{A}} Q^*(s_t, a)$ \COMMENT{Sub-millisecond nominal proposal}
+\STATE \textbf{Stage 2 (Margin \& Stress Gate):} Compute $\Delta_{\min}(s_t, a_0) = \min_k (M_k(s_t, a_0) - \tau_k)$ and $\mathcal{E}(of_t) = \sum_j w_j \widetilde{of}_{t,j}$
+\IF{$\Delta_{\min}(s_t, a_0) \ge 0$ \textbf{and} $\mathcal{E}(of_t) \le \epsilon_{\text{threshold}}$}
+    \RETURN $a_0$ \COMMENT{Accept via Fast Path without refinement latency}
 \ENDIF
-\STATE استخراج $m$ بعد با بالاترین حساسیت از مقادیر شاپلی درختی (\lr{TreeSHAP}): $\mathcal{I}_m \leftarrow \text{TopDimensions}(s_t, m)$
-\STATE تشکیل همسایگی ۱-گام محلی: $\mathcal{N}(a_0) = \{ a \in \mathcal{A} \mid \text{dist}_{\mathcal{I}_m}(a, a_0) \le 1 \}$ \COMMENT{کران $|\mathcal{N}(a_0)| \le 2m + 1$}
-\STATE مقداردهی اولیه کاندیدای برتر: $a^* \leftarrow a_0$ و بیشینه ایمنی $S^* \leftarrow \mathcal{M}(s_t, a_0)$
-\FOR{هر کاندید $a' \in \mathcal{N}(a_0)$}
-    \IF{$\text{CurrentTime}() - t_{\text{start}} \ge T_{\text{budget}} - \delta_{\text{guard}}$}
-        \STATE \textbf{break} \COMMENT{خروج اضطراری در هر زمان جهت رعایت قطعی مهلت}
-    \ENDIF
-    \STATE ارزیابی قید جانشین برای کاندید: $S' \leftarrow \mathcal{M}(s_t, a')$
-    \IF{$S' > S^*$ یا ($S' == S^*$ و $Q^*(s_t, a') > Q^*(s_t, a^*)$)}
-        \STATE $a^* \leftarrow a'$
-        \STATE $S^* \leftarrow S'$
-    \ENDIF
-\ENDFOR
-\RETURN $a^*$ \COMMENT{اقدام نهایی تضمین‌شده با قاعده حفظ ایمنی گزاره ۲}
+\STATE \textbf{Stage 3 (PG-ALR 1-Hop Refinement):} Generate $\mathcal{N}(a_0)$ along pre-extracted $\text{Top-}m(\mathcal{I}_{\text{XAI}})$ via Eq.~(\ref{eq:xai_neighborhood}) \COMMENT{$|\mathcal{N}(a_0)| \le 2m + 1$}
+\STATE Evaluate vectorized surrogate compliance $\mathcal{N}_{\text{sat}}(s_t, a_0) = \{ a \in \mathcal{N}(a_0) \mid \Delta_{\min}(s_t, a) \ge 0 \}$ within budget $T_{\text{budget}} - \delta_{\text{guard}}$
+\IF{$\mathcal{N}_{\text{sat}}(s_t, a_0) \neq \emptyset$}
+    \STATE $a^* \leftarrow \arg\max_{a \in \mathcal{N}_{\text{sat}}(s_t, a_0)} \left[ u(a) + \lambda_{\text{tie}} \bar{\Delta}(s_t, a) \right]$ \COMMENT{Maximize operational utility with tie-breaker}
+\ELSE
+    \STATE $a^* \leftarrow \arg\max_{a \in \mathcal{N}(a_0)} \sum_{k=0}^{K-1} (M_k(s_t, a) - \tau_k)$ \COMMENT{Margin-maximizing safety fallback}
+\ENDIF
+\RETURN $a^*$ \COMMENT{Verified adaptation guaranteed by Proposition~2 (Prop.~\ref{prop:safety_preservation})}
 \end{algorithmic}
+\end{latin}
 \end{algorithm}
 
 \newpage
@@ -300,22 +310,22 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \begin{table}[htbp]
 \centering
 \small
-\caption{فهرست کامل فراپارامترهای آموزش یادگیری تقویتی عمیق و شبیه‌سازی سیستم‌های هدف}
+\caption{فهرست کامل فراپارامترهای آموزش یادگیری تقویتی عمیق و شبیه‌سازی سیستم‌های هدف (هماهنگ با جدول \ref{tab:hyperparameter_catalog_thesis})}
 \label{tab:app_full_hyperparams}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|p{4.2cm}|p{3.2cm}|p{6.0cm}|}
+\begin{tabular}{|p{4.2cm}|p{4.0cm}|p{5.8cm}|}
 \hline
 \textbf{فراپارامتر} & \textbf{مقدار تنظیم‌شده} & \textbf{توضیح فنی و کارکرد} \\ \hline
-نرخ یادگیری ($\alpha$) & $10^{-4}$ & گام به‌روزرسانی وزن‌ها با بهینه‌ساز \lr{Adam} \\ \hline
-ضریب تنزیل زمانی ($\gamma$) & $0.99$ & وزن‌دهی به پاداش‌های تجمعی آتی در افق مارکوف \\ \hline
-اندازه دسته آموزش ($B$) & $64$ (شبکه) / $128$ (پهپاد) & تعداد نمونه‌های واکشی‌شده در هر گام گرادیان \\ \hline
-ظرفیت بافر بازپخش ($N$) & $100{,}000$ & ظرفیت ذخیره‌سازی تجارب عملیاتی \\ \hline
-دوره به‌روزرسانی شبکه هدف ($C$) & $1{,}000$ گام & گام‌های همگام‌سازی وزن‌های شبکه تقریب‌گر هدف \\ \hline
-پارامتر شکل‌دهی تصادفی ($\rho$) & $0.3$ & احتمال تزریق خوش‌بینانه به تجارب شکست در \lr{RS-DRL} \\ \hline
-بُعد زیرفضای حساسیت ($m$) & $3$ & تعداد ابعاد انتخابی با \lr{TreeSHAP} در \pgalr \\ \hline
-ضریب مقیاس حاشیه ($\sigma_\Delta$) & $0.15$ & فاکتور نرمال‌سازی نمایی تخطی از قیود در \mursdrl \\ \hline
-بودجه زمانی مجاز ($T_{\text{budget}}$) & $3.5\,\text{ms}$ & سقف زمانی قطعی مجاز برای مرحله ۳ پالایش هرزمانی \\ \hline
-معماری شبکه عصبی عمیق کیو & $17 \times 128 \times 128 \times 8$ & ساختار پرسپترون چندلایه با توابع فعال‌ساز \lr{ReLU} \\ \hline
+معماری شبکه در \lr{DARTSim} & \lr{MLP $7 \times 64 \times 64 \times 60$ (ReLU)} & مدل اصلی \lr{SEAMS} روی بردار ۷ بعدی و ۶۰ پیکربندی (و $17 \times 128 \times 128 \times 8$ در پیش‌آزمایش غیربرخط ۸گانه) \\ \hline
+معماری شبکه در \lr{DeltaIoT} & \lr{MLP $2 \times 128$ (ReLU)} & تقریب‌گر ارزش در فضاهای ۲۱۶ تا ۴۰۹۶ گزینه شبکه حسگر بی‌سیم \\ \hline
+نرخ یادگیری \lr{Adam} ($\eta$) & $10^{-3}$ & گام به‌روزرسانی بهینه‌ساز \lr{Adam} ($\beta_1=0.9, \beta_2=0.999$) در آزمایش‌های اصلی (جدول \ref{tab:hyperparameter_catalog_thesis}) \\ \hline
+ضریب تنزیل زمانی ($\gamma$) & $0.99$ & وزن‌دهی به پاداش‌های تجمعی آتی در افق مارکوف ($d=1$ در \lr{DARTSim}) \\ \hline
+اندازه دسته آموزش ($B$) & $64$ ($256$ در آزمون هم‌روندی) & تعداد نمونه‌های واکشی‌شده در هر به‌روزرسانی گرادیان \\ \hline
+ظرفیت بافر بازپخش ($N$) & $10^5$ کل / $30{,}000$ \lr{DARTSim} / $20{,}000$ \lr{DeltaIoT} & بافر $30{,}000$تایی متوازن از ۵۰ هزار گذار ثبت‌شده (با نرخ شکست $90.98\%$) \\ \hline
+دوره همگام‌سازی شبکه هدف ($C$) & $500$ (\lr{DARTSim}) / $200$ (\lr{DeltaIoT}) & همگام‌سازی سخت دوره‌ای ($\tau_{\text{soft}}=1.0$ در پولییاک) \\ \hline
+پارامترهای شکل‌دهی (\sgos) & $\rho = 0.30$، $\rho_{\text{base}} = 0.65$، $\alpha = 2.0$، $\sigma_\Delta = 0.05$، $\beta = 1.5$، $\gamma_u = 0.40$ & نرخ شکل‌دهی پایه و فراپارامترهای حاشیه بازیابی و مشوق مطلوبیت ($r_{\text{base}}^{\text{MU}}=0.30, \mu=0.40$) \\ \hline
+پارامترهای بافر اطمینان (\cmrsdrl) & $\tau = 0.80$، $\lambda_{\text{margin}} = 0.30$، $\lambda_{\text{util}} = 0.30$، $r_{\text{base}}^{\text{CM}} = 0.70$ & نرمال‌سازی حاشیه اضافه و تقویت پاداش ایمن در مرزهای آستانه‌ای \\ \hline
+بُعد حساسیت و تنش (\pgalr) & $m = 3$ ($\delta_{\text{hop}} \le 1$)، $\lambda_{\text{tie}} = 0.05$، $\epsilon_{\text{threshold}} = 0.35$ / $0.65$ & $m=3$ بعد برتر \lr{TreeSHAP}، آستانه تنش $0.35$ (\lr{DARTSim}) و $0.65$ (\lr{DeltaIoT})، سقف زمانی \lr{$<3.5\,\text{ms}$} \\ \hline
 \end{tabular}%
 }
 \end{table}
@@ -323,23 +333,23 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \section{گزارش ماتریس نتایج آزمون‌های فرضیه آماری}
 \label{sec:app_statistical_matrices}
 
-جدول \ref{tab:app_wilcoxon_details} مقادیر دقیق آماره‌های ناپارامتری آزمون ویلکاکسون و اندازه اثر کوهن را به ازای پرسش‌های پژوهش \lr{RQ1} تا \lr{RQ6} گزارش می‌کند.
+جدول \ref{tab:app_wilcoxon_details} مقادیر دقیق آماره‌های آزمون‌های ناپارامتری (رتبه‌دار ویلکاکسون، مک‌نمار، اندازه اثر وارگا-دلانی $\hat{A}_{12}$ و کوهن $d$) را به تفکیک پرسش‌های پژوهش \lr{RQ1} تا \lr{RQ6} (متناظر با جداول \ref{tab:stat_tests} و \ref{tab:complete_p_values} در فصل \ref{chap:evaluation}) گزارش می‌کند.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{جزئیات مقادیر آماری آزمون رتبه‌دار ویلکاکسون، اندازه اثر کوهن و اصلاحات هولم-بونفرونی}
+\caption{خلاصه جامع آزمون‌های فرضیه آماری و اندازه‌های اثر به تفکیک پرسش‌های پژوهش (هماهنگ با جداول \ref{tab:stat_tests} و \ref{tab:complete_p_values})}
 \label{tab:app_wilcoxon_details}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|p{3.2cm}|c|c|c|c|c|}
+\begin{tabular}{|p{4.0cm}|p{3.4cm}|c|c|c|p{3.2cm}|}
 \hline
-\textbf{پرسش پژوهش} & \textbf{آماره آزمون ($W$)} & \textbf{مقدار $Z$} & \textbf{مقدار دقیق $p$} & \textbf{اندازه اثر ($d$)} & \textbf{وضعیت معناداری} \\ \hline
-\lr{RQ1} (فرار از بهینه محلی) & $124.0$ & $-6.842$ & $7.81 \times 10^{-12}$ & $1.92$ (بسیار قوی) & رد فرض صفر ($p < 0.001$) \\ \hline
-\lr{RQ2} (کیفیت و واریانس) & $215.5$ & $-5.914$ & $3.34 \times 10^{-9}$ & $1.45$ (قوی) & رد فرض صفر ($p < 0.001$) \\ \hline
-\lr{RQ3} (مقیاس‌پذیری و ابعاد) & $89.0$ & $-7.120$ & $1.08 \times 10^{-12}$ & $2.14$ (بسیار قوی) & رد فرض صفر ($p < 0.001$) \\ \hline
-\lr{RQ4} (استهلاک سربار) & $342.0$ & $-4.850$ & $1.23 \times 10^{-6}$ & $1.18$ (قوی) & رد فرض صفر ($p < 0.001$) \\ \hline
-\lr{RQ5} (تأخیر زیر $3.5\,\text{ms}$) & $0.0$ & $-8.210$ & $2.20 \times 10^{-16}$ & $3.45$ (استثنایی) & رد فرض صفر ($p < 0.001$) \\ \hline
-\lr{RQ6} (شکاف واقعیت و بقا) & $412.0$ & $-5.240$ & $1.61 \times 10^{-7}$ & $1.32$ (قوی) & رد فرض صفر ($p < 0.001$) \\ \hline
+\textbf{پرسش پژوهش و جفت مقایسه} & \textbf{نوع آزمون و نمونه} & \textbf{آماره / اختلاف} & \textbf{مقدار دقیق $p$} & \textbf{اندازه اثر} & \textbf{وضعیت معناداری ($\alpha_{\text{adj}}=0.005$)} \\ \hline
+\lr{RQ1} — ارزش کیو: \\ \lr{MU-RS-DRL vs. Baseline DQN} & ویلکاکسون / $t$ روی همگرایی \mbox{($N=5$)} & $Q: +0.64$ در برابر $-5.8$ & $0.0397$ & $d = 3.75$ (استثنایی) & معنادار در مهار افت کیو \\ \hline
+\lr{RQ2} — مطلوبیت \lr{DARTSim}: \\ \lr{MU-RS-DRL vs. Foundational / XDA-II} & ویلکاکسون زوجی \mbox{($N=200$)} & $\Delta d_{\text{norm}} = +0.0385$ / $+0.0595$ & $2.37 \times 10^{-10}$ / $4.12 \times 10^{-10}$ & $\hat{A}_{12} = 0.778$ / $0.795$ & رد فرض صفر \mbox{($p \ll \alpha_{\text{adj}}$)} \\ \hline
+\lr{RQ3} / \lr{RQ5} — تأخیر برخط و مهار به زیر \lr{$3.5\,\text{ms}$} & ویلکاکسون / نسبت سرعت \mbox{($N=200$)} & $0.485\,\text{ms}$ در برابر $62.61\,\text{ms}$ (\lr{XDA-II}) & \lr{$< 10^{-15}$} & $129\times\text{--}267\times$ سریع‌تر & برآورده‌سازی قطعی مهلت \lr{$<50\,\text{ms}$} \\ \hline
+\lr{RQ4} — انتقال به \lr{DeltaIoTv2} ۴۰۹۶تایی: \\ \lr{RS-DRL\textsuperscript{+} vs. Foundational RS-DRL} & آزمون مقایسه‌ای پیوسته \mbox{($N=30$)} & اتلاف بسته: $8.32\%$ در برابر $10.49\%$ & $4.96 \times 10^{-18}$ & $d = 1.96$ (بزرگ) & رد فرض صفر \mbox{($p \ll \alpha_{\text{adj}}$)} \\ \hline
+\lr{RQ6} — انطباق جانشین $v_3$: \\ \lr{MU-RS-DRL vs. FITEST / Random} & مک‌نمار زوجی \mbox{($N=200$)} & $b=137, c=0$ / $b=138, c=0$ & $1.21 \times 10^{-31}$ / $7.29 \times 10^{-32}$ & $\hat{A}_{12} = 0.843$ / $0.845$ & برتری قطعی انطباق \mbox{($p \ll \alpha_{\text{adj}}$)} \\ \hline
+\lr{RQ6} — بقای فیزیکی بدون سپر $v_3$: \\ \lr{RS-DRL\textsuperscript{+} vs. Shielded} & مک‌نمار دقیق \mbox{($N=200$)} & $b=49, c=38$ \mbox{($\text{OR}=1.29$)} & $0.284$ & $d = 0.24$ (تناسب) & برابری ایمنی با کاهش $267\times$ تأخیر \\ \hline
 \end{tabular}%
 }
 \end{table}
@@ -352,7 +362,7 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \chapter{مصنوعات پیاده‌سازی و پکیج بازتولید}
 \label{chap:appendix_reproducibility}
 
-به منظور پایبندی به اصول علم باز\LTRfootnote{Open Science} و تکرارپذیری مستقل کلیه شواهد تجربی این رساله دکتری، کلیه کدهای منبع، اسکریپت‌های واسط، ردپاهای تجربی و فایل‌های کانتینر داکر در دسترس محققان قرار گرفته است.
+به منظور پایبندی به اصول علم باز\LTRfootnote{Open Science} و تکرارپذیری مستقل کلیه شواهد تجربی این رساله دکتری، کلیه کدهای منبع، اسکریپت‌های واسط، ردپاهای محیطی و عملیاتی و فایل‌های کانتینر داکر در دسترس محققان قرار گرفته است.
 
 \section{ساختار مخزن نرم‌افزاری و ماژول‌ها}
 \label{sec:app_repo_structure}
@@ -374,7 +384,7 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
 \section{دستورالعمل استقرار در محیط کانتینری داکر}
 \label{sec:app_docker_setup}
 
-جهت مصون ماندن از تداخلات ناشی از نسخه‌های سیستم‌عامل و درایورها، پکیج بازتولید در قالب یک تصویر داکر مجزا استانداردسازی شده است. مراحل فراخوانی و اجرای کانتینر به شرح زیر است:
+جهت مصون ماندن از تعارض‌های ناشی از نسخه‌های سیستم‌عامل و راه‌اندازها، پکیج بازتولید در قالب یک تصویر داکر مجزا استانداردسازی شده است. مراحل فراخوانی و اجرای کانتینر به شرح زیر است:
 
 \begin{enumerate}
     \item \textbf{کلون کردن مخزن کدهای منبع:}
@@ -405,31 +415,34 @@ s_t = \big\langle &E = [0.3,\, 0.3,\, 0.25,\, 0.25], \\
     \end{LTR}
 \end{enumerate}
 
-\section{دستورات بازتولید آزمایش‌های تجربی و آزمون‌های فرضیه}
+\section{دستورات بازتولید آزمایش‌ها و آزمون‌های فرضیه}
 \label{sec:app_reproduction_commands}
 
-پس از ورود به محیط کانتینر، اجرای سناریوهای تجربی با دستورات خط فرمان زیر امکان‌پذیر است:
+پس از ورود به محیط کانتینر، اجرای سناریوهای ارزیابی با دستورات خط فرمان زیر امکان‌پذیر است:
 
-\paragraph{بازتولید نتایج بستر \lr{DeltaIoT} (\lr{RQ1} تا \lr{RQ4}):}
+\subsubsection*{بازتولید نتایج بستر \lr{DeltaIoT} (\lr{RQ1} تا \lr{RQ4})}
 \begin{LTR}
 \small
 \begin{verbatim}
 python run_deltaiot_benchmarks.py --instances v1 v1.1 v2 --seeds 30
 \end{verbatim}
 \end{LTR}
-این دستور شبیه‌سازی همگرایی و هرس فضا را روی هر سه مقیاس شبکه حسگر اجرا کرده و سوابق نتایج را در مسیر \texttt{results/deltaiot/} ذخیره می‌نماید.
+این دستور شبیه‌سازی همگرایی و هرس فضا را روی هر سه مقیاس شبکه حسگر اجرا کرده و سوابق نتایج را در مسیر \lr{\texttt{results/deltaiot/}} ذخیره می‌نماید.
 
-\paragraph{بازتولید ۲,۰۰۰ پرواز مأموریتی \lr{DARTSim} (\lr{RQ1}، \lr{RQ5} و \lr{RQ6}):}
+\subsubsection*{بازتولید ۲,۰۰۰ پرواز مأموریتی \lr{DARTSim} (\lr{RQ1}، \lr{RQ5} و \lr{RQ6})}
 \begin{LTR}
 \small
 \begin{verbatim}
-python run_dartsim_eval.py --scenarios 200 --flights-per-scenario 10 \
-                           --methods RS-DRL-Plus MU-RS-DRL Shielded DQN
+python run_dartsim_eval.py --scenarios 200 --flights-per-scenario 1 \
+                           --methods RS-DRL-Plus MU-RS-DRL CM-RS-DRL \
+                                     Foundational-RS-DRL Baseline-DQN \
+                                     Shielded XDA-II-SHAP XDA-PDP \
+                                     NSGA-III FITEST
 \end{verbatim}
 \end{LTR}
-این دستور $2{,}000$ پرواز ۶ درجه آزادی حلقه-بسته را شبیه‌سازی کرده و میزان بقا، تأخیر میلی‌ثانیه‌ای و مصرف حافظه را در فایل \texttt{results/dartsim\_metrics.csv} ثبت می‌نماید.
+این دستور $2{,}000$ پرواز ۶ درجه آزادی حلقه-بسته (۱۰ روش $\times$ ۲۰۰ سناریو؛ ۱ پرواز به ازای هر جفت روش-سناریو) را شبیه‌سازی کرده و خروجی‌های بقا، تأخیر میلی‌ثانیه‌ای و مصرف حافظه را در فایل \lr{\texttt{results/}}\allowbreak\lr{\texttt{dartsim\_metrics.csv}} ثبت می‌نماید.
 
-\paragraph{تولید نمودارها و ماتریس آزمون‌های آماری ویلکاکسون:}
+\subsubsection*{تولید نمودارها و ماتریس آزمون‌های آماری ویلکاکسون}
 \begin{LTR}
 \small
 \begin{verbatim}

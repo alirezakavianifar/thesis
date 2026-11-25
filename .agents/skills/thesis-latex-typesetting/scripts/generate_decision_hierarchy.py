@@ -57,7 +57,7 @@ def create_decision_hierarchy(output_path):
     draw_card(10.0, 13.8, 14.5, 1.3, c_blue_fill, c_blue_border)
     ax.text(10.0, 14.15, r"Runtime State Telemetry: $s_t = \langle cf, of \rangle \in \mathcal{S}$",
             ha='center', va='center', fontsize=9.6, fontweight='bold', color=c_blue_title)
-    ax.text(10.0, 13.60, r"Triggered when any surrogate confidence falls below threshold: $\min_k M_k(s_t) < \tau_k$",
+    ax.text(10.0, 13.60, r"Triggered when any surrogate margin falls below threshold: $\min_k (M_k(s_t) - \tau_k) < 0$",
             ha='center', va='center', fontsize=8.2, color=c_slate_dark)
 
     # Arrow 0 -> Stage 1
@@ -102,11 +102,11 @@ def create_decision_hierarchy(output_path):
 
     # Fast Path Card (Right Side)
     draw_card(16.5, 7.8, 4.4, 1.5, c_emerald_fill, c_emerald_border, lw=1.6)
-    ax.text(16.5, 8.25, "Fast-Path Execution", ha='center', va='center', fontsize=9.2, fontweight='bold', color=c_emerald_title)
+    ax.text(15.75, 8.25, "Fast-Path Execution", ha='center', va='center', fontsize=8.8, fontweight='bold', color=c_emerald_title)
     ax.text(16.5, 7.75, r"Accept Nominal: $a^* = a_0$", ha='center', va='center', fontsize=8.6, fontweight='bold', color='#065F46')
     ax.text(16.5, 7.30, "No Search Latency Injected", ha='center', va='center', fontsize=7.4, color=c_slate_muted)
-    ax.text(17.8, 8.25, "< 0.50 ms", ha='center', va='center', fontsize=7.2, fontweight='bold', color='#059669',
-            bbox=dict(boxstyle='round,pad=0.15', facecolor='#ECFDF5', edgecolor='#059669', lw=0.8))
+    ax.text(18.00, 8.25, "< 0.50 ms", ha='center', va='center', fontsize=7.0, fontweight='bold', color='#059669',
+            bbox=dict(boxstyle='round,pad=0.14', facecolor='#ECFDF5', edgecolor='#059669', lw=0.8))
 
     # -------------------------------------------------------------
     # Left Branch: NO (Threat / Margin Alert) -> Stage 3 (PG-ALR)

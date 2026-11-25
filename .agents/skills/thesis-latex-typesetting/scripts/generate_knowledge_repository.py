@@ -117,7 +117,8 @@ def create_knowledge_repository(output_path):
     # Arrow: Monitor -> Store 2 (Write Telemetry)
     ax.annotate('', xy=(6.9, 9.9), xytext=(5.7, 10.7),
                 arrowprops=dict(facecolor=c_blue_border, edgecolor=c_blue_border, width=1.3, headwidth=5.5, headlength=6.5))
-    ax.text(6.0, 10.6, "Append State $s_t$", ha='center', va='center', fontsize=7.5, fontweight='bold', color=c_blue_title)
+    ax.text(5.85, 11.20, "Append State $s_t$", ha='center', va='center', fontsize=7.5, fontweight='bold', color=c_blue_title,
+            bbox=dict(boxstyle='round,pad=0.15', facecolor='#FFFFFF', edgecolor='none', alpha=0.85))
 
     # B. ANALYZE (Mid Left: x = 3.2, y = 6.7)
     draw_card(3.2, 6.7, 5.0, 2.2, c_blue_fill, c_blue_border, lw=1.5)
@@ -147,7 +148,8 @@ def create_knowledge_repository(output_path):
     ax.annotate('', xy=(6.9, 5.4), xytext=(5.7, 2.4),
                 arrowprops=dict(facecolor=c_purple_border, edgecolor=c_purple_border, width=1.3, headwidth=5.5, headlength=6.5,
                                connectionstyle='arc3,rad=-0.12'))
-    ax.text(5.7, 4.7, "Append $(s, a^*, r)$", ha='center', va='center', fontsize=7.4, fontweight='bold', color=c_purple_title)
+    ax.text(5.45, 4.65, "Append $(s, a^*, r, s^\\prime)$", ha='center', va='center', fontsize=7.4, fontweight='bold', color=c_purple_title,
+            bbox=dict(boxstyle='round,pad=0.18', facecolor='#FFFFFF', edgecolor=c_purple_border, lw=0.6, alpha=0.92))
 
     # D. EXECUTOR (Top Right: x = 18.8, y = 10.7)
     draw_card(18.8, 10.7, 5.0, 2.2, c_emerald_fill, c_emerald_border, lw=1.5)

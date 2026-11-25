@@ -35,6 +35,7 @@
 \usepackage{subfigure}
 \usepackage[subfigure]{tocloft}
 \usepackage{multirow}
+\usepackage{longtable}
 \usepackage{xspace}
 
 
@@ -60,11 +61,12 @@
 \makeatother
 
 % Standalone configuration to support individual chapter compilation
-\ifdefined\ifstandalone
-\else
+\makeatletter
+\@ifundefined{ifstandalone}{%
   \newif\ifstandalone
   \standalonetrue
-\fi
+}{}
+\makeatother
 
 % Cross-document label resolution for standalone chapter builds
 \ifstandalone
@@ -134,7 +136,7 @@
   \unskip
   \unskip
   \unpenalty
-  \hbox{,}\hskip\m@mipn@skip}
+  \nobreak\hbox{,}\hskip\m@mipn@skip}
 
 % بازتعریف bidi@make@para@LTRfootgroup جهت باز کردن کامل جعبه‌ها، جلوگیری از سرریز و حذف کامای انتهایی
 \bidi@ensure@newcommand{\bidi@make@para@LTRfootgroup}[1]{%
@@ -398,8 +400,8 @@
 \makeatother
 
 \makeatletter
-{\def\thebibliography#1{\chapter*{\refname\@mkboth
-   {\uppercase{\refname}}{\uppercase{\refname}}}\list
+{\gdef\thebibliography#1{\chapter*{\refname\@mkboth
+   {\refname}{\refname}}\thispagestyle{plain}\markboth{\refname}{\refname}\list
    {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}
    \rightmargin\labelwidth
    \advance\rightmargin\labelsep
@@ -415,9 +417,17 @@
 
 % Robust macros for RS-DRL+ and architectural patterns
 \xspaceaddexceptions{، ؛ » \footnote \LTRfootnote ^^^^200c}
-\newcommand{\rsdrlplus}{\lr{RS-DRL\textsuperscript{+}}\xspace}
-\newcommand{\sgos}{\lr{SG-OS}\xspace}
-\newcommand{\caepv}{\lr{CA-EPV}\xspace}
-\newcommand{\pgalr}{\lr{PG-ALR}\xspace}
-\newcommand{\mursdrl}{\lr{MU-RS-DRL}\xspace}
-\newcommand{\cmrsdrl}{\lr{CM-RS-DRL}\xspace}
+\DeclareRobustCommand{\rsdrlplus}{\lr{\mbox{RS-DRL\textsuperscript{+}}}\xspace}
+\DeclareRobustCommand{\sgos}{\lr{\mbox{SG-OS}}\xspace}
+\DeclareRobustCommand{\caepv}{\lr{\mbox{CA-EPV}}\xspace}
+\DeclareRobustCommand{\pgalr}{\lr{\mbox{PG-ALR}}\xspace}
+\DeclareRobustCommand{\mursdrl}{\lr{\mbox{MU-RS-DRL}}\xspace}
+\DeclareRobustCommand{\cmrsdrl}{\lr{\mbox{CM-RS-DRL}}\xspace}
+\pdfstringdefDisableCommands{%
+  \def\rsdrlplus{RS-DRL+}%
+  \def\sgos{SG-OS}%
+  \def\caepv{CA-EPV}%
+  \def\pgalr{PG-ALR}%
+  \def\mursdrl{MU-RS-DRL}%
+  \def\cmrsdrl{CM-RS-DRL}%
+}

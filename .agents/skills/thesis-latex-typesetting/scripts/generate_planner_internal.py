@@ -180,10 +180,10 @@ def create_planner_internal(output_path):
     # 2. UPPAAL-SMC Verification Module
     draw_card(cx2, 8.60, w_card, 2.50, c_purple_fill, c_purple_border, lw=1.5)
     ax.text(cx2, 9.45, "UPPAAL-SMC VERIFIER", ha='center', va='center', fontsize=9.2, fontweight='bold', color=c_purple_title)
-    ax.text(cx2, 8.90, "Parallel Background Thread\n$N_{\\mathrm{sim}} \\approx 4{,}611$ via Chernoff Bound\nNon-blocking Execution",
+    ax.text(cx2, 8.90, "Parallel Background Thread\n$N_{\\mathrm{sim}} = 4{,}612$ via Chernoff Bound\nNon-blocking Execution",
             ha='center', va='center', fontsize=7.6, color=c_slate_dark, linespacing=1.3)
-    ax.text(cx2, 7.75, r"Returns $r_{\mathrm{smc}} = \mathbb{P}(\psi \models \diamondsuit_{[0, T]} \phi) \in [0, 1]$",
-            ha='center', va='center', fontsize=7.8, fontweight='bold', color='#4C1D95')
+    ax.text(cx2, 7.75, r"Returns $r_{\mathrm{smc}} = \mathbb{I}[\hat{P}(\mathrm{□}_{\leq T}\, \phi) \geq 1-\alpha] \in \{0, 1\}$",
+            ha='center', va='center', fontsize=7.6, fontweight='bold', color='#4C1D95')
 
     # Arrow -> Composite Reward
     ax.annotate('', xy=(cx2, 6.15), xytext=(cx2, 7.35),
@@ -267,11 +267,11 @@ def create_planner_internal(output_path):
     ax.annotate('', xy=(cx3, 4.68), xytext=(cx3, 5.50),
                 arrowprops=dict(facecolor=c_amber_border, edgecolor=c_amber_border, width=1.3, headwidth=5.5, headlength=6.0))
 
-    # 4. Target Network Soft Update Card
+    # 4. Target Network Periodic Update Card
     draw_card(cx3, 4.10, w_card, 1.15, '#FFFFFF', c_amber_border)
-    ax.text(cx3, 4.35, "Target Network Soft Update", ha='center', va='center', fontsize=8.5, fontweight='bold', color=c_amber_title)
-    ax.text(cx3, 3.85, r"$\theta^\prime \leftarrow \tau_{\mathrm{soft}} \theta_{\mathrm{train}} + (1 - \tau_{\mathrm{soft}})\theta^\prime$",
-            ha='center', va='center', fontsize=8.0, color=c_slate_dark)
+    ax.text(cx3, 4.35, "Target Network Sync (Every $C$ Steps)", ha='center', va='center', fontsize=8.3, fontweight='bold', color=c_amber_title)
+    ax.text(cx3, 3.85, r"$\theta^\prime \leftarrow \tau_{\mathrm{soft}}\theta_{\mathrm{train}} + (1{-}\tau_{\mathrm{soft}})\theta^\prime$ ($\tau_{\mathrm{soft}}{=}1.0$)",
+            ha='center', va='center', fontsize=7.6, color=c_slate_dark)
 
     # Arrow -> Atomic Pointer Swap Box
     ax.annotate('', xy=(cx3, 2.73), xytext=(cx3, 3.52),
